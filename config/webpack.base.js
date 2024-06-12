@@ -18,9 +18,20 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /(\.js(x?))$|(\.ts(x?))$/,
+				test: /\.tsx?$/,
 				exclude: /node_modules/,
-				loader: "babel-loader",
+				loader: "ts-loader",
+			},
+			// 如果你的项目中也直接使用了.jsx文件，且希望用Babel处理它们，可以加如下规则
+			{
+				test: /\.jsx?$/, // 匹配.js和.jsx文件
+				exclude: /node_modules/,
+				use: {
+					loader: "babel-loader",
+					options: {
+						presets: ["@babel/preset-react"], // 添加React preset
+					},
+				},
 			},
 			{
 				test: /\.(jpg|jpeg|gif|png)$/,

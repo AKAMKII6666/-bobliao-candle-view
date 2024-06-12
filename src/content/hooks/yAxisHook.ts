@@ -1,7 +1,7 @@
 import { createContext, useState, useContext, useRef, useCallback, useEffect, FC, ReactElement } from "react";
 
 import {} from "../interface/contextInterFace";
-
+import { pointCoord } from "../interface/itemsInterFace";
 import {
 	getDecimalOfLength,
 	getIntOfLength,
@@ -13,14 +13,7 @@ import _bigNumber from "bignumber.js";
 import { Iaxis } from "../interface/configInterFaces";
 import { IAxisobj, IyAxisobj } from "../interface/hooksInterFace";
 import { DEFAULTAXISVALUES } from "../utils/defaultValues";
-import {
-	IToolTipItem,
-	netLineItem,
-	numberScope,
-	numberScopeString,
-	tickItem,
-	pointCoord,
-} from "../interface/itemsInterFace";
+import { IToolTipItem, netLineItem, numberScope, numberScopeString, tickItem } from "../interface/itemsInterFace";
 
 /**
  * y轴钩子

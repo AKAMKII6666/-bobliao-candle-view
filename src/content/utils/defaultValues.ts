@@ -180,7 +180,7 @@ export const DEFAULTDATAVALUES: IdataConfig = {
  初始值的定义和注释和可以去参看接口定义
  */
 export const DEFAULTVALUES: IuseCandleView = {
-	title: "交易对:🚀BNB/USDT🚀这是⚡CandleView⚡组件示例",
+	title: "交易对:🚀BNB/USDT🚀这是CandleView组件示例V2⚡闪电版⚡",
 	enableTitle: true,
 	enableinfo: true,
 	timeFormat: "1h",

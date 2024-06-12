@@ -1,7 +1,7 @@
 /*** examples/src/app.js ***/
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { CandleView, candleViewContext, useCandleView } from "../../lib/index";
+import { CandleView, useCandleView, useCandleViewContext, candleViewContext } from "../../.";
 
 const App = () => {
 	const [isMounted, setIsMounted] = useState<boolean>(false);

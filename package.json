@@ -3,7 +3,7 @@
 	"version": "0.0.4",
 	"description": "",
 	"main": "lib/index.js",
-	"types": "lib/index.d.ts",
+	"types": "lib/types/index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/AKAMKII6666/-bobliao-candle-view.git"
@@ -12,13 +12,17 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "webpack-dev-server --config config/webpack.dev.config.js",
-		"build": "concurrently \"tsc\" \"webpack --config config/webpack.prod.config.js\"",
+		"build": "webpack --config config/webpack.prod.config.js",
 		"publicNpm": "npm publish --access public"
 	},
 	"keywords": [
 		"k-line",
 		"tradingview",
 		"react"
+	],
+	"files": [
+		"lib",
+		"src"
 	],
 	"author": "AKA MKII",
 	"license": "ISC",
