@@ -10,6 +10,7 @@ const prodConfig = {
 		path: path.join(__dirname, "../lib/"),
 		filename: "index.js",
 		libraryTarget: "umd", // 采用通用模块定义
+		globalObject: "this",
 	},
 	module: {
 		rules: [
