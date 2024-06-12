@@ -13,7 +13,6 @@ import _bigNumber from "bignumber.js";
 import lodash from "lodash";
 import useDebounce from "./debounceHook";
 import useThrottle from "./throttleHook";
-import { current } from "immer";
 import { IdataConfig, IuseCandleView } from "../interface/configInterFaces";
 import { IAxisobj, IuseCandleHook, IyAxisobj } from "../interface/hooksInterFace";
 import { DEFAULTDATAVALUES } from "../utils/defaultValues";
