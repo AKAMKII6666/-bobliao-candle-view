@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"description": "",
 	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/AKAMKII6666/-bobliao-candle-view.git"
