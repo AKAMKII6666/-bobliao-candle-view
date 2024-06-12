@@ -11,8 +11,6 @@ const prodConfig = {
 		filename: "index.js",
 		libraryTarget: "umd", // 采用通用模块定义
 		libraryExport: "default", // 兼容 ES6 Module、CommonJS 和 AMD 模块规范
-		globalObject: "this",
-		publicPath: "",
 	},
 	module: {
 		rules: [
@@ -54,16 +52,16 @@ const prodConfig = {
 	externals: {
 		// 定义外部依赖，避免把react和react-dom打包进去
 		react: {
-			root: "React",
-			commonjs2: "react",
 			commonjs: "react",
-			amd: "react",
+			commonjs2: "react",
+			amd: "React",
+			root: "React",
 		},
 		"react-dom": {
-			root: "ReactDOM",
-			commonjs2: "react-dom",
 			commonjs: "react-dom",
-			amd: "react-dom",
+			commonjs2: "react-dom",
+			amd: "ReactDOM",
+			root: "ReactDOM",
 		},
 	},
 };
