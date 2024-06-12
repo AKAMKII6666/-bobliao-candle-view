@@ -33,21 +33,6 @@ module.exports = {
 					},
 				},
 			},
-			{
-				test: /\.(jpg|jpeg|gif|png)$/,
-				loader: "url-loader",
-				options: {
-					name: "[path][name].[ext]?_v=" + Version,
-					limit: 10240,
-					esModule: false,
-				},
-			},
-			{
-				test: /\.svg$/,
-				type: "asset/inline",
-				// Inline assets with the "inline" query parameter.
-				//resourceQuery: /inline/,
-			},
 		],
 	},
 };
