@@ -1,4 +1,4 @@
-import { ITooltipConfig, Iaxis, IdataConfig, IuseCandleView } from "../interface/configInterFaces";
+import { ITooltipConfig, Iaxis, IdataConfig, IuseCandleView } from '../interface/configInterFaces';
 /**
  *tooltip的初始值
  */

@@ -28,14 +28,14 @@ import { TtimeType } from '../interface/timeDefineInterFace';
 import yAxis from '../com/yAxis';
 
 /**
- * 创建一个需要全局使用的钱包context
+ * Candleview K-line图的context,用于给CandleView组件提供数据
  **/
 const candleViewContext = createContext<IcandleViewContext>(
   {} as IcandleViewContext
 );
 
 /**
- * 钱包的公用钩子
+ * 初始化 Candleview K-line图的钩子
  */
 const useCandleView: TcandleViewContext = function(
   args: IuseCandleView
@@ -271,6 +271,7 @@ export interface IuseCandleViewContext {
   (): IcandleViewContext;
 }
 
+/* 在别的地方使用CandleView的数据 */
 let useCandleViewContext: IuseCandleViewContext = function(): IcandleViewContext {
   var r: IcandleViewContext = useContext(candleViewContext);
   return r;

@@ -1528,18 +1528,18 @@ try {
 
 var DEFAULTTOOLTIPVALUES = {
   enabled: true,
-  color: "#02121c",
+  color: '#02121c',
   lineSize: 0.5,
   dashLength: 4,
   spaceLength: 3,
   label: {
     fontsize: 12,
-    color: "#ffffff",
-    backGroundColor: "#454545",
+    color: '#ffffff',
+    backGroundColor: '#454545',
     backGroundAlpha: 1,
     formatter: function formatter(axisItem) {
       //yyyy-MM-dd HH:mm:ss
-      return formatDate(new Date(axisItem.value), "yyyy-MM-dd HH:mm:ss");
+      return formatDate(new Date(axisItem.value), 'yyyy-MM-dd HH:mm:ss');
     }
   }
 };
@@ -1548,21 +1548,21 @@ var DEFAULTTOOLTIPVALUES = {
  */
 
 var DEFAULTAXISVALUES = {
-  labelSpace: "90px",
-  fontColor: "#454545",
-  fontSize: "12px",
-  netLineColor: "#dedede",
-  lineColor: "#454545",
-  tickColor: "#454545",
-  tickLength: "3px",
+  labelSpace: '90px',
+  fontColor: '#454545',
+  fontSize: '12px',
+  netLineColor: '#dedede',
+  lineColor: '#454545',
+  tickColor: '#454545',
+  tickLength: '3px',
   netLineMaxCount: 34,
   netLineMinCount: 3,
   netLineSize: 1,
   lineSize: 1,
   tickSize: 1,
-  backgroundColor: "#ffffff",
+  backgroundColor: '#ffffff',
   tooltip: DEFAULTTOOLTIPVALUES,
-  initTimePoint: "now",
+  initTimePoint: 'now',
   displayPadding: 0.1
 };
 /**
@@ -1600,23 +1600,23 @@ var DEFAULTDATAVALUES = {
     }()
   },
   candleStyles: {
-    candleWidth: "80%",
-    wickWidth: "1px",
-    candleRiseColor: "#7de17c",
-    candleFallColor: "#c85656",
-    wickRiseColor: "#7de17c",
-    wickFallColor: "#c85656",
+    candleWidth: '80%',
+    wickWidth: '1px',
+    candleRiseColor: '#7de17c',
+    candleFallColor: '#c85656',
+    wickRiseColor: '#7de17c',
+    wickFallColor: '#c85656',
     //当前最末尾价格的tooltip设置
     currentPriceTooltip: {
       enabled: true,
-      color: "#b9b42c",
+      color: '#b9b42c',
       lineSize: 0.5,
       dashLength: 8,
       spaceLength: 3,
       label: {
         fontsize: 12,
-        color: "#ffffff",
-        backGroundColor: "#b9b42c",
+        color: '#ffffff',
+        backGroundColor: '#b9b42c',
         backGroundAlpha: 1,
         formatter: function formatter(axisItem) {
           axisItem = axisItem; //yyyy-MM-dd HH:mm:ss
@@ -1628,14 +1628,14 @@ var DEFAULTDATAVALUES = {
     //当前显示范围的最末尾的tooltip设置
     viewLastPriceTooltip: {
       enabled: true,
-      color: "#b9b42c",
+      color: '#b9b42c',
       lineSize: 0.5,
       dashLength: 8,
       spaceLength: 3,
       label: {
         fontsize: 12,
-        color: "#ffffff",
-        backGroundColor: "#826abe",
+        color: '#ffffff',
+        backGroundColor: '#826abe',
         backGroundAlpha: 0.5,
         formatter: function formatter(axisItem) {
           axisItem = axisItem; //yyyy-MM-dd HH:mm:ss
@@ -1657,7 +1657,7 @@ var DEFAULTDATAVALUES = {
       /**
        *交易量图表高度
        */
-      volumeChartHeight: "30%",
+      volumeChartHeight: '30%',
 
       /**
        *交易量图表透明度
@@ -1667,27 +1667,27 @@ var DEFAULTDATAVALUES = {
       /**
        *上升时显示的颜色
        */
-      riseColor: "#d6dfc5",
+      riseColor: '#d6dfc5',
 
       /**
        *下降时显示的颜色
        */
-      fallColor: "#c7c7c7",
+      fallColor: '#c7c7c7',
       //当前最末尾价格的tooltip设置
       currentPriceTooltip: {
         enabled: true,
-        color: "#b9b42c",
+        color: '#b9b42c',
         lineSize: 0.5,
         dashLength: 8,
         spaceLength: 3,
         label: {
           fontsize: 12,
-          color: "#ffffff",
-          backGroundColor: "#b9b42c",
+          color: '#ffffff',
+          backGroundColor: '#b9b42c',
           backGroundAlpha: 1,
           formatter: function formatter(axisItem, language) {
             if (language === void 0) {
-              language = "en";
+              language = 'en';
             }
 
             axisItem = axisItem; //yyyy-MM-dd HH:mm:ss
@@ -1699,18 +1699,18 @@ var DEFAULTDATAVALUES = {
       //当前显示范围的最末尾的tooltip设置
       viewLastPriceTooltip: {
         enabled: true,
-        color: "#b9b42c",
+        color: '#b9b42c',
         lineSize: 0.5,
         dashLength: 8,
         spaceLength: 3,
         label: {
           fontsize: 12,
-          color: "#ffffff",
-          backGroundColor: "#826abe",
+          color: '#ffffff',
+          backGroundColor: '#826abe',
           backGroundAlpha: 0.5,
           formatter: function formatter(axisItem, language) {
             if (language === void 0) {
-              language = "en";
+              language = 'en';
             }
 
             axisItem = axisItem; //yyyy-MM-dd HH:mm:ss
@@ -1728,44 +1728,44 @@ var DEFAULTDATAVALUES = {
  */
 
 var DEFAULTVALUES = {
-  title: "交易对:🚀BNB/USDT🚀这是CandleView组件示例V2⚡闪电版⚡",
+  title: '交易对:🚀BNB/USDT🚀这是⚡CandleView⚡组件示例V2',
   enableTitle: true,
   enableinfo: true,
-  timeFormat: "1h",
-  width: "auto",
-  height: "500px",
-  backgroundColor: "#fff",
+  timeFormat: '1h',
+  width: 'auto',
+  height: '500px',
+  backgroundColor: '#fff',
   resizeDebounceTime: 100,
-  language: "zh",
+  language: 'zh',
   timeZone: {
     dataSourceTimeZone: 0,
     fetchConditionTimeZone: 0,
     displayTimeZone: 0
   },
   yAxis: {
-    labelSpace: "90px",
+    labelSpace: '90px',
     formatter: function formatter(axisItem) {
       return axisItem.displayValue.toString();
     },
-    fontColor: "#454545",
-    fontSize: "12px",
-    netLineColor: "#dedede",
-    lineColor: "#454545",
-    tickColor: "#454545",
-    tickLength: "3px",
+    fontColor: '#454545',
+    fontSize: '12px',
+    netLineColor: '#dedede',
+    lineColor: '#454545',
+    tickColor: '#454545',
+    tickLength: '3px',
     netLineMaxCount: 14,
     netLineMinCount: 3,
     displayPadding: 0.3,
     tooltip: {
       enabled: true,
-      color: "#02121c",
+      color: '#02121c',
       lineSize: 0.5,
       dashLength: 4,
       spaceLength: 3,
       label: {
         fontsize: 12,
-        color: "#ffffff",
-        backGroundColor: "#454545",
+        color: '#ffffff',
+        backGroundColor: '#454545',
         backGroundAlpha: 1,
         formatter: function formatter(axisItem) {
           axisItem = axisItem; //yyyy-MM-dd HH:mm:ss
@@ -1776,32 +1776,32 @@ var DEFAULTVALUES = {
     }
   },
   xAxis: {
-    labelSpace: "30px",
-    fontColor: "#454545",
-    fontSize: "12px",
-    netLineColor: "#dedede",
-    lineColor: "#454545",
-    tickColor: "#454545",
-    tickLength: "4px",
+    labelSpace: '30px',
+    fontColor: '#454545',
+    fontSize: '12px',
+    netLineColor: '#dedede',
+    lineColor: '#454545',
+    tickColor: '#454545',
+    tickLength: '4px',
     netLineMaxCount: 30,
     netLineMinCount: 0,
     netLineSize: 0.5,
-    initTimePoint: "now",
+    initTimePoint: 'now',
     displayPadding: 0,
     tooltip: {
       enabled: true,
-      color: "#02121c",
+      color: '#02121c',
       lineSize: 0.5,
       dashLength: 4,
       spaceLength: 3,
       label: {
         fontsize: 12,
-        color: "#ffffff",
-        backGroundColor: "#454545",
+        color: '#ffffff',
+        backGroundColor: '#454545',
         backGroundAlpha: 1,
         formatter: function formatter(axisItem) {
           //yyyy-MM-dd HH:mm:ss
-          return formatDate(new Date(axisItem.value), "yyyy-MM-dd HH:mm:ss");
+          return formatDate(new Date(axisItem.value), 'yyyy-MM-dd HH:mm:ss');
         }
       }
     }
@@ -7432,12 +7432,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 };
 
 /**
- * 创建一个需要全局使用的钱包context
+ * Candleview K-line图的context,用于给CandleView组件提供数据
  **/
 
 var candleViewContext = /*#__PURE__*/createContext({});
 /**
- * 钱包的公用钩子
+ * 初始化 Candleview K-line图的钩子
  */
 
 var useCandleView = function useCandleView(args) {
@@ -7667,6 +7667,8 @@ var useCandleView = function useCandleView(args) {
     }
   };
 };
+/* 在别的地方使用CandleView的数据 */
+
 
 var useCandleViewContext = function useCandleViewContext() {
   var r = useContext(candleViewContext);
