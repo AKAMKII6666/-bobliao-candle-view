@@ -961,9 +961,17 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
       }
 
       //计算移动，并更新tick
-      window.requestAnimationFrame(function() {
-        moveAxis(start, stop, isSaveScope);
-      });
+      if (tickArr.length > 1200) {
+        moveThrettor(function() {
+          window.requestAnimationFrame(function() {
+            moveAxis(start, stop, isSaveScope);
+          });
+        }, 30);
+      } else {
+        window.requestAnimationFrame(function() {
+          moveAxis(start, stop, isSaveScope);
+        });
+      }
     }
   };
 
