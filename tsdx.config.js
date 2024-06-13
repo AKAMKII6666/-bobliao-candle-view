@@ -1,6 +1,7 @@
 // tsdx.config.js
 const postcss = require('rollup-plugin-postcss');
 const autoprefixer = require('autoprefixer');
+const url = require('rollup-plugin-url');
 
 module.exports = {
   rollup(config, options) {
@@ -19,7 +20,14 @@ module.exports = {
         // 其他PostCSS配置...
       })
     );
-
+    // 添加url插件来处理图片和其他文件
+    config.plugins.push(
+      url({
+        include: ['**/*.png', '**/*.jpg', '**/*.gif', '**/*.svg'], // 需要处理的文件类型
+        limit: 81920, // 小于这个大小的文件会被转换为base64
+        // 其他url插件配置...
+      })
+    );
     return config;
   },
   // tsdx 的其他配置...
