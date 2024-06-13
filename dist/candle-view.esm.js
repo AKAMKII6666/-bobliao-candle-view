@@ -5489,8 +5489,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       setlastMaxMiny = _useState9[1];
 
   var _useState10 = useState(),
-      workMessage = _useState10[0],
-      seworkMessage = _useState10[1];
+      workMessage = _useState10[0];
 
   var _useState11 = useState([]);
   /**
@@ -7275,13 +7274,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       return;
     }
   };
-
-  var openMoveWorker = function openMoveWorker() {
-    mWorker.current = new Worker(new URL('../webWorkers/moveWorker', import.meta.url));
-    mWorker.current.addEventListener('message', function (e) {
-      seworkMessage(e);
-    });
-  };
   /**
    * ==================================Effects===============================
    */
@@ -7302,8 +7294,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       } else {
         setisStaticData(false);
       }
-
-      openMoveWorker();
     }
 
     return function () {
@@ -9846,56 +9836,43 @@ var CandleView = function CandleView(_ref2, _ref) {
   }, React.createElement(NetLines$1, null), React.createElement(VolumChart, null), React.createElement(Data$1, null), React.createElement(XAxis$1, null), React.createElement(YAxis$1, null)))));
 };
 
-var CandleView$1 = /*#__PURE__*/memo(CandleView);
+var index = /*#__PURE__*/memo(CandleView);
 
 
 
-var CVbasicShapesInterFace = {
+var basicShapesInterFace = {
   __proto__: null
 };
 
 
 
-var CVconfigInterFaces = {
+var configInterFaces = {
   __proto__: null
 };
 
 
 
-var CVcontextInterFace = {
+var contextInterFace = {
   __proto__: null
 };
 
 
 
-var CVhooksInterFace = {
+var hooksInterFace = {
   __proto__: null
 };
 
 
 
-var CVitemsInterFace = {
+var itemsInterFace = {
   __proto__: null
 };
 
 
 
-var CVtimeDefineInterFace = {
+var timeDefineInterFace = {
   __proto__: null
 };
 
-var index = {
-  CandleView: CandleView$1,
-  useCandleView: useCandleView,
-  useCandleViewContext: useCandleViewContext,
-  candleViewContext: candleViewContext,
-  CVbasicShapesInterFace: CVbasicShapesInterFace,
-  CVconfigInterFaces: CVconfigInterFaces,
-  CVcontextInterFace: CVcontextInterFace,
-  CVhooksInterFace: CVhooksInterFace,
-  CVitemsInterFace: CVitemsInterFace,
-  CVtimeDefineInterFace: CVtimeDefineInterFace
-};
-
-export default index;
+export { basicShapesInterFace as CVbasicShapesInterFace, configInterFaces as CVconfigInterFaces, contextInterFace as CVcontextInterFace, hooksInterFace as CVhooksInterFace, itemsInterFace as CVitemsInterFace, timeDefineInterFace as CVtimeDefineInterFace, index as CandleView, candleViewContext, useCandleView, useCandleViewContext };
 //# sourceMappingURL=candle-view.esm.js.map

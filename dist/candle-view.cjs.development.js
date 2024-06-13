@@ -5496,8 +5496,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       setlastMaxMiny = _useState9[1];
 
   var _useState10 = React.useState(),
-      workMessage = _useState10[0],
-      seworkMessage = _useState10[1];
+      workMessage = _useState10[0];
 
   var _useState11 = React.useState([]);
   /**
@@ -7282,13 +7281,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       return;
     }
   };
-
-  var openMoveWorker = function openMoveWorker() {
-    mWorker.current = new Worker(new URL('../webWorkers/moveWorker', (typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('candle-view.cjs.development.js', document.baseURI).href))));
-    mWorker.current.addEventListener('message', function (e) {
-      seworkMessage(e);
-    });
-  };
   /**
    * ==================================Effects===============================
    */
@@ -7309,8 +7301,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       } else {
         setisStaticData(false);
       }
-
-      openMoveWorker();
     }
 
     return function () {
@@ -9853,56 +9843,52 @@ var CandleView = function CandleView(_ref2, _ref) {
   }, React__default.createElement(NetLines$1, null), React__default.createElement(VolumChart, null), React__default.createElement(Data$1, null), React__default.createElement(XAxis$1, null), React__default.createElement(YAxis$1, null)))));
 };
 
-var CandleView$1 = /*#__PURE__*/React.memo(CandleView);
+var index = /*#__PURE__*/React.memo(CandleView);
 
 
 
-var CVbasicShapesInterFace = {
+var basicShapesInterFace = {
   __proto__: null
 };
 
 
 
-var CVconfigInterFaces = {
+var configInterFaces = {
   __proto__: null
 };
 
 
 
-var CVcontextInterFace = {
+var contextInterFace = {
   __proto__: null
 };
 
 
 
-var CVhooksInterFace = {
+var hooksInterFace = {
   __proto__: null
 };
 
 
 
-var CVitemsInterFace = {
+var itemsInterFace = {
   __proto__: null
 };
 
 
 
-var CVtimeDefineInterFace = {
+var timeDefineInterFace = {
   __proto__: null
 };
 
-var index = {
-  CandleView: CandleView$1,
-  useCandleView: useCandleView,
-  useCandleViewContext: useCandleViewContext,
-  candleViewContext: candleViewContext,
-  CVbasicShapesInterFace: CVbasicShapesInterFace,
-  CVconfigInterFaces: CVconfigInterFaces,
-  CVcontextInterFace: CVcontextInterFace,
-  CVhooksInterFace: CVhooksInterFace,
-  CVitemsInterFace: CVitemsInterFace,
-  CVtimeDefineInterFace: CVtimeDefineInterFace
-};
-
-exports.default = index;
+exports.CVbasicShapesInterFace = basicShapesInterFace;
+exports.CVconfigInterFaces = configInterFaces;
+exports.CVcontextInterFace = contextInterFace;
+exports.CVhooksInterFace = hooksInterFace;
+exports.CVitemsInterFace = itemsInterFace;
+exports.CVtimeDefineInterFace = timeDefineInterFace;
+exports.CandleView = index;
+exports.candleViewContext = candleViewContext;
+exports.useCandleView = useCandleView;
+exports.useCandleViewContext = useCandleViewContext;
 //# sourceMappingURL=candle-view.cjs.development.js.map

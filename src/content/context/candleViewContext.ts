@@ -37,7 +37,9 @@ const candleViewContext = createContext<IcandleViewContext>(
 /**
  * 钱包的公用钩子
  */
-const useCandleView: TcandleViewContext = function(args): IcandleViewContext {
+const useCandleView: TcandleViewContext = function(
+  args: IuseCandleView
+): IcandleViewContext {
   /**
    *默认参数状态
    */

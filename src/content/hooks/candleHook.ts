@@ -2151,15 +2151,6 @@ const useCandleHook = function(
     }
   };
 
-  let openMoveWorker = function() {
-    mWorker.current = new Worker(
-      new URL('../webWorkers/moveWorker', import.meta.url)
-    );
-    mWorker.current.addEventListener('message', (e: MessageEvent<any>) => {
-      seworkMessage(e);
-    });
-  };
-
   /**
    * ==================================Effects===============================
    */
@@ -2183,7 +2174,6 @@ const useCandleHook = function(
       } else {
         setisStaticData(false);
       }
-      openMoveWorker();
     }
     return function(): void {
       setIsMounted(false);

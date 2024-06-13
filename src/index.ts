@@ -12,9 +12,9 @@ import * as CVhooksInterFace from './content/interface/hooksInterFace';
 import * as CVitemsInterFace from './content/interface/itemsInterFace';
 import * as CVtimeDefineInterFace from './content/interface/timeDefineInterFace';
 
-export default {
-  CandleView,
+export {
   useCandleView,
+  CandleView,
   useCandleViewContext,
   candleViewContext,
   CVbasicShapesInterFace,
