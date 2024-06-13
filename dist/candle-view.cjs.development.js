@@ -9853,52 +9853,56 @@ var CandleView = function CandleView(_ref2, _ref) {
   }, React__default.createElement(NetLines$1, null), React__default.createElement(VolumChart, null), React__default.createElement(Data$1, null), React__default.createElement(XAxis$1, null), React__default.createElement(YAxis$1, null)))));
 };
 
-var index = /*#__PURE__*/React.memo(CandleView);
+var CandleView$1 = /*#__PURE__*/React.memo(CandleView);
 
 
 
-var basicShapesInterFace = {
+var CVbasicShapesInterFace = {
   __proto__: null
 };
 
 
 
-var configInterFaces = {
+var CVconfigInterFaces = {
   __proto__: null
 };
 
 
 
-var contextInterFace = {
+var CVcontextInterFace = {
   __proto__: null
 };
 
 
 
-var hooksInterFace = {
+var CVhooksInterFace = {
   __proto__: null
 };
 
 
 
-var itemsInterFace = {
+var CVitemsInterFace = {
   __proto__: null
 };
 
 
 
-var timeDefineInterFace = {
+var CVtimeDefineInterFace = {
   __proto__: null
 };
 
-exports.CVbasicShapesInterFace = basicShapesInterFace;
-exports.CVconfigInterFaces = configInterFaces;
-exports.CVcontextInterFace = contextInterFace;
-exports.CVhooksInterFace = hooksInterFace;
-exports.CVitemsInterFace = itemsInterFace;
-exports.CVtimeDefineInterFace = timeDefineInterFace;
-exports.CandleView = index;
-exports.candleViewContext = candleViewContext;
-exports.useCandleView = useCandleView;
-exports.useCandleViewContext = useCandleViewContext;
+var index = {
+  CandleView: CandleView$1,
+  useCandleView: useCandleView,
+  useCandleViewContext: useCandleViewContext,
+  candleViewContext: candleViewContext,
+  CVbasicShapesInterFace: CVbasicShapesInterFace,
+  CVconfigInterFaces: CVconfigInterFaces,
+  CVcontextInterFace: CVcontextInterFace,
+  CVhooksInterFace: CVhooksInterFace,
+  CVitemsInterFace: CVitemsInterFace,
+  CVtimeDefineInterFace: CVtimeDefineInterFace
+};
+
+exports.default = index;
 //# sourceMappingURL=candle-view.cjs.development.js.map
