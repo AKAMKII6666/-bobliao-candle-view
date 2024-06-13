@@ -6,10 +6,10 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var React = require('react');
 var React__default = _interopDefault(React);
-var react = require('@pixi/react');
-var useJquery = _interopDefault(require('@bobliao/use-jquery-hook'));
 var _bigNumber = _interopDefault(require('bignumber.js'));
 var lodash = require('lodash');
+var react = require('@pixi/react');
+var useJquery = _interopDefault(require('@bobliao/use-jquery-hook'));
 var ResizeObserver = _interopDefault(require('resize-observer-polyfill'));
 var PIXI = require('pixi.js');
 
@@ -108,6 +108,666 @@ function _createForOfIteratorHelperLoose(o, allowArrayLike) {
 
   throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
+
+/**
+ * 格式化时间
+ */
+
+var formatDate = function formatDate(date, format) {
+  date = date || new Date();
+  format = format || "yyyy-MM-dd HH:mm:ss";
+  var result = format.replace("yyyy", date.getFullYear().toString()).replace("yy", date.getFullYear().toString().substring(2, 4)).replace("MM", (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1).toString()).replace("dd", (date.getDate() < 10 ? "0" : "") + date.getDate().toString()).replace("HH", (date.getHours() < 10 ? "0" : "") + date.getHours().toString()).replace("mm", (date.getMinutes() < 10 ? "0" : "") + date.getMinutes().toString()).replace("ss", (date.getSeconds() < 10 ? "0" : "") + date.getSeconds().toString());
+  return result;
+};
+/**
+ * 将某个时间重置到GMT +0000 然后再变换到GMT +0n00
+ */
+
+var anyTimeToGMT0000ToTarget = function anyTimeToGMT0000ToTarget(time, currentTimeZone, targetTimeZone) {
+  var date = new Date(time);
+  var localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
+
+  if (targetTimeZone === "local") {
+    targetTimeZone = localtimeZone;
+  }
+
+  if (currentTimeZone === "local") {
+    currentTimeZone = localtimeZone;
+  }
+
+  date.setHours(date.getHours() - currentTimeZone + targetTimeZone);
+  return date.getTime();
+};
+/**
+ * 获得长度
+ *@param  {number | string} arg 输入值
+ *@param  {number} length 相对的长度
+ *@returns {number}
+ */
+
+var getSpaceSize = function getSpaceSize(arg, length) {
+  if (typeof arg === "string" && arg === "auto") {
+    return length;
+  }
+
+  if (typeof arg === "string" && arg.indexOf("%") !== -1) {
+    var value = Number(arg.replace("%", "")) / 100;
+    return length * value;
+  }
+
+  if (typeof arg === "string" && arg.indexOf("px") !== -1) {
+    return Number(arg.replace("px", ""));
+  }
+
+  if (typeof arg === "number" || !isNaN(Number(arg))) {
+    return Number(arg);
+  }
+
+  console.log("no useful length !");
+  return 0;
+};
+/**
+ * 通过时间 计算点的坐标
+ *@param  {number} value 值
+ *@param  {number} length 数组长度
+ *@param {number} pixWidth 像素长度
+ */
+
+var getRangePosition = function getRangePosition( //
+value, range, pixWidth) {
+  return pixWidth * ((value - range.start) / (range.end - range.start));
+};
+/**
+ * 求tick的交集
+ */
+
+var findIntersection = function findIntersection(tickArr, scope) {
+  var result = [];
+
+  if (tickArr.length < 300) {
+    for (var _iterator = _createForOfIteratorHelperLoose(tickArr), _step; !(_step = _iterator()).done;) {
+      var item = _step.value;
+
+      if (Number(item.value) >= scope.start && Number(item.value) <= scope.end) {
+        result.push(item);
+      }
+    }
+  } else {
+    result = findIntersectionByKey(tickArr, scope, "value");
+  }
+
+  return result;
+};
+/**
+ * 求candle的交集
+ */
+
+var findIntersectionCandle = function findIntersectionCandle(candle, scope) {
+  var result = []; //for (var item of candle) {
+  //	if (Number(item.time) >= scope.start && Number(item.time) <= scope.end) {
+  //		result.push(item);
+  //	}
+  //}
+
+  result = findIntersectionByKey(candle, scope, "time");
+  return result;
+}; //换算区块链的数字单位
+
+var shiftNumber = function shiftNumber(_number, _shiftLength) {
+  return new _bigNumber(_number).times(new _bigNumber(10).exponentiatedBy(_shiftLength)).toString();
+};
+/**
+ * 将数组快速转换为hash表
+ */
+
+var arrayToHash = function arrayToHash(arr, keyProperty) {
+  return arr.reduce(function (hash, obj, index) {
+    hash[obj[keyProperty]] = obj;
+    hash[obj[keyProperty]].index = index;
+    return hash;
+  }, {});
+};
+/**
+ * 把任意整数的末尾数字算成整数例如 12345678  算成 12345680
+ * “四舍五入”到最近的十的倍数 (N的倍数)
+ */
+
+var roundToNearestTenBigNumber = function roundToNearestTenBigNumber(num, intGetPar) {
+  // 创建BigNumber实例
+  var bigNum = new _bigNumber(num); // 计算末尾数字（余数）
+
+  var remainder = bigNum.modulo(intGetPar); // 判断并进行相应的加减操作
+  // 注意：BigNumber的运算需要使用其提供的方法，不能直接使用+-*/等运算符
+
+  var result; // 加（intGetPar - 余数）
+  //永远往大推，不要往小推
+
+  result = bigNum.minus(remainder).plus(intGetPar); // 确保结果是整数，虽然一般操作结果已经是整数，但可做显式转换
+
+  return result.integerValue(_bigNumber.ROUND_FLOOR).toString();
+}; //这是我自己写的
+///**
+// * 查找点
+// * @param inputArr 查找的数组
+// * @param target 目标数字
+// * @param key 目标字段
+// * @param targetType 找 起点<= 目标  还是 终点>= 目标
+// */
+//function binarySearchByKey(
+//	inputArr: jsonObjectType[],
+//	target: number,
+//	key: string,
+//	targetType: "forStart" | "forEnd"
+//): number | null {
+//	if (targetType === "forStart" && target <= (inputArr[0][key] as number)) {
+//		return 0;
+//	}
+//	if (targetType === "forEnd" && target >= (inputArr[inputArr.length - 1][key] as number)) {
+//		return inputArr.length - 1;
+//	}
+//
+//	let left = 0;
+//	let right = inputArr.length - 1;
+//	let mid: number;
+//
+//	while (left <= right) {
+//		mid = left + Math.floor((right - left) / 2);
+//
+//		if (inputArr[mid][key] === target) {
+//			if (targetType === "forStart") {
+//				// 查找起点，继续在左半边查找可能更小的索引
+//				right = mid - 1;
+//			} else {
+//				// 查找终点，继续在右半边查找可能更大的索引
+//				left = mid + 1;
+//			}
+//		} else if ((inputArr[mid][key] as number) < target) {
+//			left = mid + 1;
+//		} else {
+//			right = mid - 1;
+//		}
+//	}
+//
+//	// 根据targetType确定返回值
+//	if (targetType === "forStart") {
+//		// 如果是查找起点，返回第一个大于等于target的索引
+//		return left;
+//	} else {
+//		// 如果是查找终点，由于循环结束时left已经越过了目标，所以返回right
+//		return right;
+//	}
+//}
+//
+///**
+// * 二分查找法求交集
+// * @param inputArr 输入数组
+// * @param scope 范围
+// * @param key 目标字段
+// * @returns 返回找到的数组范围
+// */
+//export const findIntersectionByKey = function (
+//	inputArr: jsonObjectType[],
+//	scope: numberScope,
+//	key: string
+//): jsonObjectType[] {
+//	let startIndex = binarySearchByKey(inputArr, scope.start, key, "forStart");
+//	let endIndex = binarySearchByKey(inputArr, scope.end, key, "forEnd");
+//
+//	// 确保索引有效
+//	startIndex = startIndex === null ? 0 : startIndex;
+//	endIndex = endIndex === null ? inputArr.length - 1 : endIndex;
+//
+//	// 调整endIndex以确保包含等于scope.end的元素
+//	if (endIndex < inputArr.length && inputArr[endIndex][key] < scope.end) {
+//		endIndex++;
+//	}
+//
+//	return inputArr.slice(startIndex, endIndex);
+//};
+
+/**
+ * 查找点
+ * @param inputArr 查找的数组
+ * @param target 目标数字
+ * @param key 目标字段
+ * @param targetType 找 起点=== 目标  还是 终点=== 目标
+ */
+
+function binarySearchByKeyStrictlyEqual(inputArr, target, targetType, key) {
+  var getItem = function getItem(arr, index) {
+    if (typeof arr[index] === "object" || typeof key !== "undefined") {
+      return Number(arr[index][key]);
+    }
+
+    return Number(arr[index]);
+  };
+
+  if (targetType === "forStart" && target === getItem(inputArr, 0)) {
+    return 0;
+  }
+
+  if (targetType === "forEnd" && target === getItem(inputArr, inputArr.length - 1)) {
+    return inputArr.length - 1;
+  }
+
+  var left = 0;
+  var right = inputArr.length - 1;
+  var mid;
+
+  while (left <= right) {
+    mid = left + Math.floor((right - left) / 2);
+
+    if (getItem(inputArr, mid) === target) {
+      if (targetType === "forStart") {
+        // 查找起点，继续在左半边查找可能更小的索引
+        right = mid - 1;
+      } else {
+        // 查找终点，继续在右半边查找可能更大的索引
+        left = mid + 1;
+      }
+    } else if (getItem(inputArr, mid) < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  } // 根据targetType确定返回值
+
+
+  if (targetType === "forStart") {
+    // 如果是查找起点，返回第一个大于等于target的索引
+    return left;
+  } else {
+    // 如果是查找终点，由于循环结束时left已经越过了目标，所以返回right
+    return right;
+  }
+} //ai帮忙优化的版本，确实优雅一些
+
+/**
+ * 查找点
+ * @param inputArr 查找的数组
+ * @param target 目标数字
+ * @param key 目标字段
+ * @param targetType 找 起点<= 目标  还是 终点>= 目标
+ */
+
+function binarySearchByKey(inputArr, target, key, targetType) {
+  if (typeof inputArr[0] === "undefined") {
+    return -1;
+  }
+
+  if (targetType === "forStart" && target <= inputArr[0][key]) {
+    return 0;
+  }
+
+  if (targetType === "forEnd" && target >= inputArr[inputArr.length - 1][key]) {
+    return inputArr.length - 1;
+  }
+
+  var left = 0;
+  var right = inputArr.length - 1;
+  var mid;
+
+  while (left <= right) {
+    mid = left + Math.floor((right - left) / 2);
+
+    if (inputArr[mid][key] === target) {
+      if (targetType === "forStart") {
+        // 查找起点，继续在左半边查找可能更小的索引
+        right = mid - 1;
+      } else {
+        // 查找终点，继续在右半边查找可能更大的索引
+        left = mid + 1;
+      }
+    } else if (inputArr[mid][key] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  } // 根据targetType确定返回值
+
+
+  if (targetType === "forStart") {
+    // 如果是查找起点，返回第一个大于等于target的索引
+    return left;
+  } else {
+    // 如果是查找终点，由于循环结束时left已经越过了目标，所以返回right
+    return right;
+  }
+}
+/**
+ * 二分查找法求交集
+ * @param inputArr 输入数组
+ * @param scope 范围
+ * @param key 目标字段
+ * @returns 返回找到的数组范围
+ */
+
+
+var findIntersectionByKey = function findIntersectionByKey(inputArr, scope, key) {
+  var startIndex = binarySearchByKey(inputArr, scope.start, key, "forStart");
+  var endIndex = binarySearchByKey(inputArr, scope.end, key, "forEnd"); // 确保索引有效
+
+  startIndex = startIndex === null ? 0 : startIndex;
+  endIndex = endIndex === null ? inputArr.length - 1 : endIndex;
+
+  if (typeof inputArr[endIndex] === "undefined") {
+    return [];
+  }
+
+  if (endIndex < inputArr.length && inputArr[endIndex][key] < scope.end) {
+    // 调整endIndex以确保包含等于scope.end的元素
+    endIndex++;
+  }
+
+  return inputArr.slice(startIndex, endIndex);
+};
+/**
+ * 获得正确的时间
+ */
+
+var getRightDate = function getRightDate(dateTime) {
+  if (typeof dateTime === "number") {
+    return dateTime;
+  }
+
+  return +new Date(dateTime);
+}; //千分位分割
+
+var thousandsSplit = function thousandsSplit(num) {
+  var numStr = num.toString().trim().split(".")[0].split("");
+  var output = "";
+  var j = 0;
+
+  for (var i = numStr.length - 1; i > -1; i--) {
+    if (j % 3 == 0 && j != 0) {
+      output = numStr[i] + "," + output;
+    } else {
+      output = numStr[i] + output;
+    }
+
+    j++;
+  }
+
+  if (num.toString().split(".")[1]) {
+    output += "." + num.toString().split(".")[1];
+  }
+
+  return output;
+}; //通过语言信息获得单位换算
+
+var getUnitNumber = function getUnitNumber(_num, _lan, _fix) {
+  if (typeof _lan === "undefined") {
+    _lan = "en";
+  }
+
+  if (typeof _fix === "undefined") {
+    _fix = 0;
+  }
+
+  var result = _num.toString();
+
+  switch (_lan) {
+    case "en":
+      result = translateNumberT(_num, _fix);
+      break;
+
+    case "ja":
+      result = translateNumberF(_num, _fix);
+      break;
+
+    case "ko":
+      result = translateNumberK(_num, _fix);
+      break;
+
+    case "zh":
+      result = translateNumberF(_num, _fix);
+      break;
+
+    case "ru":
+      result = translateNumberT(_num, _fix);
+      break;
+  }
+
+  return result;
+}; //韩文
+
+var translateNumberK = function translateNumberK(_num, _fix) {
+  if (typeof _fix === "undefined") {
+    _fix = 0;
+  }
+
+  var num = new _bigNumber(_num).toFixed().split(".");
+  var nIARR = num[0].split("");
+  var nFARR = [];
+
+  if (typeof num[1] !== "undefined") {
+    nFARR = num[1].split("");
+  }
+  /**
+   * 万 = 10000
+   * 亿 = 100000000
+   * 兆 = 1000000000000
+   */
+  //兆 = 1000000000000
+
+
+  if (nIARR.length >= 13) {
+    var _num2 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(12).toFixed()).toFixed(_fix, 1);
+
+    return _num2 + "조";
+  } //亿 = 100000000
+
+
+  if (nIARR.length >= 9) {
+    var _num3 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(8).toFixed()).toFixed(_fix, 1);
+
+    return _num3 + "억";
+  } //万 = 10000
+
+
+  if (nIARR.length >= 5) {
+    var _num4 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(4).toFixed()).toFixed(_fix, 1);
+
+    return _num4 + "만";
+  }
+
+  return new _bigNumber(_num).toFixed(_fix);
+}; //中文
+
+var translateNumberF = function translateNumberF(_num, _fix) {
+  if (typeof _fix === "undefined") {
+    _fix = 0;
+  }
+
+  var num = new _bigNumber(_num).toFixed().split(".");
+  var nIARR = num[0].split("");
+  var nFARR = [];
+
+  if (typeof num[1] !== "undefined") {
+    nFARR = num[1].split("");
+  }
+  /**
+   * 百 = 100
+   * 千 = 1000
+   * 万 = 10000
+   * 百万 = 1000000
+   * 千万 = 10000000
+   * 亿 = 100000000
+   * 兆 = 1000000000000
+   */
+  //兆 = 1000000000000
+
+
+  if (nIARR.length >= 13) {
+    var _num5 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(12).toFixed()).toFixed(_fix, 1);
+
+    return _num5 + "兆";
+  } //亿 = 100000000
+
+
+  if (nIARR.length >= 9) {
+    var _num6 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(8).toFixed()).toFixed(_fix, 1);
+
+    return _num6 + "亿";
+  } //千万 = 10000000
+
+
+  if (nIARR.length >= 8) {
+    var _num7 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(7).toFixed()).toFixed(_fix, 1);
+
+    return _num7 + "千萬";
+  } //百万 = 1000000
+
+
+  if (nIARR.length >= 7) {
+    var _num8 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(6).toFixed()).toFixed(_fix, 1);
+
+    return _num8 + "百萬";
+  } //万 = 10000
+
+
+  if (nIARR.length >= 5) {
+    var _num9 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(4).toFixed()).toFixed(_fix, 1);
+
+    return _num9 + "萬";
+  }
+
+  return new _bigNumber(_num).toFixed(_fix);
+}; //换算单位英文
+
+var translateNumberT = function translateNumberT(_num, _fix) {
+  if (typeof _fix === "undefined") {
+    _fix = 0;
+  }
+
+  var num = new _bigNumber(_num).toFixed().split(".");
+  var nIARR = num[0].split("");
+  var nFARR = [];
+
+  if (typeof num[1] !== "undefined") {
+    nFARR = num[1].split("");
+  }
+  /**
+   * k = 1000
+   * m = 10000000
+   * b = 1000000000
+   * t = 10000000000
+   */
+  //t = 10000000000
+
+
+  if (nIARR.length >= 11) {
+    var _num10 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(10).toFixed()).toFixed(_fix, 1);
+
+    return _num10 + "T";
+  } //b = 1000000000
+
+
+  if (nIARR.length >= 10) {
+    var _num11 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(9).toFixed()).toFixed(_fix, 1);
+
+    return _num11 + "B";
+  } //m = 1000000
+
+
+  if (nIARR.length >= 7) {
+    var _num12 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(6).toFixed()).toFixed(_fix, 1);
+
+    return _num12 + "M";
+  } //k = 1000
+
+
+  if (nIARR.length >= 4) {
+    var _num13 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(3).toFixed()).toFixed(_fix, 1);
+
+    return _num13 + "K";
+  }
+
+  return new _bigNumber(_num).toFixed(_fix);
+};
+/**
+ * 求等差数列的个数
+ * @param length 数组的长度
+ * @param step 每隔几个元素取一个元素
+ * @returns 返回共可取多少元素
+ */
+
+var countSelectedElements = function countSelectedElements(length, step) {
+  // 计算数组长度
+  var arrayLength = length;
+  step = step + 1; // 如果步长大于数组长度，则没有元素可以挑选
+
+  if (step >= arrayLength) {
+    return 0;
+  } // 计算挑选的元素数量
+  // 使用整数除法向下取整
+
+
+  var count = Math.floor((arrayLength - 1) / step) + 1;
+  return count;
+};
+
+var getLength = function getLength(p1, p2) {
+  return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+};
+
+/**
+ * 节流钩子
+ */
+
+var useThrottle = function useThrottle() {
+  /**
+   * ============================state===========================
+   */
+  var _useState = React.useState(false),
+      isMounted = _useState[0],
+      setIsMounted = _useState[1];
+
+  var ThrottleFunction = React.useRef(null);
+  var ThrottleTimeOut = React.useRef(null);
+  /**
+   * ==========================函数==============================
+   */
+
+  var Throttle = function Throttle(_func, _time) {
+    if (typeof _time === "undefined") {
+      _time = 500;
+    }
+
+    if (_time === 0) {
+      _func();
+
+      return;
+    }
+
+    ThrottleFunction.current = _func;
+
+    if (ThrottleTimeOut.current === null) {
+      ThrottleTimeOut.current = setTimeout(function () {
+        if (ThrottleFunction.current !== null) {
+          ThrottleFunction.current();
+          ThrottleFunction.current = null;
+          ThrottleTimeOut.current = null;
+        }
+      }, _time);
+    }
+  };
+  /**
+   * ==================================Effects===============================
+   */
+
+
+  React.useEffect(function () {
+    if (isMounted === false) {
+      setIsMounted(true);
+    }
+
+    return function () {
+      setIsMounted(false);
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return Throttle;
+};
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -868,666 +1528,6 @@ try {
   }
 }
 });
-
-/**
- * 格式化时间
- */
-
-var formatDate = function formatDate(date, format) {
-  date = date || new Date();
-  format = format || "yyyy-MM-dd HH:mm:ss";
-  var result = format.replace("yyyy", date.getFullYear().toString()).replace("yy", date.getFullYear().toString().substring(2, 4)).replace("MM", (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1).toString()).replace("dd", (date.getDate() < 10 ? "0" : "") + date.getDate().toString()).replace("HH", (date.getHours() < 10 ? "0" : "") + date.getHours().toString()).replace("mm", (date.getMinutes() < 10 ? "0" : "") + date.getMinutes().toString()).replace("ss", (date.getSeconds() < 10 ? "0" : "") + date.getSeconds().toString());
-  return result;
-};
-/**
- * 将某个时间重置到GMT +0000 然后再变换到GMT +0n00
- */
-
-var anyTimeToGMT0000ToTarget = function anyTimeToGMT0000ToTarget(time, currentTimeZone, targetTimeZone) {
-  var date = new Date(time);
-  var localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
-
-  if (targetTimeZone === "local") {
-    targetTimeZone = localtimeZone;
-  }
-
-  if (currentTimeZone === "local") {
-    currentTimeZone = localtimeZone;
-  }
-
-  date.setHours(date.getHours() - currentTimeZone + targetTimeZone);
-  return date.getTime();
-};
-/**
- * 获得长度
- *@param  {number | string} arg 输入值
- *@param  {number} length 相对的长度
- *@returns {number}
- */
-
-var getSpaceSize = function getSpaceSize(arg, length) {
-  if (typeof arg === "string" && arg === "auto") {
-    return length;
-  }
-
-  if (typeof arg === "string" && arg.indexOf("%") !== -1) {
-    var value = Number(arg.replace("%", "")) / 100;
-    return length * value;
-  }
-
-  if (typeof arg === "string" && arg.indexOf("px") !== -1) {
-    return Number(arg.replace("px", ""));
-  }
-
-  if (typeof arg === "number" || !isNaN(Number(arg))) {
-    return Number(arg);
-  }
-
-  console.log("no useful length !");
-  return 0;
-};
-/**
- * 通过时间 计算点的坐标
- *@param  {number} value 值
- *@param  {number} length 数组长度
- *@param {number} pixWidth 像素长度
- */
-
-var getRangePosition = function getRangePosition( //
-value, range, pixWidth) {
-  return pixWidth * ((value - range.start) / (range.end - range.start));
-};
-/**
- * 求tick的交集
- */
-
-var findIntersection = function findIntersection(tickArr, scope) {
-  var result = [];
-
-  if (tickArr.length < 300) {
-    for (var _iterator = _createForOfIteratorHelperLoose(tickArr), _step; !(_step = _iterator()).done;) {
-      var item = _step.value;
-
-      if (Number(item.value) >= scope.start && Number(item.value) <= scope.end) {
-        result.push(item);
-      }
-    }
-  } else {
-    result = findIntersectionByKey(tickArr, scope, "value");
-  }
-
-  return result;
-};
-/**
- * 求candle的交集
- */
-
-var findIntersectionCandle = function findIntersectionCandle(candle, scope) {
-  var result = []; //for (var item of candle) {
-  //	if (Number(item.time) >= scope.start && Number(item.time) <= scope.end) {
-  //		result.push(item);
-  //	}
-  //}
-
-  result = findIntersectionByKey(candle, scope, "time");
-  return result;
-}; //换算区块链的数字单位
-
-var shiftNumber = function shiftNumber(_number, _shiftLength) {
-  return new _bigNumber(_number).times(new _bigNumber(10).exponentiatedBy(_shiftLength)).toString();
-};
-/**
- * 将数组快速转换为hash表
- */
-
-var arrayToHash = function arrayToHash(arr, keyProperty) {
-  return arr.reduce(function (hash, obj, index) {
-    hash[obj[keyProperty]] = obj;
-    hash[obj[keyProperty]].index = index;
-    return hash;
-  }, {});
-};
-/**
- * 把任意整数的末尾数字算成整数例如 12345678  算成 12345680
- * “四舍五入”到最近的十的倍数 (N的倍数)
- */
-
-var roundToNearestTenBigNumber = function roundToNearestTenBigNumber(num, intGetPar) {
-  // 创建BigNumber实例
-  var bigNum = new _bigNumber(num); // 计算末尾数字（余数）
-
-  var remainder = bigNum.modulo(intGetPar); // 判断并进行相应的加减操作
-  // 注意：BigNumber的运算需要使用其提供的方法，不能直接使用+-*/等运算符
-
-  var result; // 加（intGetPar - 余数）
-  //永远往大推，不要往小推
-
-  result = bigNum.minus(remainder).plus(intGetPar); // 确保结果是整数，虽然一般操作结果已经是整数，但可做显式转换
-
-  return result.integerValue(_bigNumber.ROUND_FLOOR).toString();
-}; //这是我自己写的
-///**
-// * 查找点
-// * @param inputArr 查找的数组
-// * @param target 目标数字
-// * @param key 目标字段
-// * @param targetType 找 起点<= 目标  还是 终点>= 目标
-// */
-//function binarySearchByKey(
-//	inputArr: jsonObjectType[],
-//	target: number,
-//	key: string,
-//	targetType: "forStart" | "forEnd"
-//): number | null {
-//	if (targetType === "forStart" && target <= (inputArr[0][key] as number)) {
-//		return 0;
-//	}
-//	if (targetType === "forEnd" && target >= (inputArr[inputArr.length - 1][key] as number)) {
-//		return inputArr.length - 1;
-//	}
-//
-//	let left = 0;
-//	let right = inputArr.length - 1;
-//	let mid: number;
-//
-//	while (left <= right) {
-//		mid = left + Math.floor((right - left) / 2);
-//
-//		if (inputArr[mid][key] === target) {
-//			if (targetType === "forStart") {
-//				// 查找起点，继续在左半边查找可能更小的索引
-//				right = mid - 1;
-//			} else {
-//				// 查找终点，继续在右半边查找可能更大的索引
-//				left = mid + 1;
-//			}
-//		} else if ((inputArr[mid][key] as number) < target) {
-//			left = mid + 1;
-//		} else {
-//			right = mid - 1;
-//		}
-//	}
-//
-//	// 根据targetType确定返回值
-//	if (targetType === "forStart") {
-//		// 如果是查找起点，返回第一个大于等于target的索引
-//		return left;
-//	} else {
-//		// 如果是查找终点，由于循环结束时left已经越过了目标，所以返回right
-//		return right;
-//	}
-//}
-//
-///**
-// * 二分查找法求交集
-// * @param inputArr 输入数组
-// * @param scope 范围
-// * @param key 目标字段
-// * @returns 返回找到的数组范围
-// */
-//export const findIntersectionByKey = function (
-//	inputArr: jsonObjectType[],
-//	scope: numberScope,
-//	key: string
-//): jsonObjectType[] {
-//	let startIndex = binarySearchByKey(inputArr, scope.start, key, "forStart");
-//	let endIndex = binarySearchByKey(inputArr, scope.end, key, "forEnd");
-//
-//	// 确保索引有效
-//	startIndex = startIndex === null ? 0 : startIndex;
-//	endIndex = endIndex === null ? inputArr.length - 1 : endIndex;
-//
-//	// 调整endIndex以确保包含等于scope.end的元素
-//	if (endIndex < inputArr.length && inputArr[endIndex][key] < scope.end) {
-//		endIndex++;
-//	}
-//
-//	return inputArr.slice(startIndex, endIndex);
-//};
-
-/**
- * 查找点
- * @param inputArr 查找的数组
- * @param target 目标数字
- * @param key 目标字段
- * @param targetType 找 起点=== 目标  还是 终点=== 目标
- */
-
-function binarySearchByKeyStrictlyEqual(inputArr, target, targetType, key) {
-  var getItem = function getItem(arr, index) {
-    if (typeof arr[index] === "object" || typeof key !== "undefined") {
-      return Number(arr[index][key]);
-    }
-
-    return Number(arr[index]);
-  };
-
-  if (targetType === "forStart" && target === getItem(inputArr, 0)) {
-    return 0;
-  }
-
-  if (targetType === "forEnd" && target === getItem(inputArr, inputArr.length - 1)) {
-    return inputArr.length - 1;
-  }
-
-  var left = 0;
-  var right = inputArr.length - 1;
-  var mid;
-
-  while (left <= right) {
-    mid = left + Math.floor((right - left) / 2);
-
-    if (getItem(inputArr, mid) === target) {
-      if (targetType === "forStart") {
-        // 查找起点，继续在左半边查找可能更小的索引
-        right = mid - 1;
-      } else {
-        // 查找终点，继续在右半边查找可能更大的索引
-        left = mid + 1;
-      }
-    } else if (getItem(inputArr, mid) < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  } // 根据targetType确定返回值
-
-
-  if (targetType === "forStart") {
-    // 如果是查找起点，返回第一个大于等于target的索引
-    return left;
-  } else {
-    // 如果是查找终点，由于循环结束时left已经越过了目标，所以返回right
-    return right;
-  }
-} //ai帮忙优化的版本，确实优雅一些
-
-/**
- * 查找点
- * @param inputArr 查找的数组
- * @param target 目标数字
- * @param key 目标字段
- * @param targetType 找 起点<= 目标  还是 终点>= 目标
- */
-
-function binarySearchByKey(inputArr, target, key, targetType) {
-  if (typeof inputArr[0] === "undefined") {
-    return -1;
-  }
-
-  if (targetType === "forStart" && target <= inputArr[0][key]) {
-    return 0;
-  }
-
-  if (targetType === "forEnd" && target >= inputArr[inputArr.length - 1][key]) {
-    return inputArr.length - 1;
-  }
-
-  var left = 0;
-  var right = inputArr.length - 1;
-  var mid;
-
-  while (left <= right) {
-    mid = left + Math.floor((right - left) / 2);
-
-    if (inputArr[mid][key] === target) {
-      if (targetType === "forStart") {
-        // 查找起点，继续在左半边查找可能更小的索引
-        right = mid - 1;
-      } else {
-        // 查找终点，继续在右半边查找可能更大的索引
-        left = mid + 1;
-      }
-    } else if (inputArr[mid][key] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  } // 根据targetType确定返回值
-
-
-  if (targetType === "forStart") {
-    // 如果是查找起点，返回第一个大于等于target的索引
-    return left;
-  } else {
-    // 如果是查找终点，由于循环结束时left已经越过了目标，所以返回right
-    return right;
-  }
-}
-/**
- * 二分查找法求交集
- * @param inputArr 输入数组
- * @param scope 范围
- * @param key 目标字段
- * @returns 返回找到的数组范围
- */
-
-
-var findIntersectionByKey = function findIntersectionByKey(inputArr, scope, key) {
-  var startIndex = binarySearchByKey(inputArr, scope.start, key, "forStart");
-  var endIndex = binarySearchByKey(inputArr, scope.end, key, "forEnd"); // 确保索引有效
-
-  startIndex = startIndex === null ? 0 : startIndex;
-  endIndex = endIndex === null ? inputArr.length - 1 : endIndex;
-
-  if (typeof inputArr[endIndex] === "undefined") {
-    return [];
-  }
-
-  if (endIndex < inputArr.length && inputArr[endIndex][key] < scope.end) {
-    // 调整endIndex以确保包含等于scope.end的元素
-    endIndex++;
-  }
-
-  return inputArr.slice(startIndex, endIndex);
-};
-/**
- * 获得正确的时间
- */
-
-var getRightDate = function getRightDate(dateTime) {
-  if (typeof dateTime === "number") {
-    return dateTime;
-  }
-
-  return +new Date(dateTime);
-}; //千分位分割
-
-var thousandsSplit = function thousandsSplit(num) {
-  var numStr = num.toString().trim().split(".")[0].split("");
-  var output = "";
-  var j = 0;
-
-  for (var i = numStr.length - 1; i > -1; i--) {
-    if (j % 3 == 0 && j != 0) {
-      output = numStr[i] + "," + output;
-    } else {
-      output = numStr[i] + output;
-    }
-
-    j++;
-  }
-
-  if (num.toString().split(".")[1]) {
-    output += "." + num.toString().split(".")[1];
-  }
-
-  return output;
-}; //通过语言信息获得单位换算
-
-var getUnitNumber = function getUnitNumber(_num, _lan, _fix) {
-  if (typeof _lan === "undefined") {
-    _lan = "en";
-  }
-
-  if (typeof _fix === "undefined") {
-    _fix = 0;
-  }
-
-  var result = _num.toString();
-
-  switch (_lan) {
-    case "en":
-      result = translateNumberT(_num, _fix);
-      break;
-
-    case "ja":
-      result = translateNumberF(_num, _fix);
-      break;
-
-    case "ko":
-      result = translateNumberK(_num, _fix);
-      break;
-
-    case "zh":
-      result = translateNumberF(_num, _fix);
-      break;
-
-    case "ru":
-      result = translateNumberT(_num, _fix);
-      break;
-  }
-
-  return result;
-}; //韩文
-
-var translateNumberK = function translateNumberK(_num, _fix) {
-  if (typeof _fix === "undefined") {
-    _fix = 0;
-  }
-
-  var num = new _bigNumber(_num).toFixed().split(".");
-  var nIARR = num[0].split("");
-  var nFARR = [];
-
-  if (typeof num[1] !== "undefined") {
-    nFARR = num[1].split("");
-  }
-  /**
-   * 万 = 10000
-   * 亿 = 100000000
-   * 兆 = 1000000000000
-   */
-  //兆 = 1000000000000
-
-
-  if (nIARR.length >= 13) {
-    var _num2 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(12).toFixed()).toFixed(_fix, 1);
-
-    return _num2 + "조";
-  } //亿 = 100000000
-
-
-  if (nIARR.length >= 9) {
-    var _num3 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(8).toFixed()).toFixed(_fix, 1);
-
-    return _num3 + "억";
-  } //万 = 10000
-
-
-  if (nIARR.length >= 5) {
-    var _num4 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(4).toFixed()).toFixed(_fix, 1);
-
-    return _num4 + "만";
-  }
-
-  return new _bigNumber(_num).toFixed(_fix);
-}; //中文
-
-var translateNumberF = function translateNumberF(_num, _fix) {
-  if (typeof _fix === "undefined") {
-    _fix = 0;
-  }
-
-  var num = new _bigNumber(_num).toFixed().split(".");
-  var nIARR = num[0].split("");
-  var nFARR = [];
-
-  if (typeof num[1] !== "undefined") {
-    nFARR = num[1].split("");
-  }
-  /**
-   * 百 = 100
-   * 千 = 1000
-   * 万 = 10000
-   * 百万 = 1000000
-   * 千万 = 10000000
-   * 亿 = 100000000
-   * 兆 = 1000000000000
-   */
-  //兆 = 1000000000000
-
-
-  if (nIARR.length >= 13) {
-    var _num5 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(12).toFixed()).toFixed(_fix, 1);
-
-    return _num5 + "兆";
-  } //亿 = 100000000
-
-
-  if (nIARR.length >= 9) {
-    var _num6 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(8).toFixed()).toFixed(_fix, 1);
-
-    return _num6 + "亿";
-  } //千万 = 10000000
-
-
-  if (nIARR.length >= 8) {
-    var _num7 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(7).toFixed()).toFixed(_fix, 1);
-
-    return _num7 + "千萬";
-  } //百万 = 1000000
-
-
-  if (nIARR.length >= 7) {
-    var _num8 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(6).toFixed()).toFixed(_fix, 1);
-
-    return _num8 + "百萬";
-  } //万 = 10000
-
-
-  if (nIARR.length >= 5) {
-    var _num9 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(4).toFixed()).toFixed(_fix, 1);
-
-    return _num9 + "萬";
-  }
-
-  return new _bigNumber(_num).toFixed(_fix);
-}; //换算单位英文
-
-var translateNumberT = function translateNumberT(_num, _fix) {
-  if (typeof _fix === "undefined") {
-    _fix = 0;
-  }
-
-  var num = new _bigNumber(_num).toFixed().split(".");
-  var nIARR = num[0].split("");
-  var nFARR = [];
-
-  if (typeof num[1] !== "undefined") {
-    nFARR = num[1].split("");
-  }
-  /**
-   * k = 1000
-   * m = 10000000
-   * b = 1000000000
-   * t = 10000000000
-   */
-  //t = 10000000000
-
-
-  if (nIARR.length >= 11) {
-    var _num10 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(10).toFixed()).toFixed(_fix, 1);
-
-    return _num10 + "T";
-  } //b = 1000000000
-
-
-  if (nIARR.length >= 10) {
-    var _num11 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(9).toFixed()).toFixed(_fix, 1);
-
-    return _num11 + "B";
-  } //m = 1000000
-
-
-  if (nIARR.length >= 7) {
-    var _num12 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(6).toFixed()).toFixed(_fix, 1);
-
-    return _num12 + "M";
-  } //k = 1000
-
-
-  if (nIARR.length >= 4) {
-    var _num13 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(3).toFixed()).toFixed(_fix, 1);
-
-    return _num13 + "K";
-  }
-
-  return new _bigNumber(_num).toFixed(_fix);
-};
-/**
- * 求等差数列的个数
- * @param length 数组的长度
- * @param step 每隔几个元素取一个元素
- * @returns 返回共可取多少元素
- */
-
-var countSelectedElements = function countSelectedElements(length, step) {
-  // 计算数组长度
-  var arrayLength = length;
-  step = step + 1; // 如果步长大于数组长度，则没有元素可以挑选
-
-  if (step >= arrayLength) {
-    return 0;
-  } // 计算挑选的元素数量
-  // 使用整数除法向下取整
-
-
-  var count = Math.floor((arrayLength - 1) / step) + 1;
-  return count;
-};
-
-var getLength = function getLength(p1, p2) {
-  return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-};
-
-/**
- * 节流钩子
- */
-
-var useThrottle = function useThrottle() {
-  /**
-   * ============================state===========================
-   */
-  var _useState = React.useState(false),
-      isMounted = _useState[0],
-      setIsMounted = _useState[1];
-
-  var ThrottleFunction = React.useRef(null);
-  var ThrottleTimeOut = React.useRef(null);
-  /**
-   * ==========================函数==============================
-   */
-
-  var Throttle = function Throttle(_func, _time) {
-    if (typeof _time === "undefined") {
-      _time = 500;
-    }
-
-    if (_time === 0) {
-      _func();
-
-      return;
-    }
-
-    ThrottleFunction.current = _func;
-
-    if (ThrottleTimeOut.current === null) {
-      ThrottleTimeOut.current = setTimeout(function () {
-        if (ThrottleFunction.current !== null) {
-          ThrottleFunction.current();
-          ThrottleFunction.current = null;
-          ThrottleTimeOut.current = null;
-        }
-      }, _time);
-    }
-  };
-  /**
-   * ==================================Effects===============================
-   */
-
-
-  React.useEffect(function () {
-    if (isMounted === false) {
-      setIsMounted(true);
-    }
-
-    return function () {
-      setIsMounted(false);
-    }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return Throttle;
-};
 
 /**
  *tooltip的初始值
@@ -9338,8 +9338,7 @@ var useCandleViewPixiContext = function useCandleViewPixiContext() {
   var r = React.useContext(candleViewPixiContext);
   return r;
 };
-
-var CandleView = function CandleView(_ref2, _ref) {
+var CandleView = /*#__PURE__*/React.memo(function (_ref2, _ref) {
   _objectDestructuringEmpty(_ref2);
 
   //===============useHooks=================
@@ -9452,18 +9451,18 @@ var CandleView = function CandleView(_ref2, _ref) {
 
 
   var getCanvasSize = function getCanvasSize() {
-    if (CVData.initArgs.height === "auto") {
-      $(canvasConatiner.current).parent().css("overflow", "hidden");
-      $(canvasConatiner.current).parent().css("position", "relative");
+    if (CVData.initArgs.height === 'auto') {
+      $(canvasConatiner.current).parent().css('overflow', 'hidden');
+      $(canvasConatiner.current).parent().css('position', 'relative');
     } //如果放在容器里但是没指定容器高度
 
 
-    if ($(canvasConatiner.current).parent().height() === 0 && CVData.initArgs.height === "auto") {
+    if ($(canvasConatiner.current).parent().height() === 0 && CVData.initArgs.height === 'auto') {
       $(canvasConatiner.current).parent().height(500);
     } //如果没有放在特定容器里
 
 
-    if ($(canvasConatiner.current).parent() !== 0 && CVData.initArgs.height === "auto" && ($(canvasConatiner.current).next().length !== 0 || $(canvasConatiner.current).prev().length !== 0)) {
+    if ($(canvasConatiner.current).parent() !== 0 && CVData.initArgs.height === 'auto' && ($(canvasConatiner.current).next().length !== 0 || $(canvasConatiner.current).prev().length !== 0)) {
       CVData.initArgs.height = 500;
     } //设置宽度
 
@@ -9526,7 +9525,7 @@ var CandleView = function CandleView(_ref2, _ref) {
       return;
     }
 
-    if (typeof event.targetTouches[0] !== "undefined" && typeof event.targetTouches[1] !== "undefined") {
+    if (typeof event.targetTouches[0] !== 'undefined' && typeof event.targetTouches[1] !== 'undefined') {
       setisTouchScale(true);
       settouchScaleStartLength(getLength({
         x: event.targetTouches[0].pageX,
@@ -9561,7 +9560,7 @@ var CandleView = function CandleView(_ref2, _ref) {
       return;
     }
 
-    if (typeof event.targetTouches[0] !== "undefined" && typeof event.targetTouches[1] !== "undefined") {
+    if (typeof event.targetTouches[0] !== 'undefined' && typeof event.targetTouches[1] !== 'undefined') {
       var left = Math.min(event.targetTouches[0].pageX, event.targetTouches[1].pageX);
       var right = Math.max(event.targetTouches[0].pageX, event.targetTouches[1].pageX);
       var point = (right - left) / 2 + left;
@@ -9581,10 +9580,10 @@ var CandleView = function CandleView(_ref2, _ref) {
           x: event.targetTouches[1].pageX,
           y: event.targetTouches[1].pageY
         }));
-        var movement = "zoomIn";
+        var movement = 'zoomIn';
 
         if (length - touchScaleStartLength < 0) {
-          movement = "zoomOut";
+          movement = 'zoomOut';
         }
 
         CVData.hookObjs.xAxisObj.funcs.scale(point, CVData.hookObjs.xAxisObj.data.scaleStep, movement);
@@ -9773,10 +9772,10 @@ var CandleView = function CandleView(_ref2, _ref) {
       return;
     }
 
-    var movement = "zoomIn";
+    var movement = 'zoomIn';
 
     if (e.deltaY > 0) {
-      movement = "zoomOut";
+      movement = 'zoomOut';
     }
 
     CVData.hookObjs.xAxisObj.funcs.scale(e.pageX, CVData.hookObjs.xAxisObj.data.scaleStep, movement);
@@ -9793,22 +9792,22 @@ var CandleView = function CandleView(_ref2, _ref) {
     if (isMounted === false) {
       setIsMounted(true);
       initCandleView();
-      canvasConatiner.current.addEventListener("wheel", preventDefault);
+      canvasConatiner.current.addEventListener('wheel', preventDefault);
     }
   }, [isMounted]);
   React.useEffect(function () {
     return function () {
       setIsMounted(false);
       clearObserver();
-      canvasConatiner.current.removeEventListener("wheel", preventDefault);
+      canvasConatiner.current.removeEventListener('wheel', preventDefault);
     };
   }, []);
   return React__default.createElement(React__default.Fragment, null, React__default.createElement("div", {
-    className: "cvcv_container",
+    className: 'cvcv_container',
     ref: canvasConatiner,
     style: {
-      width: CVData.data.canvasWidth + "px",
-      height: CVData.data.canvasHeight + "px",
+      width: CVData.data.canvasWidth + 'px',
+      height: CVData.data.canvasHeight + 'px',
       backgroundColor: CVData.initArgs.backgroundColor
     },
     onMouseDown: onMouseDownContainer,
@@ -9841,53 +9840,9 @@ var CandleView = function CandleView(_ref2, _ref) {
   }, React__default.createElement(candleViewPixiContext.Provider, {
     value: CVData
   }, React__default.createElement(NetLines$1, null), React__default.createElement(VolumChart, null), React__default.createElement(Data$1, null), React__default.createElement(XAxis$1, null), React__default.createElement(YAxis$1, null)))));
-};
+});
 
-var index = /*#__PURE__*/React.memo(CandleView);
-
-
-
-var basicShapesInterFace = {
-  __proto__: null
-};
-
-
-
-var configInterFaces = {
-  __proto__: null
-};
-
-
-
-var contextInterFace = {
-  __proto__: null
-};
-
-
-
-var hooksInterFace = {
-  __proto__: null
-};
-
-
-
-var itemsInterFace = {
-  __proto__: null
-};
-
-
-
-var timeDefineInterFace = {
-  __proto__: null
-};
-
-exports.CVbasicShapesInterFace = basicShapesInterFace;
-exports.CVconfigInterFaces = configInterFaces;
-exports.CVcontextInterFace = contextInterFace;
-exports.CVhooksInterFace = hooksInterFace;
-exports.CVitemsInterFace = itemsInterFace;
-exports.CVtimeDefineInterFace = timeDefineInterFace;
-exports.CandleView = index;
+exports.CandleView = CandleView;
 exports.candleViewContext = candleViewContext;
 exports.useCandleView = useCandleView;
 exports.useCandleViewContext = useCandleViewContext;

@@ -12,4 +12,4 @@ export interface IuseCandleViewContext {
     (): IcandleViewContext;
 }
 declare let useCandleViewContext: IuseCandleViewContext;
-export { candleViewContext as default, useCandleView, useCandleViewContext, };
+export { candleViewContext, useCandleView, useCandleViewContext, };

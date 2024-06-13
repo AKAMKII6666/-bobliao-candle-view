@@ -4,10 +4,10 @@
  * 模块说明：用于模仿tradingView做的交易实时图表
  * 编写时间：2024年5月25日 00:30:05
  */
-import React from "react";
-import "./index.module.css";
-import { IuseCandleViewContext } from "./context/candleViewContext";
-import { IcandleViewContext } from "./interface/contextInterFace";
+import React, { FC } from 'react';
+import './index.module.css';
+import { IuseCandleViewContext } from './context/candleViewContext';
+import { IcandleViewContext } from './interface/contextInterFace';
 /**
  * 传入参数
  */
@@ -18,5 +18,4 @@ export interface iprops {
  **/
 export declare const candleViewPixiContext: React.Context<IcandleViewContext>;
 export declare const useCandleViewPixiContext: IuseCandleViewContext;
-declare const _default: React.NamedExoticComponent<iprops>;
-export default _default;
+export declare const CandleView: FC<iprops>;

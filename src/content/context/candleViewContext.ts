@@ -278,7 +278,7 @@ let useCandleViewContext: IuseCandleViewContext = function(): IcandleViewContext
 
 export {
   //交易图的context
-  candleViewContext as default,
+  candleViewContext,
   //创建自定义交易图钩子
   useCandleView,
   //在子组件中,获取交易图的context对象
