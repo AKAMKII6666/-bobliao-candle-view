@@ -32,6 +32,8 @@
 
 8. 时间标签支持中文/英文显示
 
+9. 支持web移动端
+
 ---
 
 ## 如何使用
@@ -119,3 +121,13 @@ const candleViewHook = useCandleView({
   </candleViewContext.Provider>
 </div>
 ```
+
+## 示例
+
+-----
+
+静态数据：
+
+动态数据：
+
+样式 / 语言 / 显示时区更改：

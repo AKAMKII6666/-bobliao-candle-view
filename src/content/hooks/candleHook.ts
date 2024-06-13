@@ -1343,8 +1343,9 @@ const useCandleHook = function(
         ...backwardDCArr,
         ..._totalCandleDisplayArr,
         ...forwardDCArr,
-      ];
-
+      ].sort(function(a, b) {
+        return Number(a.time) - Number(b.time);
+      });
       let currentScopeDisplayCandleData = findIntersectionCandle(
         _displayCandleData,
         xAxis.data.currentTimeScope
@@ -1366,6 +1367,76 @@ const useCandleHook = function(
           );
         } else {
           computSingalCandledataMini(item, _org_displayCandleMaxMin);
+        }
+      }
+
+      //丢弃数据
+      //丢弃掉低于开始时间最早1500条数据
+      //丢弃掉高于结束时间最早1500条数据
+      //先算低于的
+      //mouseSpeedSec为正数就是在往以前推动
+      //mouseSpeedSec为负数就是在往未来拖动
+      //比现在显示最边缘的时间还小1500个单位以外
+
+      if (
+        _displayCandleData.length > 0 &&
+        currentScopeDisplayCandleData.length > 0
+      ) {
+        let rangeNamber = 900;
+        if (
+          Number(_displayCandleData[0].time) <
+          xAxis.data.currentTimeType!.backwardTimeUnit!(
+            Number(currentScopeDisplayCandleData[0].time),
+            rangeNamber,
+            0
+          )!
+        ) {
+          let i = 0;
+          let count = 0;
+          let starttime = xAxis.data.currentTimeType!.backwardTimeUnit!(
+            Number(currentScopeDisplayCandleData[0].time),
+            rangeNamber,
+            0
+          )!;
+          while (Number(_displayCandleData[i].time) < starttime) {
+            i++;
+            count++;
+          }
+          _displayCandleData = _displayCandleData.slice(
+            i,
+            _displayCandleData.length
+          );
+        }
+
+        //比现在显示最边缘的时间还大1500个单位以外
+        if (
+          Number(_displayCandleData[_displayCandleData.length - 1].time) >
+          xAxis.data.currentTimeType!.forwardTimeUnit!(
+            Number(
+              currentScopeDisplayCandleData[
+                currentScopeDisplayCandleData.length - 1
+              ].time
+            ),
+            rangeNamber,
+            0
+          )!
+        ) {
+          let i = _displayCandleData.length - 1;
+          let count = 0;
+          let endTime = xAxis.data.currentTimeType!.forwardTimeUnit!(
+            Number(
+              currentScopeDisplayCandleData[
+                currentScopeDisplayCandleData.length - 1
+              ].time
+            ),
+            rangeNamber,
+            0
+          );
+          while (Number(_displayCandleData[i].time) > endTime) {
+            i--;
+            count++;
+          }
+          _displayCandleData = _displayCandleData.slice(0, i + 1);
         }
       }
       setdisplayCandleData(_displayCandleData);
