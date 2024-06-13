@@ -23,7 +23,7 @@ import React, {
 import { Stage, Container, Sprite, PixiComponent } from "@pixi/react";
 import * as PIXI from "pixi.js";
 import useJquery, { jQueryObject, isRunningInServer } from "@bobliao/use-jquery-hook";
-import styles from "./index.module.scss";
+import "./index.module.css";
 import { IuseCandleViewContext, useCandleViewContext } from "./context/candleViewContext";
 import ResizeObserver from "resize-observer-polyfill";
 import useDebounce from "./hooks/debounceHook";
@@ -489,7 +489,7 @@ const CandleView: FC<iprops> = ({}, _ref): ReactElement => {
 	return (
 		<>
 			<div
-				className={styles.container}
+				className={"cvcv_container"}
 				ref={canvasConatiner}
 				style={{
 					width: CVData.data.canvasWidth + "px",

@@ -1,98 +1,88 @@
 {
-	"name": "@bobliao/candle-view",
-	"version": "0.1.3",
-	"description": "",
-	"main": "lib/index.js",
-	"types": "lib/types/index.d.ts",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/AKAMKII6666/-bobliao-candle-view.git"
-	},
-	"module": "lib/index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "webpack-dev-server --config config/webpack.dev.config.js",
-		"build": "webpack --config config/webpack.prod.config.js",
-		"publicNpm": "npm publish --access public"
-	},
-	"keywords": [
-		"k-line",
-		"tradingview",
-		"react"
-	],
-	"files": [
-		"lib",
-		"src"
-	],
-	"author": "AKA MKII",
-	"license": "ISC",
-	"devDependencies": {
-		"@babel/cli": "^7.17.10",
-		"@babel/core": "^7.18.2",
-		"@babel/plugin-proposal-class-properties": "^7.17.12",
-		"@babel/plugin-proposal-decorators": "^7.18.2",
-		"@babel/plugin-proposal-private-methods": "^7.17.12",
-		"@babel/plugin-proposal-private-property-in-object": "^7.17.12",
-		"@babel/plugin-syntax-import-assertions": "^7.18.6",
-		"@babel/plugin-transform-runtime": "^7.18.2",
-		"@babel/preset-env": "^7.18.2",
-		"@babel/preset-react": "^7.17.12",
-		"@babel/preset-typescript": "^7.17.12",
-		"@bobliao/use-jquery-hook": "",
-		"@emotion/react": "^11.9.0",
-		"@emotion/styled": "^11.8.1",
-		"@material-ui/core": "^4.12.4",
-		"@material-ui/icons": "^4.11.3",
-		"@material-ui/lab": "4.0.0-alpha.61",
-		"@metamask/onboarding": "^1.0.1",
-		"@mui/material": "^5.8.3",
-		"@mui/styled-engine": "^5.8.0",
-		"@pixi/react": "^7.1.2",
-		"@types/lodash": "^4.17.4",
-		"@types/node": "^17.0.42",
-		"@types/react": "^18.0.12",
-		"@types/react-dom": "^18.0.5",
-		"@walletconnect/client": "^1.7.8",
-		"@walletconnect/qrcode-modal": "^1.7.8",
-		"@walletconnect/web3-provider": "^1.7.8",
-		"antd": "^4.21.0",
-		"babel": "^6.23.0",
-		"babel-loader": "^8.2.5",
-		"bignumber.js": "",
-		"css-loader": "^6.7.1",
-		"install": "^0.13.0",
-		"json-loader": "^0.5.7",
-		"lodash": "^4.17.21",
-		"mini-css-extract-plugin": "^2.6.0",
-		"node-sass": "^9.0.0",
-		"npm": "^8.12.1",
-		"pixi.js": "^7.4.2",
-		"postcss": "^8.4.14",
-		"postcss-image-inliner": "^5.0.0",
-		"postcss-loader": "^7.0.0",
-		"postcss-preset-env": "^7.7.1",
-		"raw-loader": "^4.0.2",
-		"react": "^18.1.0",
-		"react-dom": "^18.1.0",
-		"react-localstorage-hook": "^0.1.0",
-		"react-responsive": "9.0.0-beta.10",
-		"sass-loader": "^13.0.0",
-		"stream-browserify": "^3.0.0",
-		"style-loader": "^3.3.1",
-		"svg-url-loader": "^7.1.1",
-		"ts-loader": "^9.5.1",
-		"typescript": "^5",
-		"url": "^0.11.0",
-		"url-loader": "^4.1.1",
-		"webpack": "^5.73.0",
-		"webpack-cli": "^4.9.2",
-		"webpack-dev-server": "^4.9.2",
-		"webpack-merge": "^5.8.0"
-	},
-	"dependencies": {
-		"concurrently": "^8.2.2",
-		"file-loader": "^6.2.0",
-		"typescript-plugin-css-modules": "^5.1.0",
-		"webpack-env": "^0.8.0"
-	}
+  "version": "0.1.3",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "@bobliao/candle-view",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AKAMKII6666/-bobliao-candle-view.git"
+  },
+  "author": "AKA MKII",
+  "module": "dist/candle-view.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/candle-view.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/candle-view.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18",
+    "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^7.24.7",
+    "@size-limit/preset-small-lib": "^7.0.8",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react-hooks": "^8.0.0",
+    "@types/jest": "^27.5.0",
+    "husky": "^7.0.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-helmet": "^6.1.0",
+    "react-test-renderer": "^18.1.0",
+    "size-limit": "^7.0.8",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.24.7",
+    "@bobliao/use-jquery-hook": "0.1.6",
+    "@pixi/react": "^7.1.2",
+    "@types/lodash": "^4.14.30",
+    "autoprefixer": "^10.4.19",
+    "bignumber.js": "^9.1.2",
+    "code-stringify": "^2.0.3",
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
+    "pixi.js": "^7.4.2",
+    "plugin-bugfix-v8-spread-parameters-in-optional-chaining": "^0.0.1-security",
+    "postcss": "^8.4.38",
+    "resize-observer-polyfill": "^1.5.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "uglify-js": "^3.17.4"
+  }
 }
