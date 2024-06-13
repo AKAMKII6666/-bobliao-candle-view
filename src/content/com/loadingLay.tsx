@@ -5,7 +5,7 @@
  * 编写时间：
  */
 import React, { useEffect, useState, FC, ReactElement } from 'react';
-import '../assets/styles/loaddingLay.module.css';
+import '../assets/styles/loaddingLay.css';
 import { useCandleViewContext } from '../context/candleViewContext';
 
 /**

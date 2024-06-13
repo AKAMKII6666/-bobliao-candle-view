@@ -5,7 +5,7 @@
  * 编写时间：
  */
 import React, { useEffect, useState, FC, ReactElement, useMemo } from 'react';
-import '../index.module.css';
+import '../index.css';
 import { useCandleViewContext } from '../context/candleViewContext';
 import { thousandsSplit } from '../utils/consts';
 import BigNumber from 'bignumber.js';

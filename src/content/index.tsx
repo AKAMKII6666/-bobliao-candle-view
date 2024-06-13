@@ -26,7 +26,7 @@ import useJquery, {
   jQueryObject,
   isRunningInServer,
 } from '@bobliao/use-jquery-hook';
-import './index.module.css';
+import './index.css';
 import {
   IuseCandleViewContext,
   useCandleViewContext,

@@ -5,7 +5,7 @@
  * 编写时间：
  */
 import { FC } from 'react';
-import '../assets/styles/loaddingLay.module.css';
+import '../assets/styles/loaddingLay.css';
 /**
  * 传入参数
  */

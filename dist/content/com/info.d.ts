@@ -5,7 +5,7 @@
  * 编写时间：
  */
 import { FC } from 'react';
-import '../index.module.css';
+import '../index.css';
 /**
  * 传入参数
  */

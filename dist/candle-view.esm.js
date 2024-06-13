@@ -7673,6 +7673,36 @@ var useCandleViewContext = function useCandleViewContext() {
   return r;
 };
 
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = "@charset \"UTF-8\";\r\n.cvcv_container {\r\n\tposition: relative;\r\n\toverflow: hidden;\r\n}\r\n.cvcv_container .infoDisplayLayer {\r\n\ttop: 20px;\r\n\tleft: 20px;\r\n\tposition: absolute;\r\n\tbox-sizing: border-box;\r\n\tfont-size: 26px;\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\twidth: 80%;\r\n\ttext-wrap: nowrap;\r\n}\r\n.cvcv_container .infoDisplayLayer .title {\r\n\tfont-size: 26px;\r\n\tfont-weight: bold;\r\n\ttext-align: left;\r\n}\r\n.cvcv_container .infoDisplayLayer .info {\r\n\tdisplay: flex;\r\n\tjustify-content: flex-start;\r\n\talign-content: center;\r\n\tline-height: unset;\r\n\theight: unset;\r\n\twidth: 100%;\r\n}\r\n.cvcv_container .infoDisplayLayer .info div {\r\n\tline-height: unset;\r\n\theight: unset;\r\n\tmargin-right: 20px;\r\n\tbackground-color: rgba(255, 255, 255, 0.4901960784);\r\n\tpadding: 5px 10px;\r\n\tborder-radius: 10px;\r\n\talign-items: center;\r\n\talign-content: center;\r\n\t-webkit-backdrop-filter: blur(2px);\r\n\t        backdrop-filter: blur(2px);\r\n}\r\n.cvcv_container .infoDisplayLayer .info div span,\r\n.cvcv_container .infoDisplayLayer .info div label {\r\n\tdisplay: inline-block;\r\n\tfont-size: 12px;\r\n\tfont-weight: 500;\r\n}\r\n.cvcv_container .infoDisplayLayer .info div label {\r\n\tmargin-left: 5px;\r\n\tcolor: #19123d;\r\n\tfont-weight: bold;\r\n}\r\n.cvcv_container .infoDisplayLayer .info div.timetype {\r\n\tbackground-color: #5b88d1;\r\n}\r\n.cvcv_container .infoDisplayLayer .info div.timetype label {\r\n\tmargin-left: 0;\r\n\tcolor: #fff;\r\n\tfont-weight: bold;\r\n}\r\n.cvcv_container canvas {\r\n\tdisplay: block;\r\n}\r\n\r\n/*移动端时使用的样式:竖屏样式*/\r\n@media (orientation: portrait) {\r\n\t.cvcv_container .infoDisplayLayer .title {\r\n\t\tfont-size: 1.625rem;\r\n\t\tfont-weight: bold;\r\n\t}\r\n\t.cvcv_container .infoDisplayLayer .info {\r\n\t\tdisplay: flex;\r\n\t\tjustify-content: flex-start;\r\n\t\talign-content: center;\r\n\t\tline-height: unset;\r\n\t\theight: unset;\r\n\t\twidth: 100%;\r\n\t}\r\n\t.cvcv_container .infoDisplayLayer .info div {\r\n\t\tline-height: unset;\r\n\t\theight: unset;\r\n\t\tmargin-right: 0.2rem;\r\n\t\tbackground-color: rgba(255, 255, 255, 0.4901960784);\r\n\t\tpadding: 0.3125rem 0.625rem;\r\n\t\tborder-radius: 0.625rem;\r\n\t\t-webkit-backdrop-filter: blur(0.125rem);\r\n\t\t        backdrop-filter: blur(0.125rem);\r\n\t}\r\n\t.cvcv_container .infoDisplayLayer .info div span,\r\n\t.cvcv_container .infoDisplayLayer .info div label {\r\n\t\tdisplay: block;\r\n\t\tfont-size: 0.75rem;\r\n\t\tfont-weight: 500;\r\n\t}\r\n\t.cvcv_container .infoDisplayLayer .info div label {\r\n\t\tmargin-left: 0.3125rem;\r\n\t\tcolor: #19123d;\r\n\t\tfont-weight: bold;\r\n\t}\r\n\t.cvcv_container .infoDisplayLayer .info div.timetype {\r\n\t\tbackground-color: #5b88d1;\r\n\t}\r\n\t.cvcv_container .infoDisplayLayer .info div.timetype label {\r\n\t\tmargin-left: 0;\r\n\t\tcolor: #fff;\r\n\t\tfont-weight: bold;\r\n\t}\r\n}\r\n";
+styleInject(css_248z);
+
 /**
  * 防抖钩子
  */
@@ -9272,6 +9302,9 @@ var Info = function Info(_ref2, _ref) {
     className: 'infoDisplayLayer'
   }, React.createElement(React.Fragment, null, title, infoLayer)));
 };
+
+var css_248z$1 = ".cdcdv_l_container {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tleft: 0;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n\t-webkit-backdrop-filter: blur(3px);\r\n\t        backdrop-filter: blur(3px);\r\n\tbackground-repeat: no-repeat;\r\n\tbackground-size: 20%;\r\n\tbackground-position: center;\r\n\tbackground-color: rgba(0, 0, 0, 0.6);\r\n\tz-index: 99;\r\n}\r\n.cdcdv_l_container.black {\r\n\tbackground-image: url(../images/spin.svg);\r\n\tbackground-color: rgba(0, 0, 0, 0.6);\r\n}\r\n.cdcdv_l_container.white {\r\n\tbackground-image: url(../images/spin-white.svg);\r\n\tbackground-color: rgba(255, 255, 255, 0.6);\r\n}\r\n";
+styleInject(css_248z$1);
 
 /**
  * 廖力编写

@@ -5,7 +5,7 @@
  * 编写时间：2024年5月25日 00:30:05
  */
 import React, { FC } from 'react';
-import './index.module.css';
+import './index.css';
 import { IuseCandleViewContext } from './context/candleViewContext';
 import { IcandleViewContext } from './interface/contextInterFace';
 /**
