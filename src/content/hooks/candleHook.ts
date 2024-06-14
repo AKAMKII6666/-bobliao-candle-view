@@ -19,10 +19,14 @@ import {
   localTimeToGMT0000,
 } from '../utils/consts';
 import _bigNumber from 'bignumber.js';
-import { merge } from 'lodash';
+import lodash from 'lodash';
 import useDebounce from './debounceHook';
 import useThrottle from './throttleHook';
-import { IdataConfig, IuseCandleView } from '../interface/configInterFaces';
+import {
+  IdataConfig,
+  Itimezone,
+  IuseCandleView,
+} from '../interface/configInterFaces';
 import {
   IAxisobj,
   IuseCandleHook,
@@ -68,7 +72,6 @@ declare var MessageEvent: {
   prototype: MessageEvent;
   new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>;
 };
-
 /**
  * 数据处理钩子
  *
@@ -99,7 +102,7 @@ const useCandleHook = function(
   xAxis = xAxis!;
   yAxis = yAxis!;
   const [initArgs, setinitArgs] = useState<IdataConfig>(
-    merge(DEFAULTDATAVALUES, args)
+    lodash.merge(DEFAULTDATAVALUES, args)
   );
   let updateThrottlereComputAllDisplayedCandleData = useThrottle();
   let updateThrottle = useThrottle();
@@ -119,6 +122,7 @@ const useCandleHook = function(
     start: 0,
     end: 0,
   });
+  const [currentTimeZone, setcurrentTimeZone] = useState<Itimezone>();
 
   const [workMessage, seworkMessage] = useState<MessageEvent<any>>();
   const [LastScopeddcData, setLastScopeddcData] = useState<IcandleData[]>([]);
@@ -219,10 +223,7 @@ const useCandleHook = function(
   /**
    * view的全量尺寸
    */
-  const [viewSize, setviewSize] = useState<{
-    width: number;
-    height: number;
-  }>({
+  const [viewSize, setviewSize] = useState<{ width: number; height: number }>({
     width: 0,
     height: 0,
   });
@@ -237,9 +238,9 @@ const useCandleHook = function(
   /**
    * 所有的归并后的数据(数据来源于orgCandleData )
    */
-  let allComputedCandleData = useRef<{
-    [propName: string]: IcandleItem;
-  }>({} as { [propName: string]: IcandleItem });
+  let allComputedCandleData = useRef<{ [propName: string]: IcandleItem }>(
+    {} as { [propName: string]: IcandleItem }
+  );
   let isUpdateing = useRef<boolean>(false);
   let isQuickUpdateing = useRef<boolean>(false);
   let isEscapeItems = useRef<boolean>(false);
@@ -453,9 +454,7 @@ const useCandleHook = function(
           item,
           Number(_displayCandleMaxMin.end)
         ).toString();
-        allComputedCandleData.current[item.time] = {
-          ...item,
-        };
+        allComputedCandleData.current[item.time] = { ...item };
       }
     }
 
@@ -704,13 +703,13 @@ const useCandleHook = function(
     for (let item of data) {
       //如果填写的是"本地时间"，就不做任何操作
       if (baseConfig.timeZone!.dataSourceTimeZone === 'local') {
-        item.time = Number(item.time);
+        item.time = getRightDate(item.time);
       } else {
         //否则，先把时间按照用户设置的归零，然后再设置到显示时间
         item.time = anyTimeToGMT0000ToTarget(
-          Number(item.time),
-          baseConfig.timeZone!.dataSourceTimeZone,
-          baseConfig.timeZone!.displayTimeZone
+          getRightDate(item.time),
+          baseConfig.timeZone!.dataSourceTimeZone!,
+          baseConfig.timeZone!.displayTimeZone!
         );
       }
     }
@@ -757,16 +756,29 @@ const useCandleHook = function(
     /**
      * 当前的整数时间
      */
-    let _timeInteger = xAxis.data.currentTimeType!.roundingFunction(
-      endTime,
-      baseConfig!.timeZone!.displayTimeZone!
+    let _timeInteger = xAxis.data.currentTimeType!.roundingFunction(endTime, 0);
+
+    let timeZoneD = 0;
+
+    if (baseConfig.timeZone!.displayTimeZone === 'local') {
+      let date = new Date();
+      let localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
+      timeZoneD = localtimeZone;
+    } else {
+      timeZoneD = baseConfig.timeZone!.displayTimeZone!;
+    }
+
+    endTime = anyTimeToGMT0000ToTarget(
+      _timeInteger,
+      timeZoneD,
+      baseConfig.timeZone!.fetchConditionTimeZone!
     );
 
     /**
      * 获得末尾时间
      */
     let startTime = xAxis.data.currentTimeType!.backwardTimeUnit!(
-      _timeInteger,
+      endTime,
       preTime,
       baseConfig!.timeZone!.displayTimeZone!
     );
@@ -804,7 +816,7 @@ const useCandleHook = function(
     let startTime = xAxis.data.currentTimeType!.backwardTimeUnit!(
       endTime,
       initArgs.dynamicData!.dataFetchCountPreTime!,
-      baseConfig!.timeZone!.displayTimeZone!
+      0
     );
 
     let timeZoneD = 0;
@@ -814,19 +826,19 @@ const useCandleHook = function(
       let localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
       timeZoneD = localtimeZone;
     } else {
-      timeZoneD = baseConfig.timeZone!.displayTimeZone;
+      timeZoneD = baseConfig.timeZone!.displayTimeZone!;
     }
     //如果设置了时间归零
     //查询时间会被错开，所以查询的时候就再还原一下时间
     startTime = anyTimeToGMT0000ToTarget(
       startTime,
       timeZoneD,
-      baseConfig.timeZone!.fetchConditionTimeZone
+      baseConfig.timeZone!.fetchConditionTimeZone!
     );
     endTime = anyTimeToGMT0000ToTarget(
       endTime,
       timeZoneD,
-      baseConfig.timeZone!.fetchConditionTimeZone
+      baseConfig.timeZone!.fetchConditionTimeZone!
     );
 
     let result: IcandleItem[] = await initArgs.dynamicData!.dataFetchCallback!(
@@ -847,8 +859,8 @@ const useCandleHook = function(
     if (result.length === 1) {
       let intTime = anyTimeToGMT0000ToTarget(
         Number(result[0].time),
-        baseConfig.timeZone!.dataSourceTimeZone,
-        baseConfig.timeZone!.displayTimeZone
+        baseConfig.timeZone!.dataSourceTimeZone!,
+        baseConfig.timeZone!.displayTimeZone!
       );
       //说明数据已经到头了
       if (intTime === displayCandleData[0].time) {
@@ -903,6 +915,7 @@ const useCandleHook = function(
     let _orgCandleData = [..._data, ...orgCandleData];
 
     setorgCandleData(_orgCandleData);
+
     if (isFirstTimeUpdate) {
       setisFirstTimeUpdate(false);
       setinitDyStamp(+new Date());
@@ -937,10 +950,7 @@ const useCandleHook = function(
       return;
     }
 
-    let dataScope: numberScopeString = {
-      start: '500',
-      end: '700',
-    };
+    let dataScope: numberScopeString = { start: '500', end: '700' };
     //小了的话就按照配置的时间类型进行归并
     if (isConsistentOfDateType === 'smaller') {
       dataScope = mergeData(_orgCandleData);
@@ -999,9 +1009,7 @@ const useCandleHook = function(
   const updatePartialCandleData = function() {
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
-    let _org_displayCandleMaxMin = {
-      ...org_displayCandleMaxMin,
-    };
+    let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
     let isEscapeItems_current = isEscapeItems.current;
     let isQuickUpdateing_current = isQuickUpdateing.current;
 
@@ -1359,11 +1367,13 @@ const useCandleHook = function(
       ].sort(function(a, b) {
         return Number(a.time) - Number(b.time);
       });
+
       let currentScopeDisplayCandleData = findIntersectionCandle(
         _displayCandleData,
         xAxis.data.currentTimeScope
       );
 
+      //计算当前屏幕上显示的数据，没显示在屏幕范围的不参与计算
       let _org_displayCandleMaxMin = org_displayCandleMaxMin;
       let currentTag =
         _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
@@ -1452,6 +1462,7 @@ const useCandleHook = function(
           _displayCandleData = _displayCandleData.slice(0, i + 1);
         }
       }
+
       setdisplayCandleData(_displayCandleData);
       checkDynamicData(_displayCandleData);
       return currentScopeDisplayCandleData;
@@ -1464,7 +1475,7 @@ const useCandleHook = function(
             xAxis.data.currentTimeScope.start &&
           xAxis.data.lastTimeScope.end !== xAxis.data.currentTimeScope.end
         ) {
-          if (Math.abs(xAxis.data.mouseSpeedSec) < 3) {
+          if (Math.abs(xAxis.data.mouseSpeedSec) < 6) {
             inputArr = updateAndAppendNewCandle();
           }
         } else {
@@ -1487,9 +1498,7 @@ const useCandleHook = function(
   const updatePartialCandleDataWorker = function() {
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
-    let _org_displayCandleMaxMin = {
-      ...org_displayCandleMaxMin,
-    };
+    let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
     let isEscapeItems_current = isEscapeItems.current;
     let isQuickUpdateing_current = isQuickUpdateing.current;
     let allComputedCandleData_current = allComputedCandleData.current;
@@ -1756,6 +1765,9 @@ const useCandleHook = function(
   };
 
   const checkDynamicData = async function(data?: IcandleData[]) {
+    if (typeof data === 'undefined') {
+      return;
+    }
     //如果当前缩放、拖动超过所有内存中数据能显示的范围
     //判断是否为动态数据加载模式
     if (
@@ -1858,8 +1870,8 @@ const useCandleHook = function(
     } else {
       time = anyTimeToGMT0000ToTarget(
         Number(new Date(time).getTime()),
-        baseConfig.timeZone!.dataSourceTimeZone,
-        baseConfig.timeZone!.displayTimeZone
+        baseConfig.timeZone!.dataSourceTimeZone!,
+        baseConfig.timeZone!.displayTimeZone!
       );
     }
     let _displayCandleData = [...displayCandleData];
@@ -2237,6 +2249,15 @@ const useCandleHook = function(
     }
   };
 
+  let openMoveWorker = function() {
+    mWorker.current = new Worker(
+      new URL('../webWorkers/moveWorker', import.meta.url)
+    );
+    mWorker.current.addEventListener('message', (e: MessageEvent<any>) => {
+      seworkMessage(e);
+    });
+  };
+
   /**
    * ==================================Effects===============================
    */
@@ -2260,6 +2281,7 @@ const useCandleHook = function(
       } else {
         setisStaticData(false);
       }
+      //openMoveWorker();
     }
     return function(): void {
       setIsMounted(false);
@@ -2279,6 +2301,7 @@ const useCandleHook = function(
       ) {
         //记录一下当前的时间类型
         setcurrentTimeTypeName(xAxis.data.currentTimeType?.name!);
+        setcurrentTimeZone(baseConfig.timeZone!);
         //如果是静态数据
         if (isStaticData) {
           //初始化静态数据
@@ -2331,9 +2354,14 @@ const useCandleHook = function(
       ) {
         if (xAxis.data.currentTimeType !== null && currentTimeTypeName !== '') {
           //这里判断是否更新了时间类型（就是时间单位）
-          if (xAxis.data.currentTimeType.name !== currentTimeTypeName) {
+          if (
+            xAxis.data.currentTimeType.name !== currentTimeTypeName ||
+            JSON.stringify(baseConfig.timeZone) !==
+              JSON.stringify(currentTimeZone)
+          ) {
             //记录一下当前的时间类型
             setcurrentTimeTypeName(xAxis.data.currentTimeType?.name);
+            setcurrentTimeZone(baseConfig.timeZone!);
 
             if (
               xAxis.data.currentTimeScope.end !== 0 &&
@@ -2447,7 +2475,7 @@ const useCandleHook = function(
     funcs: {
       updateLatestCandleData,
       setinitArgs: function(arg: IdataConfig) {
-        setinitArgs(merge(initArgs, arg));
+        setinitArgs(lodash.merge(initArgs, arg));
       },
     },
     initArgs,

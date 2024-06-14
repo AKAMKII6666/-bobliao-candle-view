@@ -67,15 +67,15 @@ export interface Itimezone {
 	 * 如果是根据GMT +0000来生成的，
 	 * 这里就设置0
 	 */
-	dataSourceTimeZone: number | "local";
+	dataSourceTimeZone?: number | "local";
 	/**
 	 * 发起数据异步查询时,查询参数中的“开始”和“结束”时间应该所在的时区
 	 */
-	fetchConditionTimeZone: number | "local";
+	fetchConditionTimeZone?: number | "local";
 	/**
 	 * 时间在组件中进行显示时，使用的时区
 	 */
-	displayTimeZone: number | "local";
+	displayTimeZone?: number | "local";
 }
 
 /**

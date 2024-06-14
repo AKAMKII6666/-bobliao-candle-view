@@ -169,6 +169,7 @@ export interface IAxisobj {
 		xAxisUpdateMoveMentTimeStamp: number;
 		xAxisUpdateScaleTimeStamp: number;
 		mouseSpeedSec: number;
+		moveDirection: "add" | "min";
 	};
 	/**
 	 *导出的方法
@@ -278,6 +279,7 @@ export interface IAxisobj {
 		setx: (v: number) => void;
 		setcandleObj: (v: IuseCandleHook) => void;
 		setinitArgs: (arg: Iaxis) => void;
+		reGenXAxis: () => void;
 	};
 	/**
 	 *初始化时用到的参数

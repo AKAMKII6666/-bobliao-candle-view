@@ -1,4 +1,4 @@
-import { IuseCandleView } from "./configInterFaces";
+import { Itimezone, IuseCandleView } from "./configInterFaces";
 import { IAxisobj, IuseCandleHook, IyAxisobj } from "./hooksInterFace";
 import { IcandleUpdateItem, Isize } from "./itemsInterFace";
 import { TtimeType } from "./timeDefineInterFace";
@@ -59,6 +59,8 @@ export interface IcandleViewContext {
 		 * CandleViewV2.initArgs.timeFormat
 		 */
 		setTimeFormat: (value: TtimeType) => void;
+		setLanguage: (language: "zh" | "en") => void;
+		setTimeZone: (timeZone: Itimezone) => void;
 	};
 	hookObjs: {
 		xAxisObj: IAxisobj;

@@ -169,7 +169,6 @@ const useyAxis = function (args: Iaxis, xAxis?: IAxisobj): IyAxisobj {
 	 *@returns {void}
 	 */
 	const updateAxisSates = function (viewWidth: number, viewHeight: number, dataScope: numberScope) {
-		console.log(dataScope);
 		let _dataScope: numberScopeString = {
 			start: new _bigNumber(dataScope.start)
 				.times(new _bigNumber(10).exponentiatedBy(_shiftLength).toFixed())
