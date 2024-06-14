@@ -115,7 +115,10 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
 
   //缩放量
   const [scaleValue, setscaleValue] = useState<number>(1);
-  const [orgScope, setorgScope] = useState<numberScope>({ start: 0, end: 0 });
+  const [orgScope, setorgScope] = useState<numberScope>({
+    start: 0,
+    end: 0,
+  });
 
   /**
    * 每次缩放的增减值
@@ -172,7 +175,10 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
   /**
    * view的全量尺寸
    */
-  const [viewSize, setviewSize] = useState<{ width: number; height: number }>({
+  const [viewSize, setviewSize] = useState<{
+    width: number;
+    height: number;
+  }>({
     width: 0,
     height: 0,
   });
@@ -190,7 +196,10 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
    * line的位置（上左定位）
    *内容区和label区的分割线的位置
    */
-  const [linePosition, setlinePosition] = useState<pointCoord>({ x: 0, y: 0 });
+  const [linePosition, setlinePosition] = useState<pointCoord>({
+    x: 0,
+    y: 0,
+  });
   const [labelSpace, setlabelSpace] = useState<number>(0);
 
   /**
@@ -307,9 +316,18 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
     setnetLineMinCount(initArgs.netLineMinCount!);
 
     /* 重置属性 */
-    setorgScope({ start: 0, end: 0 });
-    setlastTimeScope({ start: 0, end: 0 });
-    setcurrentTimeScope({ start: 0, end: 0 });
+    setorgScope({
+      start: 0,
+      end: 0,
+    });
+    setlastTimeScope({
+      start: 0,
+      end: 0,
+    });
+    setcurrentTimeScope({
+      start: 0,
+      end: 0,
+    });
     settickArr([]);
     setnetLineArr([]);
     setdisplayTickArr([]);
@@ -526,7 +544,11 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
     setdisplayTickCommonWidth(dataWidth);
     setdisplayTickCommonpixWidth(pixWidth);
 
-    return { dataWidth, pixWidth, incriseWidth };
+    return {
+      dataWidth,
+      pixWidth,
+      incriseWidth,
+    };
   };
 
   /**
@@ -587,7 +609,10 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
         color: initArgs.tickColor!,
         length: getSpaceSize(initArgs.tickLength!, viewSize.height),
         size: getSpaceSize(initArgs.tickSize!, viewSize.height),
-        cPosition: { x: 0, y: linePosition.y },
+        cPosition: {
+          x: 0,
+          y: linePosition.y,
+        },
         value: item,
       };
       let width = lineSize.width + commonPixProperties.incriseWidth * 2;
@@ -755,7 +780,10 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
          * 网格线位置
          * （上中定位）
          */
-        cPosition: { x: item.cPosition.x, y: 0 },
+        cPosition: {
+          x: item.cPosition.x,
+          y: 0,
+        },
         /**
          * 值
          */
@@ -929,7 +957,7 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
 
     setorgScope(_flexTimeScope);
     setlastTimeScope(_flexTimeScope);
-    setcurrentTimeScope(_currentTimeScope);
+    setcurrentTimeScope(() => _currentTimeScope);
     settickArr(_tickerArr);
     setnetLineArr(_netLineArr);
     setdisplayTickArr(_displayTickerArr);
@@ -1376,15 +1404,18 @@ const usexAxis: TAxis = function(args, igorn, config): IAxisobj {
   //初始化状态以后初始化数轴
   useEffect(
     function(): ReturnType<React.EffectCallback> {
-      if (currentTimeType !== null) {
+      if (
+        currentTimeType !== null &&
+        currentTimeScope.start === 0 &&
+        currentTimeScope.end === 0
+      ) {
         createAxisData();
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [currentTimeType]
+    [currentTimeType, currentTimeScope]
   );
-
   //初始化状态以后初始化数轴
   useEffect(
     function(): ReturnType<React.EffectCallback> {

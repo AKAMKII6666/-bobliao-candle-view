@@ -219,7 +219,10 @@ const useCandleHook = function(
   /**
    * view的全量尺寸
    */
-  const [viewSize, setviewSize] = useState<{ width: number; height: number }>({
+  const [viewSize, setviewSize] = useState<{
+    width: number;
+    height: number;
+  }>({
     width: 0,
     height: 0,
   });
@@ -234,9 +237,9 @@ const useCandleHook = function(
   /**
    * 所有的归并后的数据(数据来源于orgCandleData )
    */
-  let allComputedCandleData = useRef<{ [propName: string]: IcandleItem }>(
-    {} as { [propName: string]: IcandleItem }
-  );
+  let allComputedCandleData = useRef<{
+    [propName: string]: IcandleItem;
+  }>({} as { [propName: string]: IcandleItem });
   let isUpdateing = useRef<boolean>(false);
   let isQuickUpdateing = useRef<boolean>(false);
   let isEscapeItems = useRef<boolean>(false);
@@ -450,7 +453,9 @@ const useCandleHook = function(
           item,
           Number(_displayCandleMaxMin.end)
         ).toString();
-        allComputedCandleData.current[item.time] = { ...item };
+        allComputedCandleData.current[item.time] = {
+          ...item,
+        };
       }
     }
 
@@ -746,6 +751,9 @@ const useCandleHook = function(
     setstopDynamicFetching(false);
     // TODO: 1.获得时间范围，获得当前x轴时间范围的end,然后往后推用户设置的数据条数（也就是时间单位）
     let endTime = xAxis.data.currentTimeScope.end;
+
+    let preTime = initArgs.dynamicData!.dataFetchCountPreTime!;
+
     /**
      * 当前的整数时间
      */
@@ -759,7 +767,7 @@ const useCandleHook = function(
      */
     let startTime = xAxis.data.currentTimeType!.backwardTimeUnit!(
       _timeInteger,
-      initArgs.dynamicData!.dataFetchCountPreTime!,
+      preTime,
       baseConfig!.timeZone!.displayTimeZone!
     );
     let result: IcandleItem[] = await initArgs.dynamicData!.dataFetchCallback!(
@@ -929,7 +937,10 @@ const useCandleHook = function(
       return;
     }
 
-    let dataScope: numberScopeString = { start: '500', end: '700' };
+    let dataScope: numberScopeString = {
+      start: '500',
+      end: '700',
+    };
     //小了的话就按照配置的时间类型进行归并
     if (isConsistentOfDateType === 'smaller') {
       dataScope = mergeData(_orgCandleData);
@@ -988,7 +999,9 @@ const useCandleHook = function(
   const updatePartialCandleData = function() {
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
-    let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
+    let _org_displayCandleMaxMin = {
+      ...org_displayCandleMaxMin,
+    };
     let isEscapeItems_current = isEscapeItems.current;
     let isQuickUpdateing_current = isQuickUpdateing.current;
 
@@ -1474,7 +1487,9 @@ const useCandleHook = function(
   const updatePartialCandleDataWorker = function() {
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
-    let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
+    let _org_displayCandleMaxMin = {
+      ...org_displayCandleMaxMin,
+    };
     let isEscapeItems_current = isEscapeItems.current;
     let isQuickUpdateing_current = isQuickUpdateing.current;
     let allComputedCandleData_current = allComputedCandleData.current;
@@ -2319,13 +2334,19 @@ const useCandleHook = function(
           if (xAxis.data.currentTimeType.name !== currentTimeTypeName) {
             //记录一下当前的时间类型
             setcurrentTimeTypeName(xAxis.data.currentTimeType?.name);
-            //如果是静态数据
-            if (isStaticData) {
-              //初始化静态数据
-              initStaticData();
-            } else if (initArgs.dynamicData!.enabled) {
-              //否则进入动态数据模式
-              initDynamicData();
+
+            if (
+              xAxis.data.currentTimeScope.end !== 0 &&
+              xAxis.data.currentTimeScope.start !== 0
+            ) {
+              if (isStaticData) {
+                //如果是静态数据
+                //初始化静态数据
+                initStaticData();
+              } else if (initArgs.dynamicData!.enabled) {
+                //否则进入动态数据模式
+                initDynamicData();
+              }
             }
           }
           setlastTimexAsixStemp(xAxis.data.xAxisUpdateTimeStamp);
@@ -2333,7 +2354,7 @@ const useCandleHook = function(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [xAxis.data.xAxisUpdateTimeStamp, xAxis.data.currentTimeType]
+    [xAxis.data.xAxisUpdateTimeStamp]
   );
 
   useEffect(
