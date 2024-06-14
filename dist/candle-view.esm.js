@@ -3379,7 +3379,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       setIsMounted = _useState8[1]; //移动的运动方向
 
 
-  var _useState9 = useState('add'),
+  var _useState9 = useState("add"),
       moveDirection = _useState9[0],
       setmoveDirection = _useState9[1];
   /**
@@ -3400,12 +3400,16 @@ var usexAxis = function usexAxis(args, igorn, config) {
       setxAxisUpdateTimeStamp = _useState11[1];
 
   var _useState12 = useState(-1),
-      xAxisUpdateMoveMentTimeStamp = _useState12[0],
-      setxAxisUpdateMoveMentTimeStamp = _useState12[1];
+      InitStemp = _useState12[0],
+      setInitStemp = _useState12[1];
 
   var _useState13 = useState(-1),
-      xAxisUpdateScaleTimeStamp = _useState13[0],
-      setxAxisUpdateScaleTimeStamp = _useState13[1];
+      xAxisUpdateMoveMentTimeStamp = _useState13[0],
+      setxAxisUpdateMoveMentTimeStamp = _useState13[1];
+
+  var _useState14 = useState(-1),
+      xAxisUpdateScaleTimeStamp = _useState14[0],
+      setxAxisUpdateScaleTimeStamp = _useState14[1];
   /**
    * ============================tooltip state===========================
    */
@@ -3415,56 +3419,56 @@ var usexAxis = function usexAxis(args, igorn, config) {
    */
 
 
-  var _useState14 = useState({}),
-      tooltipState = _useState14[0],
-      setTooltipState = _useState14[1];
+  var _useState15 = useState({}),
+      tooltipState = _useState15[0],
+      setTooltipState = _useState15[1];
   /**
    * tooltip显示状态
    */
 
 
-  var _useState15 = useState(false),
-      tooltipIsShow = _useState15[0],
-      settooltipIsShow = _useState15[1];
+  var _useState16 = useState(false),
+      tooltipIsShow = _useState16[0],
+      settooltipIsShow = _useState16[1];
   /**
    * ============================缩放 state===========================
    */
   //总位移量
 
 
-  var _useState16 = useState(0),
-      moveAmount = _useState16[0],
-      setmoveAmount = _useState16[1];
-
   var _useState17 = useState(0),
-      x = _useState17[0],
-      setx = _useState17[1]; //缩放量
+      moveAmount = _useState17[0],
+      setmoveAmount = _useState17[1];
+
+  var _useState18 = useState(0),
+      x = _useState18[0],
+      setx = _useState18[1]; //缩放量
 
 
-  var _useState18 = useState(1),
-      setscaleValue = _useState18[1];
+  var _useState19 = useState(1),
+      setscaleValue = _useState19[1];
 
-  var _useState19 = useState({
+  var _useState20 = useState({
     start: 0,
     end: 0
   }),
-      orgScope = _useState19[0],
-      setorgScope = _useState19[1];
+      orgScope = _useState20[0],
+      setorgScope = _useState20[1];
   /**
    * 每次缩放的增减值
    */
 
 
-  var _useState20 = useState(0.1),
-      scaleStep = _useState20[0];
+  var _useState21 = useState(0.1),
+      scaleStep = _useState21[0];
   /**
    * 计算显示tick时跳过tick的数量
    */
 
 
-  var _useState21 = useState(0),
-      tickStep = _useState21[0],
-      settickStep = _useState21[1];
+  var _useState22 = useState(0),
+      tickStep = _useState22[0],
+      settickStep = _useState22[1];
   /**
    * ============================时间 state===========================
    */
@@ -3474,26 +3478,26 @@ var usexAxis = function usexAxis(args, igorn, config) {
    */
 
 
-  var _useState22 = useState(null),
-      currentTimeType = _useState22[0],
-      setcurrentTimeType = _useState22[1];
+  var _useState23 = useState(null),
+      currentTimeType = _useState23[0],
+      setcurrentTimeType = _useState23[1];
   /**
    * 初始时间范围 (上次的时间范围 )
    */
 
 
-  var _useState23 = useState({
+  var _useState24 = useState({
     start: 0,
     end: 0
   }),
-      lastTimeScope = _useState23[0],
-      setlastTimeScope = _useState23[1];
+      lastTimeScope = _useState24[0],
+      setlastTimeScope = _useState24[1];
   /**
    * 当前时间范围
    */
 
 
-  var _useState24 = useState({
+  var _useState25 = useState({
     /**
      * 最左边的时间
      */
@@ -3504,19 +3508,19 @@ var usexAxis = function usexAxis(args, igorn, config) {
      */
     end: 0
   }),
-      currentTimeScope = _useState24[0],
-      setcurrentTimeScope = _useState24[1];
+      currentTimeScope = _useState25[0],
+      setcurrentTimeScope = _useState25[1];
   /**
    * view的全量尺寸
    */
 
 
-  var _useState25 = useState({
+  var _useState26 = useState({
     width: 0,
     height: 0
   }),
-      viewSize = _useState25[0],
-      setviewSize = _useState25[1];
+      viewSize = _useState26[0],
+      setviewSize = _useState26[1];
   /**
    * ============================line 属性state===========================
    */
@@ -3526,43 +3530,43 @@ var usexAxis = function usexAxis(args, igorn, config) {
    */
 
 
-  var _useState26 = useState(0),
-      setyAxisSpace = _useState26[1];
+  var _useState27 = useState(0),
+      setyAxisSpace = _useState27[1];
   /**
    * line的位置（上左定位）
    *内容区和label区的分割线的位置
    */
 
 
-  var _useState27 = useState({
+  var _useState28 = useState({
     x: 0,
     y: 0
   }),
-      linePosition = _useState27[0],
-      setlinePosition = _useState27[1];
+      linePosition = _useState28[0],
+      setlinePosition = _useState28[1];
 
-  var _useState28 = useState(0),
-      labelSpace = _useState28[0],
-      setlabelSpace = _useState28[1];
+  var _useState29 = useState(0),
+      labelSpace = _useState29[0],
+      setlabelSpace = _useState29[1];
   /**
    * line的尺寸
    */
 
 
-  var _useState29 = useState({
+  var _useState30 = useState({
     width: 0,
     size: 0
   }),
-      lineSize = _useState29[0],
-      setlineSize = _useState29[1];
+      lineSize = _useState30[0],
+      setlineSize = _useState30[1];
   /**
    * line的颜色
    */
 
 
-  var _useState30 = useState(''),
-      lineColor = _useState30[0],
-      setlineColor = _useState30[1];
+  var _useState31 = useState(""),
+      lineColor = _useState31[0],
+      setlineColor = _useState31[1];
   /**
    * ============================网格线 属性state===========================
    */
@@ -3572,25 +3576,25 @@ var usexAxis = function usexAxis(args, igorn, config) {
    */
 
 
-  var _useState31 = useState([]),
-      netLineArr = _useState31[0],
-      setnetLineArr = _useState31[1];
+  var _useState32 = useState([]),
+      netLineArr = _useState32[0],
+      setnetLineArr = _useState32[1];
   /**
    * 网格线的最大数量
    */
 
 
-  var _useState32 = useState(0),
-      netLineMaxCount = _useState32[0],
-      setnetLineMaxCount = _useState32[1];
+  var _useState33 = useState(0),
+      netLineMaxCount = _useState33[0],
+      setnetLineMaxCount = _useState33[1];
   /**
    * 轴网格线最小数量
    */
 
 
-  var _useState33 = useState(0),
-      netLineMinCount = _useState33[0],
-      setnetLineMinCount = _useState33[1];
+  var _useState34 = useState(0),
+      netLineMinCount = _useState34[0],
+      setnetLineMinCount = _useState34[1];
   /**
    * ============================tick 属性state===========================
    */
@@ -3600,41 +3604,41 @@ var usexAxis = function usexAxis(args, igorn, config) {
    */
 
 
-  var _useState34 = useState([]),
-      tickArr = _useState34[0],
-      settickArr = _useState34[1];
+  var _useState35 = useState([]),
+      tickArr = _useState35[0],
+      settickArr = _useState35[1];
   /**
    * 显示tick组（用于显示的tick）
    */
 
 
-  var _useState35 = useState([]),
-      displayTickArr = _useState35[0],
-      setdisplayTickArr = _useState35[1];
+  var _useState36 = useState([]),
+      displayTickArr = _useState36[0],
+      setdisplayTickArr = _useState36[1];
   /**
    * tick的共有数据宽度
    */
 
 
-  var _useState36 = useState(0),
-      displayTickCommonWidth = _useState36[0],
-      setdisplayTickCommonWidth = _useState36[1];
+  var _useState37 = useState(0),
+      displayTickCommonWidth = _useState37[0],
+      setdisplayTickCommonWidth = _useState37[1];
   /**
    * tick的共有像素宽度
    */
 
 
-  var _useState37 = useState(0),
-      displayTickCommonpixWidth = _useState37[0],
-      setdisplayTickCommonpixWidth = _useState37[1];
+  var _useState38 = useState(0),
+      displayTickCommonpixWidth = _useState38[0],
+      setdisplayTickCommonpixWidth = _useState38[1];
   /**
    * ============================ref===========================
    */
 
 
-  var _useState38 = useState(null),
-      candleObj = _useState38[0],
-      setcandleObj = _useState38[1];
+  var _useState39 = useState(null),
+      candleObj = _useState39[0],
+      setcandleObj = _useState39[1];
   /**
    * ============================静态变量===========================
    */
@@ -3678,6 +3682,8 @@ var usexAxis = function usexAxis(args, igorn, config) {
       start: 0,
       end: 0
     });
+    setdisplayTickCommonWidth(0);
+    setdisplayTickCommonpixWidth(0);
     setlastTimeScope({
       start: 0,
       end: 0
@@ -3686,8 +3692,6 @@ var usexAxis = function usexAxis(args, igorn, config) {
       start: 0,
       end: 0
     });
-    setdisplayTickCommonWidth(0);
-    setdisplayTickCommonpixWidth(0);
     settickArr([]);
     setnetLineArr([]);
     setdisplayTickArr([]);
@@ -3750,7 +3754,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
 
   var updateTicks = function updateTicks(targetTickArr, timeScope, isComputCommonProp, _moveAmount, moveDir) {
-    if (moveDir === 'add' || moveDir === 'all') {
+    if (moveDir === "add" || moveDir === "all") {
       var forwardArr = timeSpeculation_forward(targetTickArr[targetTickArr.length - 1].value, timeScope.end);
 
       if (forwardArr.length > 1) {
@@ -3762,7 +3766,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       }
     }
 
-    if (moveDir === 'min' || moveDir === 'all') {
+    if (moveDir === "min" || moveDir === "all") {
       var backwardArr = timeSpeculation_backrward(targetTickArr[0].value, timeScope.start);
 
       if (backwardArr.length > 1) {
@@ -3819,7 +3823,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
   var updateDisplayTicks = function updateDisplayTicks(targetTickArr, newTickArr) {
     //将tickArr转换成hash 方便查找
-    var newTickHash = arrayToHash(newTickArr, 'value'); //往前扩展
+    var newTickHash = arrayToHash(newTickArr, "value"); //往前扩展
     //取最早的值
 
     var correspondItem;
@@ -3831,7 +3835,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       //获得下一个 step
       nextStep = nextStep - 1 - tickStep;
 
-      if (typeof newTickArr[nextStep] === 'undefined') {
+      if (typeof newTickArr[nextStep] === "undefined") {
         break;
       } else {
         targetTickArr.unshift(newTickArr[nextStep]);
@@ -3846,7 +3850,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       //获得下一个 step
       nextStep = nextStep + 1 + tickStep;
 
-      if (typeof newTickArr[nextStep] === 'undefined') {
+      if (typeof newTickArr[nextStep] === "undefined") {
         break;
       } else {
         targetTickArr.unshift(newTickArr[nextStep]);
@@ -4134,13 +4138,13 @@ var usexAxis = function usexAxis(args, igorn, config) {
       }
     }
 
-    var displayTickArr2Map = arrayToHash(displayTickArr2, 'value');
+    var displayTickArr2Map = arrayToHash(displayTickArr2, "value");
     var result = [];
 
     for (var _iterator6 = _createForOfIteratorHelperLoose(displayTickArr1), _step6; !(_step6 = _iterator6()).done;) {
       var item = _step6.value;
 
-      if (typeof displayTickArr2Map[item.value] !== 'undefined') {
+      if (typeof displayTickArr2Map[item.value] !== "undefined") {
         result.push(displayTickArr2Map[item.value]);
       } else {
         result.push(item);
@@ -4161,7 +4165,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     for (var i = xCondition.count; i > -1; i--) {
       currentIndex = currentIndex - 1 - xCondition.step;
 
-      if (typeof tickArr[currentIndex] === 'undefined') {
+      if (typeof tickArr[currentIndex] === "undefined") {
         break;
       }
 
@@ -4180,11 +4184,11 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
   var createAxisData = function createAxisData() {
     /*
-            1.获得初始的时间范围
-            1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
-            1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
-            1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
-        */
+        1.获得初始的时间范围
+        1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
+        1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
+        1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
+    */
 
     /**
      * 粗糙时间范围
@@ -4193,7 +4197,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     //就需要把起始的时区算成GMT +0000
 
 
-    if (config.timeZone.displayTimeZone !== 'local') {
+    if (config.timeZone.displayTimeZone !== "local") {
       var date = new Date();
       var localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
       _flexTimeScope.start = anyTimeToGMT0000ToTarget(_flexTimeScope.start, localtimeZone, config.timeZone.displayTimeZone);
@@ -4221,7 +4225,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     var _tickerArr = createTickers(realTimeArr, _flexTimeScope, true, 0); //挑选出所有按时间整数排列的等差数列的参数
 
 
-    var displayTickRoundValuesArray = findRoundTimeCountFromArray(_tickerArr, config.timeZone.displayTimeZone, config.timeFormat, 'value');
+    var displayTickRoundValuesArray = findRoundTimeCountFromArray(_tickerArr, config.timeZone.displayTimeZone, config.timeFormat, "value");
 
     var _displayTickerArr;
 
@@ -4253,7 +4257,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     setnetLineArr(_netLineArr);
     setdisplayTickArr(_displayTickerArr);
     setisFinishedInit(true);
-    setxAxisUpdateTimeStamp(+new Date()); //这里产生出来的指针会偏移一点，很正常 因为最末尾的时间是根据当前时间来的
+    setInitStemp(+new Date()); //这里产生出来的指针会偏移一点，很正常 因为最末尾的时间是根据当前时间来的
     //倒数第一个指针是根据最末尾时间取整得来的
   };
   /**
@@ -4306,10 +4310,10 @@ var usexAxis = function usexAxis(args, igorn, config) {
       var _moveAmount = pureLength + moveAmount; //加还是减
 
 
-      var sign = 'add';
+      var sign = "add";
 
       if (length > 0) {
-        sign = 'min';
+        sign = "min";
       }
 
       setmoveDirection(sign);
@@ -4319,7 +4323,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
       var changeScope = Number(((lastTimeScope.end - lastTimeScope.start) * prec).toFixed(0));
 
-      if (sign === 'min') {
+      if (sign === "min") {
         changeScope = 0 - changeScope;
       } //从新计算currentTimeScope
 
@@ -4341,18 +4345,18 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
       var newTicks = updateTicks(resultInterArr, _currentTimeScope, false, _moveAmount, function () {
         if (pureLength + moveAmount - x > 0) {
-          return 'min';
+          return "min";
         }
 
-        return 'add';
+        return "add";
       }());
       /* let displayTickRoundValuesArray = findRoundTimeCountFromArray(
-                newTicks as unknown as jsonObjectType[],
-                "value"
-            ); */
+          newTicks as unknown as jsonObjectType[],
+          "value"
+      ); */
       //挑选出所有按时间整数排列的等差数列的参数
 
-      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, 'value');
+      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, "value");
 
       var _displayTickerArr;
 
@@ -4408,12 +4412,12 @@ var usexAxis = function usexAxis(args, igorn, config) {
       return;
     }
 
-    if (tickArr.length > 24 * 60 * 2 && movement === 'zoomOut') {
+    if (tickArr.length > 24 * 60 * 2 && movement === "zoomOut") {
       return;
     } //最小缩放
 
 
-    if (tickArr.length <= netLineMinCount && movement === 'zoomIn') {
+    if (tickArr.length <= netLineMinCount && movement === "zoomIn") {
       return;
     }
 
@@ -4433,14 +4437,14 @@ var usexAxis = function usexAxis(args, igorn, config) {
         end: total * rightPrecent
       };
 
-      if (movement === 'zoomIn') {
+      if (movement === "zoomIn") {
         _currentTimeScope = {
           start: _currentTimeScope.start + q.start,
           end: _currentTimeScope.end - q.end
         };
       }
 
-      if (movement === 'zoomOut') {
+      if (movement === "zoomOut") {
         _currentTimeScope = {
           start: _currentTimeScope.start - q.start,
           end: _currentTimeScope.end + q.end
@@ -4468,9 +4472,9 @@ var usexAxis = function usexAxis(args, igorn, config) {
        */
 
 
-      var newTicks = updateTicks(resultInterArr, _currentTimeScope, true, 0, 'all'); //挑选出所有按时间整数排列的等差数列的参数
+      var newTicks = updateTicks(resultInterArr, _currentTimeScope, true, 0, "all"); //挑选出所有按时间整数排列的等差数列的参数
 
-      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, 'value');
+      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, "value");
 
       var _displayTickerArr;
 
@@ -4547,7 +4551,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       } //通过像素位置进行二分法查找目标tick
 
 
-      var _tickItem = findTick(tooltipX - moveAmount, 'pixSpace');
+      var _tickItem = findTick(tooltipX - moveAmount, "pixSpace");
 
       if (_tickItem === null) {
         setTooltipState(null);
@@ -4597,7 +4601,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
   var resize = function resize() {
     if (isFinishedInit) {
       window.requestAnimationFrame(function () {
-        scale(viewSize.width / 2, 0, 'keep');
+        scale(viewSize.width / 2, 0, "keep");
       });
     }
   };
@@ -4607,7 +4611,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
   var reGenXAxis = function reGenXAxis() {
     if (isFinishedInit) {
       window.requestAnimationFrame(function () {
-        scale(viewSize.width / 2, 0, 'keep');
+        scale(viewSize.width / 2, 0, "keep");
       });
     }
   };
@@ -4770,7 +4774,8 @@ var usexAxis = function usexAxis(args, igorn, config) {
       xAxisUpdateMoveMentTimeStamp: xAxisUpdateMoveMentTimeStamp,
       xAxisUpdateScaleTimeStamp: xAxisUpdateScaleTimeStamp,
       mouseSpeedSec: mouseSpeedSec,
-      moveDirection: moveDirection
+      moveDirection: moveDirection,
+      InitStemp: InitStemp
     },
     funcs: {
       /**
@@ -5480,8 +5485,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       isMounted = _useState2[0],
       setIsMounted = _useState2[1];
 
-  var _useState3 = useState(''),
-      currentTimeTypeName = _useState3[0],
+  var _useState3 = useState(""),
       setcurrentTimeTypeName = _useState3[1];
 
   var _useState4 = useState(0),
@@ -5511,7 +5515,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       setlastMaxMiny = _useState9[1];
 
   var _useState10 = useState(),
-      currentTimeZone = _useState10[0],
       setcurrentTimeZone = _useState10[1];
 
   var _useState11 = useState(),
@@ -5555,9 +5558,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
    */
 
 
-  var _useState19 = useState(798),
-      lastTimexAsixStemp = _useState19[0],
-      setlastTimexAsixStemp = _useState19[1];
+  var _useState19 = useState(798);
   /**
    * volume 数据图表的高度
    */
@@ -5604,15 +5605,15 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
 
   var _useState25 = useState({
-    start: '0',
-    end: '0'
+    start: "0",
+    end: "0"
   }),
       displayCandleMaxMin = _useState25[0],
       setdisplayCandleMaxMin = _useState25[1];
 
   var _useState26 = useState({
-    start: '0',
-    end: '0'
+    start: "0",
+    end: "0"
   }),
       org_displayCandleMaxMin = _useState26[0],
       setorg_displayCandleMaxMin = _useState26[1];
@@ -5702,19 +5703,19 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
   var determineTimeSpaceConsistent = function determineTimeSpaceConsistent(data) {
     if (data.length === 1) {
-      return 'smaller';
+      return "smaller";
     }
 
     var inputDataTimeSpace = getRightDate(data[1].time) - getRightDate(data[0].time);
     var configDataTimeSpace = xAxis.data.currentTimeType.timeGap;
 
     if (inputDataTimeSpace === configDataTimeSpace) {
-      return 'same';
+      return "same";
     } else if (inputDataTimeSpace > configDataTimeSpace) {
-      return 'bigger';
+      return "bigger";
     }
 
-    return 'smaller';
+    return "smaller";
   };
 
   var getMin = function getMin(item, start) {
@@ -5788,12 +5789,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       /**
        * 最低点
        * */
-      start: '9999999999999999999999',
+      start: "9999999999999999999999",
 
       /**
        * 最高点
        * */
-      end: '-9999999999999999999999'
+      end: "-9999999999999999999999"
     };
 
     for (var i = data.length - 1; i > -1; i--) {
@@ -5801,7 +5802,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       var time = xAxis.data.currentTimeType.roundingFunction(getRightDate(item.time), baseConfig.timeZone.displayTimeZone);
 
       if (_currentCandleStick.time === -1 || time !== _currentCandleStick.time) {
-        if (time !== _currentCandleStick.time && _currentCandleStick.time !== -1 && typeof allComputedCandleData.current[_currentCandleStick.time] === 'undefined') {
+        if (time !== _currentCandleStick.time && _currentCandleStick.time !== -1 && typeof allComputedCandleData.current[_currentCandleStick.time] === "undefined") {
           allComputedCandleData.current[_currentCandleStick.time] = _currentCandleStick; //result.push(_currentCandleStick);
         }
 
@@ -5809,8 +5810,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           time: time,
           open: -1,
           close: -1,
-          high: '-9999999999999999999999',
-          low: '9999999999999999999999',
+          high: "-9999999999999999999999",
+          low: "9999999999999999999999",
           volume: 0
         };
       }
@@ -5852,18 +5853,18 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       /**
        * 最低点
        * */
-      start: '9999999999999999999999',
+      start: "9999999999999999999999",
 
       /**
        * 最高点
        * */
-      end: '-9999999999999999999999'
+      end: "-9999999999999999999999"
     };
 
     for (var _iterator = _createForOfIteratorHelperLoose(data), _step; !(_step = _iterator()).done;) {
       var item = _step.value;
 
-      if (typeof allComputedCandleData.current[item.time] === 'undefined') {
+      if (typeof allComputedCandleData.current[item.time] === "undefined") {
         _displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
         _displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
         allComputedCandleData.current[item.time] = _extends({}, item);
@@ -5875,24 +5876,24 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
   var getCandleColor = function getCandleColor(start, end, type) {
     if (Number(start) > Number(end)) {
-      if (type === 'wick') return initArgs.candleStyles.wickFallColor;
-      if (type === 'candle') return initArgs.candleStyles.candleFallColor;
+      if (type === "wick") return initArgs.candleStyles.wickFallColor;
+      if (type === "candle") return initArgs.candleStyles.candleFallColor;
     }
 
-    if (type === 'wick') return initArgs.candleStyles.wickRiseColor;
-    if (type === 'candle') return initArgs.candleStyles.candleRiseColor;
-    return '#fff';
+    if (type === "wick") return initArgs.candleStyles.wickRiseColor;
+    if (type === "candle") return initArgs.candleStyles.candleRiseColor;
+    return "#fff";
   };
 
   var getCandleStatus = function getCandleStatus(start, end, type) {
     if (Number(start) > Number(end)) {
-      if (type === 'wick') return 'fall';
-      if (type === 'candle') return 'fall';
+      if (type === "wick") return "fall";
+      if (type === "candle") return "fall";
     }
 
-    if (type === 'wick') return 'rise';
-    if (type === 'candle') return 'rise';
-    return 'rise';
+    if (type === "wick") return "rise";
+    if (type === "candle") return "rise";
+    return "rise";
   };
 
   var getDataSpaceFromNumberScope = function getDataSpaceFromNumberScope(dataScope, start, end) {
@@ -5915,10 +5916,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   dataitem, //扩展后的范围（数据）
   dataScope, //未扩展的范围（数据）
   orgScope) {
-    dataitem.candleColor = getCandleColor(dataitem.open, dataitem.close, 'candle');
-    dataitem.wickColor = getCandleColor(dataitem.open, dataitem.close, 'wick');
-    dataitem.candleStateus = getCandleStatus(dataitem.open, dataitem.close, 'candle');
-    dataitem.wickStateus = getCandleStatus(dataitem.open, dataitem.close, 'wick'); //快速渲染
+    dataitem.candleColor = getCandleColor(dataitem.open, dataitem.close, "candle");
+    dataitem.wickColor = getCandleColor(dataitem.open, dataitem.close, "wick");
+    dataitem.candleStateus = getCandleStatus(dataitem.open, dataitem.close, "candle");
+    dataitem.wickStateus = getCandleStatus(dataitem.open, dataitem.close, "wick"); //快速渲染
 
     if (isQuickUpdateing.current == true) {
       dataitem.wickWidth = 1.2;
@@ -5992,19 +5993,19 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       /**
        * 最低点
        * */
-      start: '9999999999999999999999',
+      start: "9999999999999999999999",
 
       /**
        * 最高点
        * */
-      end: '-9999999999999999999999'
+      end: "-9999999999999999999999"
     };
     var maxVolume = -99999999999999;
 
     for (var inde_i = 0; inde_i < tickArr.length; inde_i++) {
       var item = tickArr[inde_i];
 
-      if (typeof allComputedCandleData.current[item.value] !== 'undefined') {
+      if (typeof allComputedCandleData.current[item.value] !== "undefined") {
         var dataitem = allComputedCandleData.current[item.value];
         dataitem.currentTick = item;
         _displayCandleMaxMin.start = getMin(dataitem, Number(_displayCandleMaxMin.start)).toString();
@@ -6031,7 +6032,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       var item = _step2.value;
 
       //如果填写的是"本地时间"，就不做任何操作
-      if (baseConfig.timeZone.dataSourceTimeZone === 'local') {
+      if (baseConfig.timeZone.dataSourceTimeZone === "local") {
         item.time = getRightDate(item.time);
       } else {
         //否则，先把时间按照用户设置的归零，然后再设置到显示时间
@@ -6071,12 +6072,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               setvolumChartPixHeight(0);
               setvolumChartViewMax(0);
               setdisplayCandleMaxMin({
-                start: '0',
-                end: '0'
+                start: "0",
+                end: "0"
               });
               setorg_displayCandleMaxMin({
-                start: '0',
-                end: '0'
+                start: "0",
+                end: "0"
               });
               setlatestCandleToolTip(null);
               setlatestVolumeToolTip(null);
@@ -6099,7 +6100,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               _timeInteger = xAxis.data.currentTimeType.roundingFunction(endTime, 0);
               timeZoneD = 0;
 
-              if (baseConfig.timeZone.displayTimeZone === 'local') {
+              if (baseConfig.timeZone.displayTimeZone === "local") {
                 date = new Date();
                 localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
                 timeZoneD = localtimeZone;
@@ -6120,8 +6121,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               result = _context.sent;
 
               if (result.length !== 0) {
-                setTempDynamicData(seAllDataDateToUserConfigedGMT(result));
                 setisFirstTimeUpdate(true);
+                setTempDynamicData(seAllDataDateToUserConfigedGMT(result));
               } //计算volum图的像素高度
 
 
@@ -6170,7 +6171,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               startTime = xAxis.data.currentTimeType.backwardTimeUnit(endTime, initArgs.dynamicData.dataFetchCountPreTime, 0);
               timeZoneD = 0;
 
-              if (baseConfig.timeZone.displayTimeZone === 'local') {
+              if (baseConfig.timeZone.displayTimeZone === "local") {
                 date = new Date();
                 localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
                 timeZoneD = localtimeZone;
@@ -6188,7 +6189,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
             case 10:
               result = _context2.sent;
 
-              if (!(typeof result === 'undefined' || result === null)) {
+              if (!(typeof result === "undefined" || result === null)) {
                 _context2.next = 14;
                 break;
               }
@@ -6253,14 +6254,14 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     var isConsistentOfDateType = determineTimeSpaceConsistent(data); //大了就没办法了，直接return
 
-    if (isConsistentOfDateType === 'bigger') {
-      console.log('The time interval of the data is inconsistent with the given configured time interval!');
+    if (isConsistentOfDateType === "bigger") {
+      console.log("The time interval of the data is inconsistent with the given configured time interval!");
       return;
     } //将新数据加入到当前现有的数据里去
     //小了的话就按照配置的时间类型进行归并
 
 
-    if (isConsistentOfDateType === 'smaller') {
+    if (isConsistentOfDateType === "smaller") {
       mergeData(_data);
     } else {
       //如果是一致的，就直接将这些数据放进堆里
@@ -6299,17 +6300,17 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     var isConsistentOfDateType = determineTimeSpaceConsistent(_orgCandleData); //大了就没办法了，直接return
 
-    if (isConsistentOfDateType === 'bigger') {
-      console.log('The time interval of the data is inconsistent with the given configured time interval!');
+    if (isConsistentOfDateType === "bigger") {
+      console.log("The time interval of the data is inconsistent with the given configured time interval!");
       return;
     }
 
     var dataScope = {
-      start: '500',
-      end: '700'
+      start: "500",
+      end: "700"
     }; //小了的话就按照配置的时间类型进行归并
 
-    if (isConsistentOfDateType === 'smaller') {
+    if (isConsistentOfDateType === "smaller") {
       dataScope = mergeData(_orgCandleData);
     } else {
       //如果是一致的，就直接将这些数据放进堆里
@@ -6402,7 +6403,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
           //这样的元素就需要重新进行计算，
           //否则就不需要进行计算
-          if (typeof item.updateTag === 'undefined' || item.updateTag !== currentTag) {
+          if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
             item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
           } else {
             computSingalCandledataMini(item);
@@ -6419,7 +6420,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
         //这样的元素就需要重新进行计算，
         //否则就不需要进行计算
-        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentTag) {
+        if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
           item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
         } else {
           computSingalCandledataMini(item);
@@ -6482,15 +6483,15 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     }
   };
   /*
-    第三版结合所有优点根据情况决定是计算还是更新
-    */
+  第三版结合所有优点根据情况决定是计算还是更新
+  */
 
 
   var updatePartialCandleDataV3 = function updatePartialCandleDataV3() {
     var onlyUpdatePositionAndScale = function onlyUpdatePositionAndScale(_cArr) {
       var isFromAppend = false;
 
-      if (typeof _cArr === 'undefined') {
+      if (typeof _cArr === "undefined") {
         _cArr = [].concat(displayCandleData);
         _cArr = _cArr.sort(function (a, b) {
           return Number(a.time) - Number(b.time);
@@ -6505,8 +6506,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
       var barr = [];
       /* if (_LastScopeddcData.length !== 0) {
-                barr = _LastScopeddcData;
-            } else { */
+          barr = _LastScopeddcData;
+      } else { */
 
       barr = _cArr;
       /* } */
@@ -6529,12 +6530,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         /**
          * 最低点
          * */
-        start: '9999999999999999999999',
+        start: "9999999999999999999999",
 
         /**
          * 最高点
          * */
-        end: '-9999999999999999999999'
+        end: "-9999999999999999999999"
       };
       var maxVolume = -99999999999999;
       var i = 0;
@@ -6626,10 +6627,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       if (xAxis.data.tickArr[0].value !== _totalCandleDisplayArr[0].time) {
         var index = 0;
 
-        while (typeof xAxis.data.tickArr[index] !== 'undefined' && xAxis.data.tickArr[index].value < _totalCandleDisplayArr[0].time) {
+        while (typeof xAxis.data.tickArr[index] !== "undefined" && xAxis.data.tickArr[index].value < _totalCandleDisplayArr[0].time) {
           var _item2 = allComputedCandleData.current[xAxis.data.tickArr[index].value];
 
-          if (typeof _item2 !== 'undefined') {
+          if (typeof _item2 !== "undefined") {
             _item2.currentTick = xAxis.data.tickArr[index];
             backwardDCArr.push(_item2);
           }
@@ -6643,10 +6644,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       if (xAxis.data.tickArr[xAxis.data.tickArr.length - 1].value !== _totalCandleDisplayArr[_totalCandleDisplayArr.length - 1].time) {
         var _index = xAxis.data.tickArr.length - 1;
 
-        while (typeof xAxis.data.tickArr[_index] !== 'undefined' && xAxis.data.tickArr[_index].value > _totalCandleDisplayArr[_totalCandleDisplayArr.length - 1].time) {
+        while (typeof xAxis.data.tickArr[_index] !== "undefined" && xAxis.data.tickArr[_index].value > _totalCandleDisplayArr[_totalCandleDisplayArr.length - 1].time) {
           var _item3 = allComputedCandleData.current[xAxis.data.tickArr[_index].value];
 
-          if (typeof _item3 !== 'undefined') {
+          if (typeof _item3 !== "undefined") {
             _item3.currentTick = xAxis.data.tickArr[_index];
             forwardDCArr.unshift(_item3);
           }
@@ -6667,7 +6668,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       for (var _iterator5 = _createForOfIteratorHelperLoose(currentScopeDisplayCandleData), _step5; !(_step5 = _iterator5()).done;) {
         var item = _step5.value;
 
-        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentTag) {
+        if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
           item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
         } else {
           computSingalCandledataMini(item);
@@ -6736,114 +6737,114 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   //2.使用推进法扩展candle
 
   /* const updatePartialCandleDataV2 = function () {
-        let _cArr = [...displayCandleData];
-        let lastDisplayCandleData = findIntersectionCandle(_cArr, xAxis.data.currentTimeScope);
-            let backwardDCArr: IcandleData[] = [];
-        //判断是前面少了还是后面少了
-        if (xAxis.data.tickArr[0].value !== lastDisplayCandleData[0].time) {
-            let index = 0;
-            while (xAxis.data.tickArr[index].value < lastDisplayCandleData[0].time) {
-                let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
-                if (typeof item !== "undefined") {
-                    item.currentTick = xAxis.data.tickArr[index];
-                    backwardDCArr.push(item);
-                }
+      let _cArr = [...displayCandleData];
+      let lastDisplayCandleData = findIntersectionCandle(_cArr, xAxis.data.currentTimeScope);
+        let backwardDCArr: IcandleData[] = [];
+      //判断是前面少了还是后面少了
+      if (xAxis.data.tickArr[0].value !== lastDisplayCandleData[0].time) {
+          let index = 0;
+          while (xAxis.data.tickArr[index].value < lastDisplayCandleData[0].time) {
+              let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
+              if (typeof item !== "undefined") {
+                  item.currentTick = xAxis.data.tickArr[index];
+                  backwardDCArr.push(item);
+              }
+              index++;
+          }
+      }
+        let forwardDCArr: IcandleData[] = [];
+      if (
+          xAxis.data.tickArr[xAxis.data.tickArr.length - 1].value !==
+          lastDisplayCandleData[lastDisplayCandleData.length - 1].time
+      ) {
+          let index = xAxis.data.tickArr.length - 1;
+          while (xAxis.data.tickArr[index].value > lastDisplayCandleData[lastDisplayCandleData.length - 1].time) {
+              let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
+              if (typeof item !== "undefined") {
+                  item.currentTick = xAxis.data.tickArr[index];
+                  forwardDCArr.unshift(item);
+              }
+              index--;
+          }
+      }
+        if (backwardDCArr.length === 0 && forwardDCArr.length === 0) {
+          return;
+      }
+      //上次缩放或重置后使用的最大值最小值(数据范围，不是像素 )
+      //而且是未经扩展过的数据范围（素）的
+      let _org_displayCandleMaxMin = org_displayCandleMaxMin;
+      let currentTag = _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
+        //继承上一次的结果，并从这次的新结果里查找最大的y和最小的y
+      let orgMaxMiny: numberScope = { ...lastMaxMiny };
+      //继承上一次的
+      let _displayCandleMaxMin: numberScopeString = { ...displayCandleMaxMin };
+        ///计算新选出来的displaycandle项目
+      let comp = function (arrayCD: IcandleData[]): IcandleData[] {
+          //进行数据计算
+          let index = 0;
+          isEscapeItems.current = false;
+          for (var item of arrayCD) {
+              //如果已经打开了省略模式
+                //全部进行全量计算
+              //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
+              //这样的元素就需要重新进行计算，
+              //否则就不需要进行计算
+              if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
+                  item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
+              } else {
+                  computSingalCandledataMini(item, _org_displayCandleMaxMin);
+              }
+              item.isEscaped = false;
+                if (isQuickUpdateing.current) {
+                  if (Number(item.wickPixPosition?.y) + Number(item.wickLength) > orgMaxMiny.start) {
+                      //求（像素）y最大值
+                      orgMaxMiny.start = Number(item.wickPixPosition?.y) + Number(item.wickLength);
+                  }
+                  //求（像素）y最小值
+                  if (Number(item.wickPixPosition?.y) < orgMaxMiny.end) {
+                      orgMaxMiny.end = Number(item.wickPixPosition?.y);
+                  }
+              } else {
+                  if (
+                      Math.max(
+                          Number(item.candlePixPosition?.y) + Number(item.candleLength),
+                          Number(item.wickPixPosition?.y) + Number(item.wickLength)
+                      ) > orgMaxMiny.start
+                  ) {
+                      //求（像素）y最大值
+                      orgMaxMiny.start = Math.max(
+                          Number(item.candlePixPosition?.y) + Number(item.candleLength),
+                          Number(item.wickPixPosition?.y) + Number(item.wickLength)
+                      );
+                  }
+                  //求（像素）y最小值
+                  if (Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y)) < orgMaxMiny.end) {
+                      orgMaxMiny.end = Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y));
+                  }
+              }
+                _displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
+              _displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
                 index++;
-            }
-        }
-            let forwardDCArr: IcandleData[] = [];
-        if (
-            xAxis.data.tickArr[xAxis.data.tickArr.length - 1].value !==
-            lastDisplayCandleData[lastDisplayCandleData.length - 1].time
-        ) {
-            let index = xAxis.data.tickArr.length - 1;
-            while (xAxis.data.tickArr[index].value > lastDisplayCandleData[lastDisplayCandleData.length - 1].time) {
-                let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
-                if (typeof item !== "undefined") {
-                    item.currentTick = xAxis.data.tickArr[index];
-                    forwardDCArr.unshift(item);
-                }
-                index--;
-            }
-        }
-            if (backwardDCArr.length === 0 && forwardDCArr.length === 0) {
-            return;
-        }
-        //上次缩放或重置后使用的最大值最小值(数据范围，不是像素 )
-        //而且是未经扩展过的数据范围（素）的
-        let _org_displayCandleMaxMin = org_displayCandleMaxMin;
-        let currentTag = _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
-            //继承上一次的结果，并从这次的新结果里查找最大的y和最小的y
-        let orgMaxMiny: numberScope = { ...lastMaxMiny };
-        //继承上一次的
-        let _displayCandleMaxMin: numberScopeString = { ...displayCandleMaxMin };
-            ///计算新选出来的displaycandle项目
-        let comp = function (arrayCD: IcandleData[]): IcandleData[] {
-            //进行数据计算
-            let index = 0;
-            isEscapeItems.current = false;
-            for (var item of arrayCD) {
-                //如果已经打开了省略模式
-                    //全部进行全量计算
-                //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
-                //这样的元素就需要重新进行计算，
-                //否则就不需要进行计算
-                if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
-                    item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
-                } else {
-                    computSingalCandledataMini(item, _org_displayCandleMaxMin);
-                }
-                item.isEscaped = false;
-                    if (isQuickUpdateing.current) {
-                    if (Number(item.wickPixPosition?.y) + Number(item.wickLength) > orgMaxMiny.start) {
-                        //求（像素）y最大值
-                        orgMaxMiny.start = Number(item.wickPixPosition?.y) + Number(item.wickLength);
-                    }
-                    //求（像素）y最小值
-                    if (Number(item.wickPixPosition?.y) < orgMaxMiny.end) {
-                        orgMaxMiny.end = Number(item.wickPixPosition?.y);
-                    }
-                } else {
-                    if (
-                        Math.max(
-                            Number(item.candlePixPosition?.y) + Number(item.candleLength),
-                            Number(item.wickPixPosition?.y) + Number(item.wickLength)
-                        ) > orgMaxMiny.start
-                    ) {
-                        //求（像素）y最大值
-                        orgMaxMiny.start = Math.max(
-                            Number(item.candlePixPosition?.y) + Number(item.candleLength),
-                            Number(item.wickPixPosition?.y) + Number(item.wickLength)
-                        );
-                    }
-                    //求（像素）y最小值
-                    if (Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y)) < orgMaxMiny.end) {
-                        orgMaxMiny.end = Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y));
-                    }
-                }
-                    _displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
-                _displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
-                    index++;
-            }
-            return arrayCD;
-        };
-            let _displayCandleData = comp(backwardDCArr).concat(lastDisplayCandleData).concat(comp(forwardDCArr));
-            let currentheight = orgMaxMiny.start - orgMaxMiny.end;
-        let expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding!;
-        let scale = yAxis.data.lineSize.height / expendHeight;
-        let y = -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
-            setdisplayCandleData(_displayCandleData);
-            setdisplayCandleMaxMin(() => {
-            return _displayCandleMaxMin;
-        });
-            if (_displayCandleData.length !== 0) {
-            setminy(y * scale);
-            setyScale(scale);
-            checkDynamicData(_displayCandleData);
-            setupdateStamp(+new Date());
-            setlastMaxMiny(orgMaxMiny);
-        }
-    }; */
+          }
+          return arrayCD;
+      };
+        let _displayCandleData = comp(backwardDCArr).concat(lastDisplayCandleData).concat(comp(forwardDCArr));
+        let currentheight = orgMaxMiny.start - orgMaxMiny.end;
+      let expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding!;
+      let scale = yAxis.data.lineSize.height / expendHeight;
+      let y = -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
+        setdisplayCandleData(_displayCandleData);
+        setdisplayCandleMaxMin(() => {
+          return _displayCandleMaxMin;
+      });
+        if (_displayCandleData.length !== 0) {
+          setminy(y * scale);
+          setyScale(scale);
+          checkDynamicData(_displayCandleData);
+          setupdateStamp(+new Date());
+          setlastMaxMiny(orgMaxMiny);
+      }
+  }; */
   //进行全量更新
 
 
@@ -6921,7 +6922,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              if (!(typeof data === 'undefined')) {
+              if (!(typeof data === "undefined")) {
                 _context3.next = 2;
                 break;
               }
@@ -6932,7 +6933,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               //如果当前缩放、拖动超过所有内存中数据能显示的范围
               //判断是否为动态数据加载模式
               if (initArgs.dynamicData.enabled && !isStaticData && !stopDynamicFetching) {
-                if (typeof data !== 'undefined') {
+                if (typeof data !== "undefined") {
                   if (Number(data[0].time) - Number(xAxis.data.tickArr[0].value) > 0) {
                     //往下拉取数据
                     lunchDynamicData(Number(data[0].time));
@@ -7048,7 +7049,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         isMergeMode = _streamData.isMergeMode; //将新进来的数据的时间，归零到格林威治时间
 
 
-    if (baseConfig.timeZone.dataSourceTimeZone === 'local') {
+    if (baseConfig.timeZone.dataSourceTimeZone === "local") {
       time = Number(new Date(time).getTime());
     } else {
       time = anyTimeToGMT0000ToTarget(Number(new Date(time).getTime()), baseConfig.timeZone.dataSourceTimeZone, baseConfig.timeZone.displayTimeZone);
@@ -7066,7 +7067,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     if (currentRoundTime === ((_latestCandleItem2 = _latestCandleItem) == null ? void 0 : _latestCandleItem2.time)) {
       //是否为快速合并模式
-      if (typeof isMergeMode !== 'undefined' && isMergeMode === true) {
+      if (typeof isMergeMode !== "undefined" && isMergeMode === true) {
         _latestCandleItem.close = close;
         _latestCandleItem.high = Math.max(Number(_latestCandleItem.high), Number(close));
         _latestCandleItem.low = Math.min(Number(_latestCandleItem.low), Number(close));
@@ -7087,14 +7088,14 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, org_displayCandleMaxMin);
           _displayCandleData[i] = _latestCandleItem;
           isChangeDisplayCandleArr = true;
-          _latestCandleItem.updateTag = '0';
+          _latestCandleItem.updateTag = "0";
           break;
         }
       }
     } else if (currentRoundTime > Number((_latestCandleItem3 = _latestCandleItem) == null ? void 0 : _latestCandleItem3.time)) {
       //如果是下一个时间刻度
       //是否为快速合并模式
-      if (typeof isMergeMode !== 'undefined' && isMergeMode === true) {
+      if (typeof isMergeMode !== "undefined" && isMergeMode === true) {
         _latestCandleItem.time = currentRoundTime;
         _latestCandleItem.open = close;
         _latestCandleItem.close = close;
@@ -7108,7 +7109,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         _latestCandleItem.high = high;
         _latestCandleItem.low = low;
         _latestCandleItem.volume = volume;
-        _latestCandleItem.updateTag = '0';
+        _latestCandleItem.updateTag = "0";
       } //查找ticks
 
 
@@ -7196,7 +7197,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         dataItem = latestCandleItem;
       }
 
-      if (typeof dataItem !== 'undefined') {
+      if (typeof dataItem !== "undefined") {
         var _initArgs$candleStyle5;
 
         var copyedItem = _extends({}, dataItem);
@@ -7304,7 +7305,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   };
 
   var getCurrentCursorCandle = function getCurrentCursorCandle() {
-    if (xAxis.data.tooltipIsShow && typeof xAxis.data.tooltipState !== 'undefined' && xAxis.data.tooltipState !== null && typeof xAxis.data.tooltipState.relatedTickItem !== 'undefined' && xAxis.data.tooltipState.relatedTickItem !== null) {
+    if (xAxis.data.tooltipIsShow && typeof xAxis.data.tooltipState !== "undefined" && xAxis.data.tooltipState !== null && typeof xAxis.data.tooltipState.relatedTickItem !== "undefined" && xAxis.data.tooltipState.relatedTickItem !== null) {
       var key = xAxis.data.tooltipState.relatedTickItem.value.toString();
       var item = allComputedCandleData.current[key];
       setCursorCandleItem(item);
@@ -7314,19 +7315,19 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   var workerReciveMessage = function workerReciveMessage(e) {
     var data = e.data;
 
-    if (data.message === 'setdisplayLatestCandle') {
+    if (data.message === "setdisplayLatestCandle") {
       setdisplayLatestCandle(data.data);
       return;
     }
 
-    if (data.message === 'not found') {
+    if (data.message === "not found") {
       //没找到
       setdisplayCandleData([]);
       checkDynamicData();
       return;
     }
 
-    if (data.message === 'updateYaxis') {
+    if (data.message === "updateYaxis") {
       requestAnimationFrame(function () {
         //更新y轴
         yAxis.funcs.updateAxisSates(xAxis.data.viewSize.width, xAxis.data.viewSize.height, {
@@ -7337,7 +7338,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       return;
     }
 
-    if (data.message === 'finishWork') {
+    if (data.message === "finishWork") {
       var currentheight = data.data.orgMaxMiny.start - data.data.orgMaxMiny.end;
       var expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding;
       var scale = yAxis.data.lineSize.height / expendHeight;
@@ -7363,7 +7364,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
 
   useEffect(function () {
-    if (typeof workMessage !== 'undefined') {
+    if (typeof workMessage !== "undefined") {
       workerReciveMessage(workMessage);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -7372,7 +7373,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     if (isMounted === false) {
       setIsMounted(true);
 
-      if (typeof initArgs.staticData !== 'undefined' && initArgs.staticData.length > 0) {
+      if (typeof initArgs.staticData !== "undefined" && initArgs.staticData.length > 0) {
         setisStaticData(true);
       } else {
         setisStaticData(false);
@@ -7404,7 +7405,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       }
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, [xAxis.data.isFinishedInit, yAxis.data.isFinishedInit]); //数据动态载入完成以后需要重新渲染一下数据
+  }, [xAxis.data.isFinishedInit, yAxis.data.isFinishedInit, xAxis.data.InitStemp]); //数据动态载入完成以后需要重新渲染一下数据
 
   useEffect(function () {
     //静态模式是依据initArgs.staticData.length 进行的
@@ -7423,36 +7424,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, [initDyStamp]); //这里专门用户时间类型切换时的更新
-
-  useEffect(function () {
-    if (xAxis.data.xAxisUpdateTimeStamp !== -1 && xAxis.data.xAxisUpdateTimeStamp !== lastTimexAsixStemp) {
-      if (xAxis.data.currentTimeType !== null && currentTimeTypeName !== '') {
-        //这里判断是否更新了时间类型（就是时间单位）
-        if (xAxis.data.currentTimeType.name !== currentTimeTypeName || JSON.stringify(baseConfig.timeZone) !== JSON.stringify(currentTimeZone)) {
-          var _xAxis$data$currentTi3;
-
-          //记录一下当前的时间类型
-          setcurrentTimeTypeName((_xAxis$data$currentTi3 = xAxis.data.currentTimeType) == null ? void 0 : _xAxis$data$currentTi3.name);
-          setcurrentTimeZone(baseConfig.timeZone);
-
-          if (xAxis.data.currentTimeScope.end !== 0 && xAxis.data.currentTimeScope.start !== 0) {
-            if (isStaticData) {
-              //如果是静态数据
-              //初始化静态数据
-              initStaticData();
-            } else if (initArgs.dynamicData.enabled) {
-              //否则进入动态数据模式
-              initDynamicData();
-            }
-          }
-        }
-
-        setlastTimexAsixStemp(xAxis.data.xAxisUpdateTimeStamp);
-      }
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  }, [xAxis.data.xAxisUpdateTimeStamp]);
+  }, [initDyStamp]);
   useEffect(function () {
     if (xAxis.data.xAxisUpdateMoveMentTimeStamp !== -1) {
       moveUpdate();

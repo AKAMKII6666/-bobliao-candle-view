@@ -152,6 +152,7 @@ export interface IAxisobj {
         xAxisUpdateScaleTimeStamp: number;
         mouseSpeedSec: number;
         moveDirection: "add" | "min";
+        InitStemp: number;
     };
     /**
      *导出的方法
