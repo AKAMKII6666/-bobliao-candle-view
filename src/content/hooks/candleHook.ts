@@ -1146,17 +1146,15 @@ const useCandleHook = function(
     let scale = yAxis.data.lineSize.height / expendHeight;
     let y =
       -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
-
+    setminy(y * scale);
+    setyScale(scale);
     setdisplayCandleData(result.data);
-
     setdisplayCandleMaxMin(result.scope);
 
     if (result.data.length !== 0) {
-      setminy(y * scale);
-      setyScale(scale);
       checkDynamicData(result.data);
-      setupdateStamp(+new Date());
     }
+    setupdateStamp(+new Date());
   };
 
   /*
@@ -1733,26 +1731,27 @@ const useCandleHook = function(
       index++;
     }
 
+    let scale =
+      xAxis.data.linePosition.y /
+      (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding! +
+        xAxis.data.linePosition.y);
+    let y = (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding!) / 2;
+    setminy(y * scale);
+    setyScale(scale);
+
     setdisplayCandleData(result.data);
     setviewSize(xAxis.data.viewSize);
+    setorg_displayCandleMaxMin(result.scope);
+    setcurrentGUIDUpdateTag(updateTag);
 
     if (result.data.length !== 0) {
-      let scale =
-        xAxis.data.linePosition.y /
-        (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding! +
-          xAxis.data.linePosition.y);
-      let y = (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding!) / 2;
-      setminy(y * scale);
-      setyScale(scale);
-      setorg_displayCandleMaxMin(result.scope);
-      setcurrentGUIDUpdateTag(updateTag);
       checkDynamicData(result.data);
-      setupdateStamp(+new Date());
-      setlastMaxMiny({
-        start: xAxis.data.linePosition.y,
-        end: 0,
-      });
     }
+    setupdateStamp(+new Date());
+    setlastMaxMiny({
+      start: xAxis.data.linePosition.y,
+      end: 0,
+    });
   };
 
   const checkDynamicData = async function(data?: IcandleData[]) {
