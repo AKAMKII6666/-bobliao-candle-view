@@ -115,8 +115,8 @@ function _createForOfIteratorHelperLoose(o, allowArrayLike) {
 
 var formatDate = function formatDate(date, format) {
   date = date || new Date();
-  format = format || "yyyy-MM-dd HH:mm:ss";
-  var result = format.replace("yyyy", date.getFullYear().toString()).replace("yy", date.getFullYear().toString().substring(2, 4)).replace("MM", (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1).toString()).replace("dd", (date.getDate() < 10 ? "0" : "") + date.getDate().toString()).replace("HH", (date.getHours() < 10 ? "0" : "") + date.getHours().toString()).replace("mm", (date.getMinutes() < 10 ? "0" : "") + date.getMinutes().toString()).replace("ss", (date.getSeconds() < 10 ? "0" : "") + date.getSeconds().toString());
+  format = format || 'yyyy-MM-dd HH:mm:ss';
+  var result = format.replace('yyyy', date.getFullYear().toString()).replace('yy', date.getFullYear().toString().substring(2, 4)).replace('MM', (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1).toString()).replace('dd', (date.getDate() < 10 ? '0' : '') + date.getDate().toString()).replace('HH', (date.getHours() < 10 ? '0' : '') + date.getHours().toString()).replace('mm', (date.getMinutes() < 10 ? '0' : '') + date.getMinutes().toString()).replace('ss', (date.getSeconds() < 10 ? '0' : '') + date.getSeconds().toString());
   return result;
 };
 /**
@@ -127,11 +127,11 @@ var anyTimeToGMT0000ToTarget = function anyTimeToGMT0000ToTarget(time, currentTi
   var date = new Date(time);
   var localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
 
-  if (targetTimeZone === "local") {
+  if (targetTimeZone === 'local') {
     targetTimeZone = localtimeZone;
   }
 
-  if (currentTimeZone === "local") {
+  if (currentTimeZone === 'local') {
     currentTimeZone = localtimeZone;
   }
 
@@ -146,24 +146,24 @@ var anyTimeToGMT0000ToTarget = function anyTimeToGMT0000ToTarget(time, currentTi
  */
 
 var getSpaceSize = function getSpaceSize(arg, length) {
-  if (typeof arg === "string" && arg === "auto") {
+  if (typeof arg === 'string' && arg === 'auto') {
     return length;
   }
 
-  if (typeof arg === "string" && arg.indexOf("%") !== -1) {
-    var value = Number(arg.replace("%", "")) / 100;
+  if (typeof arg === 'string' && arg.indexOf('%') !== -1) {
+    var value = Number(arg.replace('%', '')) / 100;
     return length * value;
   }
 
-  if (typeof arg === "string" && arg.indexOf("px") !== -1) {
-    return Number(arg.replace("px", ""));
+  if (typeof arg === 'string' && arg.indexOf('px') !== -1) {
+    return Number(arg.replace('px', ''));
   }
 
-  if (typeof arg === "number" || !isNaN(Number(arg))) {
+  if (typeof arg === 'number' || !isNaN(Number(arg))) {
     return Number(arg);
   }
 
-  console.log("no useful length !");
+  console.log('no useful length !');
   return 0;
 };
 /**
@@ -193,7 +193,7 @@ var findIntersection = function findIntersection(tickArr, scope) {
       }
     }
   } else {
-    result = findIntersectionByKey(tickArr, scope, "value");
+    result = findIntersectionByKey(tickArr, scope, 'value');
   }
 
   return result;
@@ -209,7 +209,7 @@ var findIntersectionCandle = function findIntersectionCandle(candle, scope) {
   //	}
   //}
 
-  result = findIntersectionByKey(candle, scope, "time");
+  result = findIntersectionByKey(candle, scope, 'time');
   return result;
 }; //换算区块链的数字单位
 
@@ -335,18 +335,18 @@ var roundToNearestTenBigNumber = function roundToNearestTenBigNumber(num, intGet
 
 function binarySearchByKeyStrictlyEqual(inputArr, target, targetType, key) {
   var getItem = function getItem(arr, index) {
-    if (typeof arr[index] === "object" || typeof key !== "undefined") {
+    if (typeof arr[index] === 'object' || typeof key !== 'undefined') {
       return Number(arr[index][key]);
     }
 
     return Number(arr[index]);
   };
 
-  if (targetType === "forStart" && target === getItem(inputArr, 0)) {
+  if (targetType === 'forStart' && target === getItem(inputArr, 0)) {
     return 0;
   }
 
-  if (targetType === "forEnd" && target === getItem(inputArr, inputArr.length - 1)) {
+  if (targetType === 'forEnd' && target === getItem(inputArr, inputArr.length - 1)) {
     return inputArr.length - 1;
   }
 
@@ -358,7 +358,7 @@ function binarySearchByKeyStrictlyEqual(inputArr, target, targetType, key) {
     mid = left + Math.floor((right - left) / 2);
 
     if (getItem(inputArr, mid) === target) {
-      if (targetType === "forStart") {
+      if (targetType === 'forStart') {
         // 查找起点，继续在左半边查找可能更小的索引
         right = mid - 1;
       } else {
@@ -373,7 +373,7 @@ function binarySearchByKeyStrictlyEqual(inputArr, target, targetType, key) {
   } // 根据targetType确定返回值
 
 
-  if (targetType === "forStart") {
+  if (targetType === 'forStart') {
     // 如果是查找起点，返回第一个大于等于target的索引
     return left;
   } else {
@@ -391,15 +391,15 @@ function binarySearchByKeyStrictlyEqual(inputArr, target, targetType, key) {
  */
 
 function binarySearchByKey(inputArr, target, key, targetType) {
-  if (typeof inputArr[0] === "undefined") {
+  if (typeof inputArr[0] === 'undefined') {
     return -1;
   }
 
-  if (targetType === "forStart" && target <= inputArr[0][key]) {
+  if (targetType === 'forStart' && target <= inputArr[0][key]) {
     return 0;
   }
 
-  if (targetType === "forEnd" && target >= inputArr[inputArr.length - 1][key]) {
+  if (targetType === 'forEnd' && target >= inputArr[inputArr.length - 1][key]) {
     return inputArr.length - 1;
   }
 
@@ -411,7 +411,7 @@ function binarySearchByKey(inputArr, target, key, targetType) {
     mid = left + Math.floor((right - left) / 2);
 
     if (inputArr[mid][key] === target) {
-      if (targetType === "forStart") {
+      if (targetType === 'forStart') {
         // 查找起点，继续在左半边查找可能更小的索引
         right = mid - 1;
       } else {
@@ -426,7 +426,7 @@ function binarySearchByKey(inputArr, target, key, targetType) {
   } // 根据targetType确定返回值
 
 
-  if (targetType === "forStart") {
+  if (targetType === 'forStart') {
     // 如果是查找起点，返回第一个大于等于target的索引
     return left;
   } else {
@@ -444,13 +444,13 @@ function binarySearchByKey(inputArr, target, key, targetType) {
 
 
 var findIntersectionByKey = function findIntersectionByKey(inputArr, scope, key) {
-  var startIndex = binarySearchByKey(inputArr, scope.start, key, "forStart");
-  var endIndex = binarySearchByKey(inputArr, scope.end, key, "forEnd"); // 确保索引有效
+  var startIndex = binarySearchByKey(inputArr, scope.start, key, 'forStart');
+  var endIndex = binarySearchByKey(inputArr, scope.end, key, 'forEnd'); // 确保索引有效
 
   startIndex = startIndex === null ? 0 : startIndex;
   endIndex = endIndex === null ? inputArr.length - 1 : endIndex;
 
-  if (typeof inputArr[endIndex] === "undefined") {
+  if (typeof inputArr[endIndex] === 'undefined') {
     return [];
   }
 
@@ -466,7 +466,7 @@ var findIntersectionByKey = function findIntersectionByKey(inputArr, scope, key)
  */
 
 var getRightDate = function getRightDate(dateTime) {
-  if (typeof dateTime === "number") {
+  if (typeof dateTime === 'number') {
     return dateTime;
   }
 
@@ -474,13 +474,13 @@ var getRightDate = function getRightDate(dateTime) {
 }; //千分位分割
 
 var thousandsSplit = function thousandsSplit(num) {
-  var numStr = num.toString().trim().split(".")[0].split("");
-  var output = "";
+  var numStr = num.toString().trim().split('.')[0].split('');
+  var output = '';
   var j = 0;
 
   for (var i = numStr.length - 1; i > -1; i--) {
     if (j % 3 == 0 && j != 0) {
-      output = numStr[i] + "," + output;
+      output = numStr[i] + ',' + output;
     } else {
       output = numStr[i] + output;
     }
@@ -488,42 +488,42 @@ var thousandsSplit = function thousandsSplit(num) {
     j++;
   }
 
-  if (num.toString().split(".")[1]) {
-    output += "." + num.toString().split(".")[1];
+  if (num.toString().split('.')[1]) {
+    output += '.' + num.toString().split('.')[1];
   }
 
   return output;
 }; //通过语言信息获得单位换算
 
 var getUnitNumber = function getUnitNumber(_num, _lan, _fix) {
-  if (typeof _lan === "undefined") {
-    _lan = "en";
+  if (typeof _lan === 'undefined') {
+    _lan = 'en';
   }
 
-  if (typeof _fix === "undefined") {
+  if (typeof _fix === 'undefined') {
     _fix = 0;
   }
 
   var result = _num.toString();
 
   switch (_lan) {
-    case "en":
+    case 'en':
       result = translateNumberT(_num, _fix);
       break;
 
-    case "ja":
+    case 'ja':
       result = translateNumberF(_num, _fix);
       break;
 
-    case "ko":
+    case 'ko':
       result = translateNumberK(_num, _fix);
       break;
 
-    case "zh":
+    case 'zh':
       result = translateNumberF(_num, _fix);
       break;
 
-    case "ru":
+    case 'ru':
       result = translateNumberT(_num, _fix);
       break;
   }
@@ -532,16 +532,16 @@ var getUnitNumber = function getUnitNumber(_num, _lan, _fix) {
 }; //韩文
 
 var translateNumberK = function translateNumberK(_num, _fix) {
-  if (typeof _fix === "undefined") {
+  if (typeof _fix === 'undefined') {
     _fix = 0;
   }
 
-  var num = new _bigNumber(_num).toFixed().split(".");
-  var nIARR = num[0].split("");
+  var num = new _bigNumber(_num).toFixed().split('.');
+  var nIARR = num[0].split('');
   var nFARR = [];
 
-  if (typeof num[1] !== "undefined") {
-    nFARR = num[1].split("");
+  if (typeof num[1] !== 'undefined') {
+    nFARR = num[1].split('');
   }
   /**
    * 万 = 10000
@@ -554,37 +554,37 @@ var translateNumberK = function translateNumberK(_num, _fix) {
   if (nIARR.length >= 13) {
     var _num2 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(12).toFixed()).toFixed(_fix, 1);
 
-    return _num2 + "조";
+    return _num2 + '조';
   } //亿 = 100000000
 
 
   if (nIARR.length >= 9) {
     var _num3 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(8).toFixed()).toFixed(_fix, 1);
 
-    return _num3 + "억";
+    return _num3 + '억';
   } //万 = 10000
 
 
   if (nIARR.length >= 5) {
     var _num4 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(4).toFixed()).toFixed(_fix, 1);
 
-    return _num4 + "만";
+    return _num4 + '만';
   }
 
   return new _bigNumber(_num).toFixed(_fix);
 }; //中文
 
 var translateNumberF = function translateNumberF(_num, _fix) {
-  if (typeof _fix === "undefined") {
+  if (typeof _fix === 'undefined') {
     _fix = 0;
   }
 
-  var num = new _bigNumber(_num).toFixed().split(".");
-  var nIARR = num[0].split("");
+  var num = new _bigNumber(_num).toFixed().split('.');
+  var nIARR = num[0].split('');
   var nFARR = [];
 
-  if (typeof num[1] !== "undefined") {
-    nFARR = num[1].split("");
+  if (typeof num[1] !== 'undefined') {
+    nFARR = num[1].split('');
   }
   /**
    * 百 = 100
@@ -601,51 +601,51 @@ var translateNumberF = function translateNumberF(_num, _fix) {
   if (nIARR.length >= 13) {
     var _num5 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(12).toFixed()).toFixed(_fix, 1);
 
-    return _num5 + "兆";
+    return _num5 + '兆';
   } //亿 = 100000000
 
 
   if (nIARR.length >= 9) {
     var _num6 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(8).toFixed()).toFixed(_fix, 1);
 
-    return _num6 + "亿";
+    return _num6 + '亿';
   } //千万 = 10000000
 
 
   if (nIARR.length >= 8) {
     var _num7 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(7).toFixed()).toFixed(_fix, 1);
 
-    return _num7 + "千萬";
+    return _num7 + '千萬';
   } //百万 = 1000000
 
 
   if (nIARR.length >= 7) {
     var _num8 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(6).toFixed()).toFixed(_fix, 1);
 
-    return _num8 + "百萬";
+    return _num8 + '百萬';
   } //万 = 10000
 
 
   if (nIARR.length >= 5) {
     var _num9 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(4).toFixed()).toFixed(_fix, 1);
 
-    return _num9 + "萬";
+    return _num9 + '萬';
   }
 
   return new _bigNumber(_num).toFixed(_fix);
 }; //换算单位英文
 
 var translateNumberT = function translateNumberT(_num, _fix) {
-  if (typeof _fix === "undefined") {
+  if (typeof _fix === 'undefined') {
     _fix = 0;
   }
 
-  var num = new _bigNumber(_num).toFixed().split(".");
-  var nIARR = num[0].split("");
+  var num = new _bigNumber(_num).toFixed().split('.');
+  var nIARR = num[0].split('');
   var nFARR = [];
 
-  if (typeof num[1] !== "undefined") {
-    nFARR = num[1].split("");
+  if (typeof num[1] !== 'undefined') {
+    nFARR = num[1].split('');
   }
   /**
    * k = 1000
@@ -659,28 +659,28 @@ var translateNumberT = function translateNumberT(_num, _fix) {
   if (nIARR.length >= 11) {
     var _num10 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(10).toFixed()).toFixed(_fix, 1);
 
-    return _num10 + "T";
+    return _num10 + 'T';
   } //b = 1000000000
 
 
   if (nIARR.length >= 10) {
     var _num11 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(9).toFixed()).toFixed(_fix, 1);
 
-    return _num11 + "B";
+    return _num11 + 'B';
   } //m = 1000000
 
 
   if (nIARR.length >= 7) {
     var _num12 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(6).toFixed()).toFixed(_fix, 1);
 
-    return _num12 + "M";
+    return _num12 + 'M';
   } //k = 1000
 
 
   if (nIARR.length >= 4) {
     var _num13 = new _bigNumber(_num).dividedBy(new _bigNumber(10).exponentiatedBy(3).toFixed()).toFixed(_fix, 1);
 
-    return _num13 + "K";
+    return _num13 + 'K';
   }
 
   return new _bigNumber(_num).toFixed(_fix);
@@ -709,6 +709,17 @@ var countSelectedElements = function countSelectedElements(length, step) {
 
 var getLength = function getLength(p1, p2) {
   return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+}; //获得一个gui ID
+
+var newGuid = function newGuid() {
+  var guid = '';
+
+  for (var i = 1; i <= 32; i++) {
+    var n = Math.floor(Math.random() * 32.0).toString(32);
+    guid += n;
+  }
+
+  return guid;
 };
 
 /**
@@ -5492,7 +5503,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       isMounted = _useState2[0],
       setIsMounted = _useState2[1];
 
-  var _useState3 = React.useState(""),
+  var _useState3 = React.useState(''),
       setcurrentTimeTypeName = _useState3[1];
 
   var _useState4 = React.useState(0),
@@ -5528,106 +5539,113 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       workMessage = _useState11[0];
 
   var _useState12 = React.useState([]);
+ //全量更新的时候才会更新这个guid,这个guid是用来判断每个candle是否需要进行重新计算的标志
+  //每次全量更新会更新一次，每次都不太一样。
+
+
+  var _useState13 = React.useState(''),
+      currentGUIDUpdateTag = _useState13[0],
+      setcurrentGUIDUpdateTag = _useState13[1];
   /**
    * 动态数据暂存处
    */
 
 
-  var _useState13 = React.useState(null),
-      TempDynamicData = _useState13[0],
-      setTempDynamicData = _useState13[1];
+  var _useState14 = React.useState(null),
+      TempDynamicData = _useState14[0],
+      setTempDynamicData = _useState14[1];
 
-  var _useState14 = React.useState(false),
-      isFirstTimeUpdate = _useState14[0],
-      setisFirstTimeUpdate = _useState14[1];
+  var _useState15 = React.useState(false),
+      isFirstTimeUpdate = _useState15[0],
+      setisFirstTimeUpdate = _useState15[1];
   /**
    * 是否已完成初始化
    */
 
 
-  var _useState15 = React.useState(false),
-      isFinishedInit = _useState15[0],
-      setisFinishedInit = _useState15[1];
-
   var _useState16 = React.useState(false),
-      isDQuickUpdateing = _useState16[0],
-      setisDQuickUpdateing = _useState16[1];
+      isFinishedInit = _useState16[0],
+      setisFinishedInit = _useState16[1];
 
-  var _useState17 = React.useState(null),
-      cursorCandleItem = _useState17[0],
-      setCursorCandleItem = _useState17[1];
+  var _useState17 = React.useState(false),
+      isDQuickUpdateing = _useState17[0],
+      setisDQuickUpdateing = _useState17[1];
 
   var _useState18 = React.useState(null),
-      latestCandleItem = _useState18[0],
-      setlatestCandleItem = _useState18[1];
+      cursorCandleItem = _useState18[0],
+      setCursorCandleItem = _useState18[1];
+
+  var _useState19 = React.useState(null),
+      latestCandleItem = _useState19[0],
+      setlatestCandleItem = _useState19[1];
   /**
    * 上次更新的X轴时间戳
    */
 
 
-  var _useState19 = React.useState(798);
+  var _useState20 = React.useState(798);
   /**
    * volume 数据图表的高度
    */
 
 
-  var _useState20 = React.useState(0),
-      volumChartPixHeight = _useState20[0],
-      setvolumChartPixHeight = _useState20[1];
+  var _useState21 = React.useState(0),
+      volumChartPixHeight = _useState21[0],
+      setvolumChartPixHeight = _useState21[1];
   /**
    * volume 数据图表 当前视窗区域的最大值
    */
 
 
-  var _useState21 = React.useState(0),
-      volumChartViewMax = _useState21[0],
-      setvolumChartViewMax = _useState21[1];
+  var _useState22 = React.useState(0),
+      volumChartViewMax = _useState22[0],
+      setvolumChartViewMax = _useState22[1];
   /**
    * 是否为静态数据模式
    */
 
 
-  var _useState22 = React.useState(false),
-      isStaticData = _useState22[0],
-      setisStaticData = _useState22[1];
+  var _useState23 = React.useState(false),
+      isStaticData = _useState23[0],
+      setisStaticData = _useState23[1];
   /**
    * 所有的candle数据（原始数据，未经过加工）
    */
 
 
-  var _useState23 = React.useState([]),
-      orgCandleData = _useState23[0],
-      setorgCandleData = _useState23[1];
+  var _useState24 = React.useState([]),
+      orgCandleData = _useState24[0],
+      setorgCandleData = _useState24[1];
   /**
    * 用于显示的candle数据(经过加工和归并之后的数据 )
    */
 
 
-  var _useState24 = React.useState([]),
-      displayCandleData = _useState24[0],
-      setdisplayCandleData = _useState24[1];
+  var _useState25 = React.useState([]),
+      displayCandleData = _useState25[0],
+      setdisplayCandleData = _useState25[1];
   /**
    * 记录当前视窗内y轴数据的最大值和最小值
    */
 
 
-  var _useState25 = React.useState({
-    start: "0",
-    end: "0"
-  }),
-      displayCandleMaxMin = _useState25[0],
-      setdisplayCandleMaxMin = _useState25[1];
-
   var _useState26 = React.useState({
-    start: "0",
-    end: "0"
+    start: '0',
+    end: '0'
   }),
-      org_displayCandleMaxMin = _useState26[0],
-      setorg_displayCandleMaxMin = _useState26[1];
+      displayCandleMaxMin = _useState26[0],
+      setdisplayCandleMaxMin = _useState26[1];
 
-  var _useState27 = React.useState(1),
-      yScale = _useState27[0],
-      setyScale = _useState27[1];
+  var _useState27 = React.useState({
+    start: '0',
+    end: '0'
+  }),
+      org_displayCandleMaxMin = _useState27[0],
+      setorg_displayCandleMaxMin = _useState27[1];
+
+  var _useState28 = React.useState(1),
+      yScale = _useState28[0],
+      setyScale = _useState28[1];
   /**
    * latestCandle
    * 最新的candle
@@ -5635,51 +5653,51 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
    */
 
 
-  var _useState28 = React.useState();
-
-  var _useState29 = React.useState(null),
-      latestCandleToolTip = _useState29[0],
-      setlatestCandleToolTip = _useState29[1];
+  var _useState29 = React.useState();
 
   var _useState30 = React.useState(null),
-      latestVolumeToolTip = _useState30[0],
-      setlatestVolumeToolTip = _useState30[1];
+      latestCandleToolTip = _useState30[0],
+      setlatestCandleToolTip = _useState30[1];
+
+  var _useState31 = React.useState(null),
+      latestVolumeToolTip = _useState31[0],
+      setlatestVolumeToolTip = _useState31[1];
   /**
    * 视图范围内最末尾的candle
    * 最新的candle
    */
 
 
-  var _useState31 = React.useState(null),
-      displayLatestCandle = _useState31[0],
-      setdisplayLatestCandle = _useState31[1];
-
   var _useState32 = React.useState(null),
-      latestdisplayLatestCandle = _useState32[0],
-      setlatestdisplayLatestCandle = _useState32[1];
+      displayLatestCandle = _useState32[0],
+      setdisplayLatestCandle = _useState32[1];
 
   var _useState33 = React.useState(null),
-      latestdisplayLatestVolume = _useState33[0],
-      setlatestdisplayLatestVolume = _useState33[1];
+      latestdisplayLatestCandle = _useState33[0],
+      setlatestdisplayLatestCandle = _useState33[1];
+
+  var _useState34 = React.useState(null),
+      latestdisplayLatestVolume = _useState34[0],
+      setlatestdisplayLatestVolume = _useState34[1];
   /**
    * view的全量尺寸
    */
 
 
-  var _useState34 = React.useState({
+  var _useState35 = React.useState({
     width: 0,
     height: 0
   }),
-      viewSize = _useState34[0],
-      setviewSize = _useState34[1];
-
-  var _useState35 = React.useState(-1),
-      updateStamp = _useState35[0],
-      setupdateStamp = _useState35[1];
+      viewSize = _useState35[0],
+      setviewSize = _useState35[1];
 
   var _useState36 = React.useState(-1),
-      initDyStamp = _useState36[0],
-      setinitDyStamp = _useState36[1];
+      updateStamp = _useState36[0],
+      setupdateStamp = _useState36[1];
+
+  var _useState37 = React.useState(-1),
+      initDyStamp = _useState37[0],
+      setinitDyStamp = _useState37[1];
   /**
    * ==================================Ref===============================
    */
@@ -5710,19 +5728,19 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
   var determineTimeSpaceConsistent = function determineTimeSpaceConsistent(data) {
     if (data.length === 1) {
-      return "smaller";
+      return 'smaller';
     }
 
     var inputDataTimeSpace = getRightDate(data[1].time) - getRightDate(data[0].time);
     var configDataTimeSpace = xAxis.data.currentTimeType.timeGap;
 
     if (inputDataTimeSpace === configDataTimeSpace) {
-      return "same";
+      return 'same';
     } else if (inputDataTimeSpace > configDataTimeSpace) {
-      return "bigger";
+      return 'bigger';
     }
 
-    return "smaller";
+    return 'smaller';
   };
 
   var getMin = function getMin(item, start) {
@@ -5796,12 +5814,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       /**
        * 最低点
        * */
-      start: "9999999999999999999999",
+      start: '9999999999999999999999',
 
       /**
        * 最高点
        * */
-      end: "-9999999999999999999999"
+      end: '-9999999999999999999999'
     };
 
     for (var i = data.length - 1; i > -1; i--) {
@@ -5809,7 +5827,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       var time = xAxis.data.currentTimeType.roundingFunction(getRightDate(item.time), baseConfig.timeZone.displayTimeZone);
 
       if (_currentCandleStick.time === -1 || time !== _currentCandleStick.time) {
-        if (time !== _currentCandleStick.time && _currentCandleStick.time !== -1 && typeof allComputedCandleData.current[_currentCandleStick.time] === "undefined") {
+        if (time !== _currentCandleStick.time && _currentCandleStick.time !== -1 && typeof allComputedCandleData.current[_currentCandleStick.time] === 'undefined') {
           allComputedCandleData.current[_currentCandleStick.time] = _currentCandleStick; //result.push(_currentCandleStick);
         }
 
@@ -5817,8 +5835,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           time: time,
           open: -1,
           close: -1,
-          high: "-9999999999999999999999",
-          low: "9999999999999999999999",
+          high: '-9999999999999999999999',
+          low: '9999999999999999999999',
           volume: 0
         };
       }
@@ -5860,18 +5878,18 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       /**
        * 最低点
        * */
-      start: "9999999999999999999999",
+      start: '9999999999999999999999',
 
       /**
        * 最高点
        * */
-      end: "-9999999999999999999999"
+      end: '-9999999999999999999999'
     };
 
     for (var _iterator = _createForOfIteratorHelperLoose(data), _step; !(_step = _iterator()).done;) {
       var item = _step.value;
 
-      if (typeof allComputedCandleData.current[item.time] === "undefined") {
+      if (typeof allComputedCandleData.current[item.time] === 'undefined') {
         _displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
         _displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
         allComputedCandleData.current[item.time] = _extends({}, item);
@@ -5883,24 +5901,24 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
   var getCandleColor = function getCandleColor(start, end, type) {
     if (Number(start) > Number(end)) {
-      if (type === "wick") return initArgs.candleStyles.wickFallColor;
-      if (type === "candle") return initArgs.candleStyles.candleFallColor;
+      if (type === 'wick') return initArgs.candleStyles.wickFallColor;
+      if (type === 'candle') return initArgs.candleStyles.candleFallColor;
     }
 
-    if (type === "wick") return initArgs.candleStyles.wickRiseColor;
-    if (type === "candle") return initArgs.candleStyles.candleRiseColor;
-    return "#fff";
+    if (type === 'wick') return initArgs.candleStyles.wickRiseColor;
+    if (type === 'candle') return initArgs.candleStyles.candleRiseColor;
+    return '#fff';
   };
 
   var getCandleStatus = function getCandleStatus(start, end, type) {
     if (Number(start) > Number(end)) {
-      if (type === "wick") return "fall";
-      if (type === "candle") return "fall";
+      if (type === 'wick') return 'fall';
+      if (type === 'candle') return 'fall';
     }
 
-    if (type === "wick") return "rise";
-    if (type === "candle") return "rise";
-    return "rise";
+    if (type === 'wick') return 'rise';
+    if (type === 'candle') return 'rise';
+    return 'rise';
   };
 
   var getDataSpaceFromNumberScope = function getDataSpaceFromNumberScope(dataScope, start, end) {
@@ -5921,14 +5939,18 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
   var computSingalCandledata = function computSingalCandledata( //进行计算的项目
   dataitem, //扩展后的范围（数据）
-  dataScope, //未扩展的范围（数据）
-  orgScope) {
-    dataitem.candleColor = getCandleColor(dataitem.open, dataitem.close, "candle");
-    dataitem.wickColor = getCandleColor(dataitem.open, dataitem.close, "wick");
-    dataitem.candleStateus = getCandleStatus(dataitem.open, dataitem.close, "candle");
-    dataitem.wickStateus = getCandleStatus(dataitem.open, dataitem.close, "wick"); //快速渲染
+  dataScope, //是否强制全量渲染
+  isForceAllDataConput) {
+    if (isForceAllDataConput === void 0) {
+      isForceAllDataConput = false;
+    }
 
-    if (isQuickUpdateing.current == true) {
+    dataitem.candleColor = getCandleColor(dataitem.open, dataitem.close, 'candle');
+    dataitem.wickColor = getCandleColor(dataitem.open, dataitem.close, 'wick');
+    dataitem.candleStateus = getCandleStatus(dataitem.open, dataitem.close, 'candle');
+    dataitem.wickStateus = getCandleStatus(dataitem.open, dataitem.close, 'wick'); //快速渲染
+
+    if (isQuickUpdateing.current == true && isForceAllDataConput === false) {
       dataitem.wickWidth = 1.2;
       dataitem.candlePixPosition = {
         x: 0,
@@ -5970,14 +5992,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       }
     } catch (_e) {}
 
-    dataitem.updateTag = orgScope.start + orgScope.end;
     return dataitem;
   }; //用y轴数据计算单个指标的各种属性
 
 
   var computSingalCandledataMini = function computSingalCandledataMini( //candle项目
-  dataitem, //未扩展的范围（数据）
-  orgScope) {
+  dataitem) {
     try {
       //顺便计算单个tick的数据空间是否在最左边边缘
       //记录视图范围内最末尾的candle
@@ -6000,19 +6020,19 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       /**
        * 最低点
        * */
-      start: "9999999999999999999999",
+      start: '9999999999999999999999',
 
       /**
        * 最高点
        * */
-      end: "-9999999999999999999999"
+      end: '-9999999999999999999999'
     };
     var maxVolume = -99999999999999;
 
     for (var inde_i = 0; inde_i < tickArr.length; inde_i++) {
       var item = tickArr[inde_i];
 
-      if (typeof allComputedCandleData.current[item.value] !== "undefined") {
+      if (typeof allComputedCandleData.current[item.value] !== 'undefined') {
         var dataitem = allComputedCandleData.current[item.value];
         dataitem.currentTick = item;
         _displayCandleMaxMin.start = getMin(dataitem, Number(_displayCandleMaxMin.start)).toString();
@@ -6039,7 +6059,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       var item = _step2.value;
 
       //如果填写的是"本地时间"，就不做任何操作
-      if (baseConfig.timeZone.dataSourceTimeZone === "local") {
+      if (baseConfig.timeZone.dataSourceTimeZone === 'local') {
         item.time = getRightDate(item.time);
       } else {
         //否则，先把时间按照用户设置的归零，然后再设置到显示时间
@@ -6079,12 +6099,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               setvolumChartPixHeight(0);
               setvolumChartViewMax(0);
               setdisplayCandleMaxMin({
-                start: "0",
-                end: "0"
+                start: '0',
+                end: '0'
               });
               setorg_displayCandleMaxMin({
-                start: "0",
-                end: "0"
+                start: '0',
+                end: '0'
               });
               setlatestCandleToolTip(null);
               setlatestVolumeToolTip(null);
@@ -6107,7 +6127,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               _timeInteger = xAxis.data.currentTimeType.roundingFunction(endTime, 0);
               timeZoneD = 0;
 
-              if (baseConfig.timeZone.displayTimeZone === "local") {
+              if (baseConfig.timeZone.displayTimeZone === 'local') {
                 date = new Date();
                 localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
                 timeZoneD = localtimeZone;
@@ -6178,7 +6198,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               startTime = xAxis.data.currentTimeType.backwardTimeUnit(endTime, initArgs.dynamicData.dataFetchCountPreTime, 0);
               timeZoneD = 0;
 
-              if (baseConfig.timeZone.displayTimeZone === "local") {
+              if (baseConfig.timeZone.displayTimeZone === 'local') {
                 date = new Date();
                 localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
                 timeZoneD = localtimeZone;
@@ -6196,7 +6216,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
             case 10:
               result = _context2.sent;
 
-              if (!(typeof result === "undefined" || result === null)) {
+              if (!(typeof result === 'undefined' || result === null)) {
                 _context2.next = 14;
                 break;
               }
@@ -6261,14 +6281,14 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     var isConsistentOfDateType = determineTimeSpaceConsistent(data); //大了就没办法了，直接return
 
-    if (isConsistentOfDateType === "bigger") {
-      console.log("The time interval of the data is inconsistent with the given configured time interval!");
+    if (isConsistentOfDateType === 'bigger') {
+      console.log('The time interval of the data is inconsistent with the given configured time interval!');
       return;
     } //将新数据加入到当前现有的数据里去
     //小了的话就按照配置的时间类型进行归并
 
 
-    if (isConsistentOfDateType === "smaller") {
+    if (isConsistentOfDateType === 'smaller') {
       mergeData(_data);
     } else {
       //如果是一致的，就直接将这些数据放进堆里
@@ -6307,17 +6327,17 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     var isConsistentOfDateType = determineTimeSpaceConsistent(_orgCandleData); //大了就没办法了，直接return
 
-    if (isConsistentOfDateType === "bigger") {
-      console.log("The time interval of the data is inconsistent with the given configured time interval!");
+    if (isConsistentOfDateType === 'bigger') {
+      console.log('The time interval of the data is inconsistent with the given configured time interval!');
       return;
     }
 
     var dataScope = {
-      start: "500",
-      end: "700"
+      start: '500',
+      end: '700'
     }; //小了的话就按照配置的时间类型进行归并
 
-    if (isConsistentOfDateType === "smaller") {
+    if (isConsistentOfDateType === 'smaller') {
       dataScope = mergeData(_orgCandleData);
     } else {
       //如果是一致的，就直接将这些数据放进堆里
@@ -6330,7 +6350,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     for (var _iterator3 = _createForOfIteratorHelperLoose(result.data), _step3; !(_step3 = _iterator3()).done;) {
       var item = _step3.value;
-      item = computSingalCandledata(item, result.scope, result.scope);
+      item = computSingalCandledata(item, result.scope);
     }
 
     dataScope = result.scope; //计算volum图的像素高度
@@ -6389,7 +6409,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     }); //上次缩放或重置后使用的最大值最小值(数据范围，不是像素 )
     //而且是未经扩展过的数据范围（素）的
 
-    var currentTag = _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
     var orgMaxMiny = {
       //start 找 y+length 最大的
       start: -9999999999999999,
@@ -6410,8 +6429,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
           //这样的元素就需要重新进行计算，
           //否则就不需要进行计算
-          if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
-            item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
+          if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag) {
+            item = computSingalCandledata(item, _org_displayCandleMaxMin);
+            item.updateTag = currentGUIDUpdateTag;
           } else {
             computSingalCandledataMini(item);
           }
@@ -6427,8 +6447,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
         //这样的元素就需要重新进行计算，
         //否则就不需要进行计算
-        if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
-          item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
+        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag) {
+          item = computSingalCandledata(item, _org_displayCandleMaxMin);
+          item.updateTag = currentGUIDUpdateTag;
         } else {
           computSingalCandledataMini(item);
         }
@@ -6490,15 +6511,15 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     }
   };
   /*
-  第三版结合所有优点根据情况决定是计算还是更新
-  */
+    第三版结合所有优点根据情况决定是计算还是更新
+    */
 
 
   var updatePartialCandleDataV3 = function updatePartialCandleDataV3() {
     var onlyUpdatePositionAndScale = function onlyUpdatePositionAndScale(_cArr) {
       var isFromAppend = false;
 
-      if (typeof _cArr === "undefined") {
+      if (typeof _cArr === 'undefined') {
         _cArr = [].concat(displayCandleData);
         _cArr = _cArr.sort(function (a, b) {
           return Number(a.time) - Number(b.time);
@@ -6512,13 +6533,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       }
 
       var barr = [];
-      /* if (_LastScopeddcData.length !== 0) {
-          barr = _LastScopeddcData;
-      } else { */
-
       barr = _cArr;
-      /* } */
-
       var currentScopeDisplayCandleData = findIntersectionCandle(barr, xAxis.data.currentTimeScope);
 
       if (isFromAppend) {
@@ -6537,12 +6552,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         /**
          * 最低点
          * */
-        start: "9999999999999999999999",
+        start: '9999999999999999999999',
 
         /**
          * 最高点
          * */
-        end: "-9999999999999999999999"
+        end: '-9999999999999999999999'
       };
       var maxVolume = -99999999999999;
       var i = 0;
@@ -6634,10 +6649,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       if (xAxis.data.tickArr[0].value !== _totalCandleDisplayArr[0].time) {
         var index = 0;
 
-        while (typeof xAxis.data.tickArr[index] !== "undefined" && xAxis.data.tickArr[index].value < _totalCandleDisplayArr[0].time) {
+        while (typeof xAxis.data.tickArr[index] !== 'undefined' && xAxis.data.tickArr[index].value < _totalCandleDisplayArr[0].time) {
           var _item2 = allComputedCandleData.current[xAxis.data.tickArr[index].value];
 
-          if (typeof _item2 !== "undefined") {
+          if (typeof _item2 !== 'undefined') {
             _item2.currentTick = xAxis.data.tickArr[index];
             backwardDCArr.push(_item2);
           }
@@ -6651,10 +6666,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       if (xAxis.data.tickArr[xAxis.data.tickArr.length - 1].value !== _totalCandleDisplayArr[_totalCandleDisplayArr.length - 1].time) {
         var _index = xAxis.data.tickArr.length - 1;
 
-        while (typeof xAxis.data.tickArr[_index] !== "undefined" && xAxis.data.tickArr[_index].value > _totalCandleDisplayArr[_totalCandleDisplayArr.length - 1].time) {
+        while (typeof xAxis.data.tickArr[_index] !== 'undefined' && xAxis.data.tickArr[_index].value > _totalCandleDisplayArr[_totalCandleDisplayArr.length - 1].time) {
           var _item3 = allComputedCandleData.current[xAxis.data.tickArr[_index].value];
 
-          if (typeof _item3 !== "undefined") {
+          if (typeof _item3 !== 'undefined') {
             _item3.currentTick = xAxis.data.tickArr[_index];
             forwardDCArr.unshift(_item3);
           }
@@ -6670,13 +6685,13 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       var currentScopeDisplayCandleData = findIntersectionCandle(_displayCandleData, xAxis.data.currentTimeScope); //计算当前屏幕上显示的数据，没显示在屏幕范围的不参与计算
 
       var _org_displayCandleMaxMin = org_displayCandleMaxMin;
-      var currentTag = _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
 
       for (var _iterator5 = _createForOfIteratorHelperLoose(currentScopeDisplayCandleData), _step5; !(_step5 = _iterator5()).done;) {
         var item = _step5.value;
 
-        if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
-          item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
+        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag) {
+          item = computSingalCandledata(item, _org_displayCandleMaxMin);
+          item.updateTag = currentGUIDUpdateTag;
         } else {
           computSingalCandledataMini(item);
         }
@@ -6744,114 +6759,114 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   //2.使用推进法扩展candle
 
   /* const updatePartialCandleDataV2 = function () {
-      let _cArr = [...displayCandleData];
-      let lastDisplayCandleData = findIntersectionCandle(_cArr, xAxis.data.currentTimeScope);
-        let backwardDCArr: IcandleData[] = [];
-      //判断是前面少了还是后面少了
-      if (xAxis.data.tickArr[0].value !== lastDisplayCandleData[0].time) {
-          let index = 0;
-          while (xAxis.data.tickArr[index].value < lastDisplayCandleData[0].time) {
-              let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
-              if (typeof item !== "undefined") {
-                  item.currentTick = xAxis.data.tickArr[index];
-                  backwardDCArr.push(item);
-              }
-              index++;
-          }
-      }
-        let forwardDCArr: IcandleData[] = [];
-      if (
-          xAxis.data.tickArr[xAxis.data.tickArr.length - 1].value !==
-          lastDisplayCandleData[lastDisplayCandleData.length - 1].time
-      ) {
-          let index = xAxis.data.tickArr.length - 1;
-          while (xAxis.data.tickArr[index].value > lastDisplayCandleData[lastDisplayCandleData.length - 1].time) {
-              let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
-              if (typeof item !== "undefined") {
-                  item.currentTick = xAxis.data.tickArr[index];
-                  forwardDCArr.unshift(item);
-              }
-              index--;
-          }
-      }
-        if (backwardDCArr.length === 0 && forwardDCArr.length === 0) {
-          return;
-      }
-      //上次缩放或重置后使用的最大值最小值(数据范围，不是像素 )
-      //而且是未经扩展过的数据范围（素）的
-      let _org_displayCandleMaxMin = org_displayCandleMaxMin;
-      let currentTag = _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
-        //继承上一次的结果，并从这次的新结果里查找最大的y和最小的y
-      let orgMaxMiny: numberScope = { ...lastMaxMiny };
-      //继承上一次的
-      let _displayCandleMaxMin: numberScopeString = { ...displayCandleMaxMin };
-        ///计算新选出来的displaycandle项目
-      let comp = function (arrayCD: IcandleData[]): IcandleData[] {
-          //进行数据计算
-          let index = 0;
-          isEscapeItems.current = false;
-          for (var item of arrayCD) {
-              //如果已经打开了省略模式
-                //全部进行全量计算
-              //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
-              //这样的元素就需要重新进行计算，
-              //否则就不需要进行计算
-              if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
-                  item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
-              } else {
-                  computSingalCandledataMini(item, _org_displayCandleMaxMin);
-              }
-              item.isEscaped = false;
-                if (isQuickUpdateing.current) {
-                  if (Number(item.wickPixPosition?.y) + Number(item.wickLength) > orgMaxMiny.start) {
-                      //求（像素）y最大值
-                      orgMaxMiny.start = Number(item.wickPixPosition?.y) + Number(item.wickLength);
-                  }
-                  //求（像素）y最小值
-                  if (Number(item.wickPixPosition?.y) < orgMaxMiny.end) {
-                      orgMaxMiny.end = Number(item.wickPixPosition?.y);
-                  }
-              } else {
-                  if (
-                      Math.max(
-                          Number(item.candlePixPosition?.y) + Number(item.candleLength),
-                          Number(item.wickPixPosition?.y) + Number(item.wickLength)
-                      ) > orgMaxMiny.start
-                  ) {
-                      //求（像素）y最大值
-                      orgMaxMiny.start = Math.max(
-                          Number(item.candlePixPosition?.y) + Number(item.candleLength),
-                          Number(item.wickPixPosition?.y) + Number(item.wickLength)
-                      );
-                  }
-                  //求（像素）y最小值
-                  if (Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y)) < orgMaxMiny.end) {
-                      orgMaxMiny.end = Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y));
-                  }
-              }
-                _displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
-              _displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
+        let _cArr = [...displayCandleData];
+        let lastDisplayCandleData = findIntersectionCandle(_cArr, xAxis.data.currentTimeScope);
+            let backwardDCArr: IcandleData[] = [];
+        //判断是前面少了还是后面少了
+        if (xAxis.data.tickArr[0].value !== lastDisplayCandleData[0].time) {
+            let index = 0;
+            while (xAxis.data.tickArr[index].value < lastDisplayCandleData[0].time) {
+                let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
+                if (typeof item !== "undefined") {
+                    item.currentTick = xAxis.data.tickArr[index];
+                    backwardDCArr.push(item);
+                }
                 index++;
-          }
-          return arrayCD;
-      };
-        let _displayCandleData = comp(backwardDCArr).concat(lastDisplayCandleData).concat(comp(forwardDCArr));
-        let currentheight = orgMaxMiny.start - orgMaxMiny.end;
-      let expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding!;
-      let scale = yAxis.data.lineSize.height / expendHeight;
-      let y = -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
-        setdisplayCandleData(_displayCandleData);
-        setdisplayCandleMaxMin(() => {
-          return _displayCandleMaxMin;
-      });
-        if (_displayCandleData.length !== 0) {
-          setminy(y * scale);
-          setyScale(scale);
-          checkDynamicData(_displayCandleData);
-          setupdateStamp(+new Date());
-          setlastMaxMiny(orgMaxMiny);
-      }
-  }; */
+            }
+        }
+            let forwardDCArr: IcandleData[] = [];
+        if (
+            xAxis.data.tickArr[xAxis.data.tickArr.length - 1].value !==
+            lastDisplayCandleData[lastDisplayCandleData.length - 1].time
+        ) {
+            let index = xAxis.data.tickArr.length - 1;
+            while (xAxis.data.tickArr[index].value > lastDisplayCandleData[lastDisplayCandleData.length - 1].time) {
+                let item = allComputedCandleData.current[xAxis.data.tickArr[index].value] as unknown as IcandleData;
+                if (typeof item !== "undefined") {
+                    item.currentTick = xAxis.data.tickArr[index];
+                    forwardDCArr.unshift(item);
+                }
+                index--;
+            }
+        }
+            if (backwardDCArr.length === 0 && forwardDCArr.length === 0) {
+            return;
+        }
+        //上次缩放或重置后使用的最大值最小值(数据范围，不是像素 )
+        //而且是未经扩展过的数据范围（素）的
+        let _org_displayCandleMaxMin = org_displayCandleMaxMin;
+        let currentTag = _org_displayCandleMaxMin.start + _org_displayCandleMaxMin.end;
+            //继承上一次的结果，并从这次的新结果里查找最大的y和最小的y
+        let orgMaxMiny: numberScope = { ...lastMaxMiny };
+        //继承上一次的
+        let _displayCandleMaxMin: numberScopeString = { ...displayCandleMaxMin };
+            ///计算新选出来的displaycandle项目
+        let comp = function (arrayCD: IcandleData[]): IcandleData[] {
+            //进行数据计算
+            let index = 0;
+            isEscapeItems.current = false;
+            for (var item of arrayCD) {
+                //如果已经打开了省略模式
+                    //全部进行全量计算
+                //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
+                //这样的元素就需要重新进行计算，
+                //否则就不需要进行计算
+                if (typeof item.updateTag === "undefined" || item.updateTag !== currentTag) {
+                    item = computSingalCandledata(item, _org_displayCandleMaxMin, _org_displayCandleMaxMin);
+                } else {
+                    computSingalCandledataMini(item, _org_displayCandleMaxMin);
+                }
+                item.isEscaped = false;
+                    if (isQuickUpdateing.current) {
+                    if (Number(item.wickPixPosition?.y) + Number(item.wickLength) > orgMaxMiny.start) {
+                        //求（像素）y最大值
+                        orgMaxMiny.start = Number(item.wickPixPosition?.y) + Number(item.wickLength);
+                    }
+                    //求（像素）y最小值
+                    if (Number(item.wickPixPosition?.y) < orgMaxMiny.end) {
+                        orgMaxMiny.end = Number(item.wickPixPosition?.y);
+                    }
+                } else {
+                    if (
+                        Math.max(
+                            Number(item.candlePixPosition?.y) + Number(item.candleLength),
+                            Number(item.wickPixPosition?.y) + Number(item.wickLength)
+                        ) > orgMaxMiny.start
+                    ) {
+                        //求（像素）y最大值
+                        orgMaxMiny.start = Math.max(
+                            Number(item.candlePixPosition?.y) + Number(item.candleLength),
+                            Number(item.wickPixPosition?.y) + Number(item.wickLength)
+                        );
+                    }
+                    //求（像素）y最小值
+                    if (Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y)) < orgMaxMiny.end) {
+                        orgMaxMiny.end = Math.min(Number(item.candlePixPosition?.y), Number(item.wickPixPosition?.y));
+                    }
+                }
+                    _displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
+                _displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
+                    index++;
+            }
+            return arrayCD;
+        };
+            let _displayCandleData = comp(backwardDCArr).concat(lastDisplayCandleData).concat(comp(forwardDCArr));
+            let currentheight = orgMaxMiny.start - orgMaxMiny.end;
+        let expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding!;
+        let scale = yAxis.data.lineSize.height / expendHeight;
+        let y = -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
+            setdisplayCandleData(_displayCandleData);
+            setdisplayCandleMaxMin(() => {
+            return _displayCandleMaxMin;
+        });
+            if (_displayCandleData.length !== 0) {
+            setminy(y * scale);
+            setyScale(scale);
+            checkDynamicData(_displayCandleData);
+            setupdateStamp(+new Date());
+            setlastMaxMiny(orgMaxMiny);
+        }
+    }; */
   //进行全量更新
 
 
@@ -6881,6 +6896,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     //}
 
     var index = 0;
+    var updateTag = newGuid();
 
     for (var _iterator6 = _createForOfIteratorHelperLoose(result.data), _step6; !(_step6 = _iterator6()).done;) {
       var item = _step6.value;
@@ -6889,8 +6905,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       if (isEscapeItems.current) {
         if (Number(index) % 2) {
           //没有被省略的进行全量计算
-          item = computSingalCandledata(item, result.scope, result.scope);
+          item = computSingalCandledata(item, result.scope);
           item.isEscaped = false;
+          item.updateTag = updateTag;
         } else {
           //省略过的只收集数据
           computSingalCandledataMini(item);
@@ -6898,8 +6915,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         }
       } else {
         //全部进行全量计算
-        item = computSingalCandledata(item, result.scope, result.scope);
+        item = computSingalCandledata(item, result.scope);
         item.isEscaped = false;
+        item.updateTag = updateTag;
       }
 
       index++;
@@ -6914,6 +6932,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       setminy(y * scale);
       setyScale(scale);
       setorg_displayCandleMaxMin(result.scope);
+      setcurrentGUIDUpdateTag(updateTag);
       checkDynamicData(result.data);
       setupdateStamp(+new Date());
       setlastMaxMiny({
@@ -6929,7 +6948,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              if (!(typeof data === "undefined")) {
+              if (!(typeof data === 'undefined')) {
                 _context3.next = 2;
                 break;
               }
@@ -6940,7 +6959,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               //如果当前缩放、拖动超过所有内存中数据能显示的范围
               //判断是否为动态数据加载模式
               if (initArgs.dynamicData.enabled && !isStaticData && !stopDynamicFetching) {
-                if (typeof data !== "undefined") {
+                if (typeof data !== 'undefined') {
                   if (Number(data[0].time) - Number(xAxis.data.tickArr[0].value) > 0) {
                     //往下拉取数据
                     lunchDynamicData(Number(data[0].time));
@@ -7056,7 +7075,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         isMergeMode = _streamData.isMergeMode; //将新进来的数据的时间，归零到格林威治时间
 
 
-    if (baseConfig.timeZone.dataSourceTimeZone === "local") {
+    if (baseConfig.timeZone.dataSourceTimeZone === 'local') {
       time = Number(new Date(time).getTime());
     } else {
       time = anyTimeToGMT0000ToTarget(Number(new Date(time).getTime()), baseConfig.timeZone.dataSourceTimeZone, baseConfig.timeZone.displayTimeZone);
@@ -7074,7 +7093,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
     if (currentRoundTime === ((_latestCandleItem2 = _latestCandleItem) == null ? void 0 : _latestCandleItem2.time)) {
       //是否为快速合并模式
-      if (typeof isMergeMode !== "undefined" && isMergeMode === true) {
+      if (typeof isMergeMode !== 'undefined' && isMergeMode === true) {
         _latestCandleItem.close = close;
         _latestCandleItem.high = Math.max(Number(_latestCandleItem.high), Number(close));
         _latestCandleItem.low = Math.min(Number(_latestCandleItem.low), Number(close));
@@ -7092,17 +7111,18 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       for (var i = _displayCandleData.length - 1; i > -1; i--) {
         if (_displayCandleData[i].time === currentRoundTime) {
           _latestCandleItem.currentTick = _displayCandleData[i].currentTick;
-          _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, org_displayCandleMaxMin);
+          _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, true);
+          _latestCandleItem.updateTag = currentGUIDUpdateTag;
           _displayCandleData[i] = _latestCandleItem;
           isChangeDisplayCandleArr = true;
-          _latestCandleItem.updateTag = "0";
+          _latestCandleItem.updateTag = '0';
           break;
         }
       }
     } else if (currentRoundTime > Number((_latestCandleItem3 = _latestCandleItem) == null ? void 0 : _latestCandleItem3.time)) {
       //如果是下一个时间刻度
       //是否为快速合并模式
-      if (typeof isMergeMode !== "undefined" && isMergeMode === true) {
+      if (typeof isMergeMode !== 'undefined' && isMergeMode === true) {
         _latestCandleItem.time = currentRoundTime;
         _latestCandleItem.open = close;
         _latestCandleItem.close = close;
@@ -7116,7 +7136,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         _latestCandleItem.high = high;
         _latestCandleItem.low = low;
         _latestCandleItem.volume = volume;
-        _latestCandleItem.updateTag = "0";
+        _latestCandleItem.updateTag = '0';
       } //查找ticks
 
 
@@ -7129,7 +7149,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         }
       }
 
-      _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, org_displayCandleMaxMin); //在可见范围内更新，不可见就不更新
+      _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, true);
+      _latestCandleItem.updateTag = currentGUIDUpdateTag; //在可见范围内更新，不可见就不更新
 
       if (xAxis.data.currentTimeScope.start <= currentRoundTime && xAxis.data.currentTimeScope.end >= currentRoundTime) {
         _displayCandleData.push(_latestCandleItem);
@@ -7204,17 +7225,17 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         dataItem = latestCandleItem;
       }
 
-      if (typeof dataItem !== "undefined") {
+      if (typeof dataItem !== 'undefined') {
         var _initArgs$candleStyle5;
 
         var copyedItem = _extends({}, dataItem);
 
         var orgScope = _extends({}, displayCandleMaxMin); ////这里的数据是给tooltip计算的
-        ////如果后面不复原的话，会影响搭配lastcandle
 
 
         var edgeScope = yAxis.funcs.expandDataSpanceEdge(orgScope);
-        computSingalCandledata(copyedItem, edgeScope.dataScope, orgScope);
+        computSingalCandledata(copyedItem, edgeScope.dataScope);
+        copyedItem.updateTag = currentGUIDUpdateTag;
         var _tooltipState = {
           position: {
             x: 0,
@@ -7232,9 +7253,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           relatedTickItem: null,
           size: getSpaceSize(initArgs.candleStyles.currentPriceTooltip.lineSize, viewSize.width)
         };
-        setlatestCandleToolTip(_tooltipState); //这里给lastcandle进行复原计算
-        //computSingalCandledata(copyedItem, org_displayCandleMaxMin, org_displayCandleMaxMin);
-
+        setlatestCandleToolTip(_tooltipState);
         setlatestCandleItem(copyedItem);
         var currentHeight = volumChartPixHeight * (Number(copyedItem.volume) / volumChartViewMax);
         var _latestVolumeToolTip = {
@@ -7263,7 +7282,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
       var edgeScope = yAxis.funcs.expandDataSpanceEdge(displayCandleMaxMin);
 
-      var _displayLatestCandle = computSingalCandledata(_extends({}, displayLatestCandle), edgeScope.dataScope, displayCandleMaxMin);
+      var _displayLatestCandle = computSingalCandledata(_extends({}, displayLatestCandle), edgeScope.dataScope, true);
+
+      _displayLatestCandle.updateTag = currentGUIDUpdateTag;
 
       if (_displayLatestCandle.isEscaped === true) {
         return;
@@ -7312,7 +7333,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   };
 
   var getCurrentCursorCandle = function getCurrentCursorCandle() {
-    if (xAxis.data.tooltipIsShow && typeof xAxis.data.tooltipState !== "undefined" && xAxis.data.tooltipState !== null && typeof xAxis.data.tooltipState.relatedTickItem !== "undefined" && xAxis.data.tooltipState.relatedTickItem !== null) {
+    if (xAxis.data.tooltipIsShow && typeof xAxis.data.tooltipState !== 'undefined' && xAxis.data.tooltipState !== null && typeof xAxis.data.tooltipState.relatedTickItem !== 'undefined' && xAxis.data.tooltipState.relatedTickItem !== null) {
       var key = xAxis.data.tooltipState.relatedTickItem.value.toString();
       var item = allComputedCandleData.current[key];
       setCursorCandleItem(item);
@@ -7322,19 +7343,19 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   var workerReciveMessage = function workerReciveMessage(e) {
     var data = e.data;
 
-    if (data.message === "setdisplayLatestCandle") {
+    if (data.message === 'setdisplayLatestCandle') {
       setdisplayLatestCandle(data.data);
       return;
     }
 
-    if (data.message === "not found") {
+    if (data.message === 'not found') {
       //没找到
       setdisplayCandleData([]);
       checkDynamicData();
       return;
     }
 
-    if (data.message === "updateYaxis") {
+    if (data.message === 'updateYaxis') {
       requestAnimationFrame(function () {
         //更新y轴
         yAxis.funcs.updateAxisSates(xAxis.data.viewSize.width, xAxis.data.viewSize.height, {
@@ -7345,7 +7366,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       return;
     }
 
-    if (data.message === "finishWork") {
+    if (data.message === 'finishWork') {
       var currentheight = data.data.orgMaxMiny.start - data.data.orgMaxMiny.end;
       var expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding;
       var scale = yAxis.data.lineSize.height / expendHeight;
@@ -7371,7 +7392,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
 
   React.useEffect(function () {
-    if (typeof workMessage !== "undefined") {
+    if (typeof workMessage !== 'undefined') {
       workerReciveMessage(workMessage);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -7380,7 +7401,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     if (isMounted === false) {
       setIsMounted(true);
 
-      if (typeof initArgs.staticData !== "undefined" && initArgs.staticData.length > 0) {
+      if (typeof initArgs.staticData !== 'undefined' && initArgs.staticData.length > 0) {
         setisStaticData(true);
       } else {
         setisStaticData(false);

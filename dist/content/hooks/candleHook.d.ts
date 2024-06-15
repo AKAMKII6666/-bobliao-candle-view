@@ -1,5 +1,5 @@
-import { IdataConfig, IuseCandleView } from "../interface/configInterFaces";
-import { IAxisobj, IuseCandleHook, IyAxisobj } from "../interface/hooksInterFace";
+import { IdataConfig, IuseCandleView } from '../interface/configInterFaces';
+import { IAxisobj, IuseCandleHook, IyAxisobj } from '../interface/hooksInterFace';
 /**
  * 数据处理钩子
  *
