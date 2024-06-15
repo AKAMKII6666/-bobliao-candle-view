@@ -1010,6 +1010,7 @@ const useCandleHook = function(
   //2.然后循环取出来的列表再循环一次计算位置，
   //3.计算位置的时候判断这个列表里有哪些candle项目已经被计算过计算过的就不算了，没计算过的计算一下
   const updatePartialCandleData = function() {
+    debugger;
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
     let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
@@ -1021,6 +1022,10 @@ const useCandleHook = function(
       data: IcandleData[];
       scope: numberScopeString;
     };
+
+    result.data = result.data.sort(function(a, b) {
+      return getRightDate(a.time) - getRightDate(b.time);
+    });
 
     //result.data 为 和目前x轴tick的交集displaycandles
     //result.scope 为扩展之前的数据范围 真实的数据范围
@@ -1064,7 +1069,8 @@ const useCandleHook = function(
           //否则就不需要进行计算
           if (
             typeof item.updateTag === 'undefined' ||
-            item.updateTag !== currentGUIDUpdateTag
+            item.updateTag !== currentGUIDUpdateTag ||
+            item.time === latestCandleItem.time
           ) {
             item = computSingalCandledata(item, _org_displayCandleMaxMin);
             item.updateTag = currentGUIDUpdateTag;
@@ -1084,7 +1090,8 @@ const useCandleHook = function(
         //否则就不需要进行计算
         if (
           typeof item.updateTag === 'undefined' ||
-          item.updateTag !== currentGUIDUpdateTag
+          item.updateTag !== currentGUIDUpdateTag ||
+          item.time === latestCandleItem.time
         ) {
           item = computSingalCandledata(item, _org_displayCandleMaxMin);
           item.updateTag = currentGUIDUpdateTag;
@@ -1150,11 +1157,11 @@ const useCandleHook = function(
     setyScale(scale);
     setdisplayCandleData(result.data);
     setdisplayCandleMaxMin(result.scope);
+    setupdateStamp(+new Date());
 
     if (result.data.length !== 0) {
       checkDynamicData(result.data);
     }
-    setupdateStamp(+new Date());
   };
 
   /*
@@ -1165,9 +1172,6 @@ const useCandleHook = function(
       let isFromAppend = false;
       if (typeof _cArr === 'undefined') {
         _cArr = [...displayCandleData];
-        _cArr = _cArr.sort(function(a, b) {
-          return Number(a.time) - Number(b.time);
-        });
       } else {
         isFromAppend = true;
       }
@@ -1264,6 +1268,17 @@ const useCandleHook = function(
 
       for (let i = 0; i < currentScopeDisplayCandleData.length; i++) {
         let item = currentScopeDisplayCandleData[i];
+
+        if (
+          typeof item.updateTag === 'undefined' ||
+          item.updateTag !== currentGUIDUpdateTag
+        ) {
+          item = computSingalCandledata(item, org_displayCandleMaxMin);
+          item.updateTag = currentGUIDUpdateTag;
+        } else {
+          computSingalCandledataMini(item);
+        }
+
         computSingalCandledataMini(item);
 
         _displayCandleMaxMin.start = getMin(
@@ -1352,9 +1367,7 @@ const useCandleHook = function(
         ...backwardDCArr,
         ..._totalCandleDisplayArr,
         ...forwardDCArr,
-      ].sort(function(a, b) {
-        return Number(a.time) - Number(b.time);
-      });
+      ];
 
       let currentScopeDisplayCandleData = findIntersectionCandle(
         _displayCandleData,
@@ -1743,15 +1756,15 @@ const useCandleHook = function(
     setviewSize(xAxis.data.viewSize);
     setorg_displayCandleMaxMin(result.scope);
     setcurrentGUIDUpdateTag(updateTag);
-
-    if (result.data.length !== 0) {
-      checkDynamicData(result.data);
-    }
     setupdateStamp(+new Date());
     setlastMaxMiny({
       start: xAxis.data.linePosition.y,
       end: 0,
     });
+
+    if (result.data.length !== 0) {
+      checkDynamicData(result.data);
+    }
   };
 
   const checkDynamicData = async function(data?: IcandleData[]) {
@@ -1908,7 +1921,7 @@ const useCandleHook = function(
             org_displayCandleMaxMin,
             true
           );
-          _latestCandleItem.updateTag = currentGUIDUpdateTag;
+          _latestCandleItem.updateTag = newGuid();
           _displayCandleData[i] = _latestCandleItem;
           isChangeDisplayCandleArr = true;
           _latestCandleItem.updateTag = '0';
@@ -1949,7 +1962,7 @@ const useCandleHook = function(
         org_displayCandleMaxMin,
         true
       );
-      _latestCandleItem.updateTag = currentGUIDUpdateTag;
+      _latestCandleItem.updateTag = newGuid();
 
       //在可见范围内更新，不可见就不更新
       if (
@@ -2028,9 +2041,6 @@ const useCandleHook = function(
       var dataItem: IcandleData;
       if (latestCandleItem === null) {
         if (isStaticData) {
-          let soted = orgCandleData.sort(function(a, b) {
-            return getRightDate(a.time) - getRightDate(b.time);
-          });
           let intTime = xAxis.data.currentTimeType!.roundingFunction!(
             getRightDate(orgCandleData[orgCandleData.length - 1].time!),
             baseConfig.timeZone!.displayTimeZone!
@@ -2052,7 +2062,7 @@ const useCandleHook = function(
         ////这里的数据是给tooltip计算的
         let edgeScope = yAxis.funcs.expandDataSpanceEdge(orgScope);
         computSingalCandledata(copyedItem, edgeScope.dataScope);
-        copyedItem.updateTag = currentGUIDUpdateTag;
+        copyedItem.updateTag = newGuid();
 
         let _tooltipState: IToolTipItem = {
           position: {
@@ -2112,7 +2122,7 @@ const useCandleHook = function(
         edgeScope.dataScope,
         true
       );
-      _displayLatestCandle.updateTag = currentGUIDUpdateTag;
+      _displayLatestCandle.updateTag = newGuid();
       if (_displayLatestCandle.isEscaped! === true) {
         return;
       }

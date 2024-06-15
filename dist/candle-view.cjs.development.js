@@ -6380,6 +6380,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
 
   var updatePartialCandleData = function updatePartialCandleData() {
+    debugger;
+
     var _xAxisdatatickArr = [].concat(xAxis.data.tickArr);
 
     var _viewSize = _extends({}, xAxis.data.viewSize);
@@ -6389,7 +6391,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     var isEscapeItems_current = isEscapeItems.current;
     var isQuickUpdateing_current = isQuickUpdateing.current; //用于显示的数据
 
-    var result = findDataByTicks(_xAxisdatatickArr); //result.data 为 和目前x轴tick的交集displaycandles
+    var result = findDataByTicks(_xAxisdatatickArr);
+    result.data = result.data.sort(function (a, b) {
+      return getRightDate(a.time) - getRightDate(b.time);
+    }); //result.data 为 和目前x轴tick的交集displaycandles
     //result.scope 为扩展之前的数据范围 真实的数据范围
 
     if (result.data.length === 0) {
@@ -6429,7 +6434,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
           //这样的元素就需要重新进行计算，
           //否则就不需要进行计算
-          if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag) {
+          if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag || item.time === latestCandleItem.time) {
             item = computSingalCandledata(item, _org_displayCandleMaxMin);
             item.updateTag = currentGUIDUpdateTag;
           } else {
@@ -6447,7 +6452,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
         //这样的元素就需要重新进行计算，
         //否则就不需要进行计算
-        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag) {
+        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag || item.time === latestCandleItem.time) {
           item = computSingalCandledata(item, _org_displayCandleMaxMin);
           item.updateTag = currentGUIDUpdateTag;
         } else {
@@ -6504,12 +6509,11 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     setyScale(scale);
     setdisplayCandleData(result.data);
     setdisplayCandleMaxMin(result.scope);
+    setupdateStamp(+new Date());
 
     if (result.data.length !== 0) {
       checkDynamicData(result.data);
     }
-
-    setupdateStamp(+new Date());
   };
   /*
     第三版结合所有优点根据情况决定是计算还是更新
@@ -6522,9 +6526,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
       if (typeof _cArr === 'undefined') {
         _cArr = [].concat(displayCandleData);
-        _cArr = _cArr.sort(function (a, b) {
-          return Number(a.time) - Number(b.time);
-        });
       } else {
         isFromAppend = true;
       }
@@ -6613,6 +6614,14 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
       for (var _i = 0; _i < currentScopeDisplayCandleData.length; _i++) {
         var _item = currentScopeDisplayCandleData[_i];
+
+        if (typeof _item.updateTag === 'undefined' || _item.updateTag !== currentGUIDUpdateTag) {
+          _item = computSingalCandledata(_item, org_displayCandleMaxMin);
+          _item.updateTag = currentGUIDUpdateTag;
+        } else {
+          computSingalCandledataMini(_item);
+        }
+
         computSingalCandledataMini(_item);
         _displayCandleMaxMin.start = getMin(_item, Number(_displayCandleMaxMin.start)).toString();
         _displayCandleMaxMin.end = getMax(_item, Number(_displayCandleMaxMin.end)).toString();
@@ -6679,9 +6688,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         }
       }
 
-      var _displayCandleData = [].concat(backwardDCArr, _totalCandleDisplayArr, forwardDCArr).sort(function (a, b) {
-        return Number(a.time) - Number(b.time);
-      });
+      var _displayCandleData = [].concat(backwardDCArr, _totalCandleDisplayArr, forwardDCArr);
 
       var currentScopeDisplayCandleData = findIntersectionCandle(_displayCandleData, xAxis.data.currentTimeScope); //计算当前屏幕上显示的数据，没显示在屏幕范围的不参与计算
 
@@ -6932,16 +6939,15 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     setviewSize(xAxis.data.viewSize);
     setorg_displayCandleMaxMin(result.scope);
     setcurrentGUIDUpdateTag(updateTag);
-
-    if (result.data.length !== 0) {
-      checkDynamicData(result.data);
-    }
-
     setupdateStamp(+new Date());
     setlastMaxMiny({
       start: xAxis.data.linePosition.y,
       end: 0
     });
+
+    if (result.data.length !== 0) {
+      checkDynamicData(result.data);
+    }
   };
 
   var checkDynamicData = /*#__PURE__*/function () {
@@ -7114,7 +7120,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
         if (_displayCandleData[i].time === currentRoundTime) {
           _latestCandleItem.currentTick = _displayCandleData[i].currentTick;
           _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, true);
-          _latestCandleItem.updateTag = currentGUIDUpdateTag;
+          _latestCandleItem.updateTag = newGuid();
           _displayCandleData[i] = _latestCandleItem;
           isChangeDisplayCandleArr = true;
           _latestCandleItem.updateTag = '0';
@@ -7152,7 +7158,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       }
 
       _latestCandleItem = computSingalCandledata(_latestCandleItem, org_displayCandleMaxMin, true);
-      _latestCandleItem.updateTag = currentGUIDUpdateTag; //在可见范围内更新，不可见就不更新
+      _latestCandleItem.updateTag = newGuid(); //在可见范围内更新，不可见就不更新
 
       if (xAxis.data.currentTimeScope.start <= currentRoundTime && xAxis.data.currentTimeScope.end >= currentRoundTime) {
         _displayCandleData.push(_latestCandleItem);
@@ -7215,9 +7221,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
       if (latestCandleItem === null) {
         if (isStaticData) {
-          var soted = orgCandleData.sort(function (a, b) {
-            return getRightDate(a.time) - getRightDate(b.time);
-          });
           var intTime = xAxis.data.currentTimeType.roundingFunction(getRightDate(orgCandleData[orgCandleData.length - 1].time), baseConfig.timeZone.displayTimeZone);
           dataItem = allComputedCandleData.current[intTime];
         } else {
@@ -7237,7 +7240,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
         var edgeScope = yAxis.funcs.expandDataSpanceEdge(orgScope);
         computSingalCandledata(copyedItem, edgeScope.dataScope);
-        copyedItem.updateTag = currentGUIDUpdateTag;
+        copyedItem.updateTag = newGuid();
         var _tooltipState = {
           position: {
             x: 0,
@@ -7286,7 +7289,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
       var _displayLatestCandle = computSingalCandledata(_extends({}, displayLatestCandle), edgeScope.dataScope, true);
 
-      _displayLatestCandle.updateTag = currentGUIDUpdateTag;
+      _displayLatestCandle.updateTag = newGuid();
 
       if (_displayLatestCandle.isEscaped === true) {
         return;
