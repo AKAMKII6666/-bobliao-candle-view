@@ -6500,15 +6500,16 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     var expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding;
     var scale = yAxis.data.lineSize.height / expendHeight;
     var y = -orgMaxMiny.end + currentheight * yAxis.initArgs.displayPadding / 2;
+    setminy(y * scale);
+    setyScale(scale);
     setdisplayCandleData(result.data);
     setdisplayCandleMaxMin(result.scope);
 
     if (result.data.length !== 0) {
-      setminy(y * scale);
-      setyScale(scale);
       checkDynamicData(result.data);
-      setupdateStamp(+new Date());
     }
+
+    setupdateStamp(+new Date());
   };
   /*
     第三版结合所有优点根据情况决定是计算还是更新
@@ -6923,23 +6924,24 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       index++;
     }
 
+    var scale = xAxis.data.linePosition.y / (xAxis.data.linePosition.y * yAxis.initArgs.displayPadding + xAxis.data.linePosition.y);
+    var y = xAxis.data.linePosition.y * yAxis.initArgs.displayPadding / 2;
+    setminy(y * scale);
+    setyScale(scale);
     setdisplayCandleData(result.data);
     setviewSize(xAxis.data.viewSize);
+    setorg_displayCandleMaxMin(result.scope);
+    setcurrentGUIDUpdateTag(updateTag);
 
     if (result.data.length !== 0) {
-      var scale = xAxis.data.linePosition.y / (xAxis.data.linePosition.y * yAxis.initArgs.displayPadding + xAxis.data.linePosition.y);
-      var y = xAxis.data.linePosition.y * yAxis.initArgs.displayPadding / 2;
-      setminy(y * scale);
-      setyScale(scale);
-      setorg_displayCandleMaxMin(result.scope);
-      setcurrentGUIDUpdateTag(updateTag);
       checkDynamicData(result.data);
-      setupdateStamp(+new Date());
-      setlastMaxMiny({
-        start: xAxis.data.linePosition.y,
-        end: 0
-      });
     }
+
+    setupdateStamp(+new Date());
+    setlastMaxMiny({
+      start: xAxis.data.linePosition.y,
+      end: 0
+    });
   };
 
   var checkDynamicData = /*#__PURE__*/function () {
