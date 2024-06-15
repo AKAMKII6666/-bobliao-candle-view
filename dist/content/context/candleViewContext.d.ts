@@ -1,11 +1,12 @@
 /// <reference types="react" />
 import { IcandleViewContext, TcandleViewContext } from '../interface/contextInterFace';
 /**
- * 创建一个需要全局使用的钱包context
+ * candleViewContext
+ * k线context
  **/
 declare const candleViewContext: import("react").Context<IcandleViewContext>;
 /**
- * 钱包的公用钩子
+ * candleView钩子
  */
 declare const useCandleView: TcandleViewContext;
 export interface IuseCandleViewContext {

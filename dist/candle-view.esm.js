@@ -7493,12 +7493,13 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 };
 
 /**
- * 创建一个需要全局使用的钱包context
+ * candleViewContext
+ * k线context
  **/
 
 var candleViewContext = /*#__PURE__*/createContext({});
 /**
- * 钱包的公用钩子
+ * candleView钩子
  */
 
 var useCandleView = function useCandleView(args) {

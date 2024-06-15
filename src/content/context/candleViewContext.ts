@@ -29,14 +29,15 @@ import yAxis from '../com/yAxis';
 import { Itimezone } from '../interface/configInterFaces';
 
 /**
- * 创建一个需要全局使用的钱包context
+ * candleViewContext
+ * k线context
  **/
 const candleViewContext = createContext<IcandleViewContext>(
   {} as IcandleViewContext
 );
 
 /**
- * 钱包的公用钩子
+ * candleView钩子
  */
 const useCandleView: TcandleViewContext = function(args): IcandleViewContext {
   /**
