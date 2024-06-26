@@ -128,6 +128,8 @@ const useCandleHook = function(
 
   const [workMessage, seworkMessage] = useState<MessageEvent<any>>();
   const [LastScopeddcData, setLastScopeddcData] = useState<IcandleData[]>([]);
+  const [totalDataPIXHeight, settotalDataPIXHeight] = useState<number>(0);
+  const [cleanY, setcleanY] = useState<number>(0);
 
   //全量更新的时候才会更新这个guid,这个guid是用来判断每个candle是否需要进行重新计算的标志
   //每次全量更新会更新一次，每次都不太一样。
@@ -193,6 +195,7 @@ const useCandleHook = function(
     numberScopeString
   >({ start: '0', end: '0' });
   const [yScale, setyScale] = useState<number>(1);
+  const [volumeScale, setvolumeScale] = useState<number>(1);
 
   /**
    * latestCandle
@@ -249,7 +252,6 @@ const useCandleHook = function(
   );
   let isUpdateing = useRef<boolean>(false);
   let isQuickUpdateing = useRef<boolean>(false);
-  let isEscapeItems = useRef<boolean>(false);
   let mWorker = useRef<Worker>();
 
   /**
@@ -732,7 +734,10 @@ const useCandleHook = function(
     setorgCandleData([]);
     setdisplayCandleData([]);
     setyScale(1);
+    setvolumeScale(1);
     setminy(0);
+    settotalDataPIXHeight(0);
+    setcleanY(0);
     setisFetchingData(true);
     setCursorCandleItem(null);
     setlatestCandleItem(null);
@@ -748,7 +753,6 @@ const useCandleHook = function(
     allComputedCandleData.current = {};
     isUpdateing.current = false;
     isQuickUpdateing.current = false;
-    isEscapeItems.current = false;
     setisFinishedInit(false);
     setstopDynamicFetching(false);
     // TODO: 1.获得时间范围，获得当前x轴时间范围的end,然后往后推用户设置的数据条数（也就是时间单位）
@@ -989,7 +993,11 @@ const useCandleHook = function(
     setisFinishedInit(true);
     setorg_displayCandleMaxMin(result.scope);
     setyScale(1);
+    setvolumeScale(1);
     setminy(0);
+    let y = (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding!) / 2;
+    settotalDataPIXHeight(xAxis.data.linePosition.y!);
+    setcleanY(0);
     //更新y轴
     yAxis.funcs.updateAxisSates(
       xAxis.data.viewSize.width,
@@ -1010,11 +1018,9 @@ const useCandleHook = function(
   //2.然后循环取出来的列表再循环一次计算位置，
   //3.计算位置的时候判断这个列表里有哪些candle项目已经被计算过计算过的就不算了，没计算过的计算一下
   const updatePartialCandleData = function() {
-    debugger;
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
     let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
-    let isEscapeItems_current = isEscapeItems.current;
     let isQuickUpdateing_current = isQuickUpdateing.current;
 
     //用于显示的数据
@@ -1058,47 +1064,19 @@ const useCandleHook = function(
     let index = 0;
 
     for (var item of result.data) {
-      //如果已经打开了省略模式
-
-      //如果已经打开了省略模式
-      if (isEscapeItems_current) {
-        if (Number(index) % 2) {
-          //全部进行全量计算
-          //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
-          //这样的元素就需要重新进行计算，
-          //否则就不需要进行计算
-          if (
-            typeof item.updateTag === 'undefined' ||
-            item.updateTag !== currentGUIDUpdateTag ||
-            item.time === latestCandleItem.time
-          ) {
-            item = computSingalCandledata(item, _org_displayCandleMaxMin);
-            item.updateTag = currentGUIDUpdateTag;
-          } else {
-            computSingalCandledataMini(item);
-          }
-          item.isEscaped = false;
-        } else {
-          //省略过的只收集数据
-          computSingalCandledataMini(item);
-          item.isEscaped = true;
-        }
+      //全部进行全量计算
+      //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
+      //这样的元素就需要重新进行计算，
+      //否则就不需要进行计算
+      if (
+        typeof item.updateTag === 'undefined' ||
+        item.updateTag !== currentGUIDUpdateTag ||
+        item.time === latestCandleItem!.time
+      ) {
+        item = computSingalCandledata(item, _org_displayCandleMaxMin);
+        item.updateTag = currentGUIDUpdateTag;
       } else {
-        //全部进行全量计算
-        //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
-        //这样的元素就需要重新进行计算，
-        //否则就不需要进行计算
-        if (
-          typeof item.updateTag === 'undefined' ||
-          item.updateTag !== currentGUIDUpdateTag ||
-          item.time === latestCandleItem.time
-        ) {
-          item = computSingalCandledata(item, _org_displayCandleMaxMin);
-          item.updateTag = currentGUIDUpdateTag;
-        } else {
-          computSingalCandledataMini(item);
-        }
-        item.isEscaped = false;
+        computSingalCandledataMini(item);
       }
 
       if (isQuickUpdateing_current) {
@@ -1153,6 +1131,10 @@ const useCandleHook = function(
     let scale = yAxis.data.lineSize.height / expendHeight;
     let y =
       -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
+    settotalDataPIXHeight(
+      currentheight + currentheight * yAxis.initArgs.displayPadding!
+    );
+    setcleanY(orgMaxMiny.end);
     setminy(y * scale);
     setyScale(scale);
     setdisplayCandleData(result.data);
@@ -1261,8 +1243,11 @@ const useCandleHook = function(
       let scale = yAxis.data.lineSize.height / expendHeight;
       let y =
         -orgMaxMiny.end + (currentheight * yAxis.initArgs.displayPadding!) / 2;
-
+      settotalDataPIXHeight(
+        currentheight + currentheight * yAxis.initArgs.displayPadding!
+      );
       setminy(y * scale);
+      setcleanY(orgMaxMiny.end);
       setyScale(scale);
       /* setLastScopeddcData(() => currentScopeDisplayCandleData); */
 
@@ -1403,7 +1388,10 @@ const useCandleHook = function(
         _displayCandleData.length > 0 &&
         currentScopeDisplayCandleData.length > 0
       ) {
-        let rangeNamber = 900;
+        /*
+				前后数量
+				*/
+        let rangeNamber = 3000;
         if (
           Number(_displayCandleData[0].time) <
           xAxis.data.currentTimeType!.backwardTimeUnit!(
@@ -1497,7 +1485,7 @@ const useCandleHook = function(
     let _xAxisdatatickArr = [...xAxis.data.tickArr];
     let _viewSize = { ...xAxis.data.viewSize };
     let _org_displayCandleMaxMin = { ...org_displayCandleMaxMin };
-    let isEscapeItems_current = isEscapeItems.current;
+
     let isQuickUpdateing_current = isQuickUpdateing.current;
     let allComputedCandleData_current = allComputedCandleData.current;
     let xAxis_initArgs_labelSpace = xAxis.initArgs.labelSpace;
@@ -1521,7 +1509,7 @@ const useCandleHook = function(
       _xAxisdatatickArr: _xAxisdatatickArr,
       _viewSize: _viewSize,
       _org_displayCandleMaxMin: _org_displayCandleMaxMin,
-      isEscapeItems_current: isEscapeItems_current,
+      isEscapeItems_current: false,
       isQuickUpdateing_current: isQuickUpdateing_current,
       allComputedCandleData_current: allComputedCandleData_current,
       xAxis_initArgs_labelSpace: xAxis_initArgs_labelSpace,
@@ -1714,33 +1702,13 @@ const useCandleHook = function(
       return result.scope;
     });
 
-    //if (xAxis.data.tickArr.length > 2000) {
-    //	isEscapeItems.current = true;
-    //} else {
-    //	isEscapeItems.current = false;
-    //}
-
     let index = 0;
     let updateTag = newGuid();
     for (let item of result.data) {
-      //如果已经打开了省略模式
-      if (isEscapeItems.current) {
-        if (Number(index) % 2) {
-          //没有被省略的进行全量计算
-          item = computSingalCandledata(item, result.scope);
-          item.isEscaped = false;
-          item.updateTag = updateTag;
-        } else {
-          //省略过的只收集数据
-          computSingalCandledataMini(item);
-          item.isEscaped = true;
-        }
-      } else {
-        //全部进行全量计算
-        item = computSingalCandledata(item, result.scope);
-        item.isEscaped = false;
-        item.updateTag = updateTag;
-      }
+      //全部进行全量计算
+      item = computSingalCandledata(item, result.scope);
+      item.isEscaped = false;
+      item.updateTag = updateTag;
       index++;
     }
 
@@ -1749,7 +1717,9 @@ const useCandleHook = function(
       (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding! +
         xAxis.data.linePosition.y);
     let y = (xAxis.data.linePosition.y! * yAxis.initArgs.displayPadding!) / 2;
+    settotalDataPIXHeight(xAxis.data.linePosition.y!);
     setminy(y * scale);
+    setcleanY(0);
     setyScale(scale);
 
     setdisplayCandleData(result.data);
@@ -1877,11 +1847,12 @@ const useCandleHook = function(
         baseConfig.timeZone!.displayTimeZone!
       );
     }
-    let _displayCandleData = [...displayCandleData];
-    let currentRoundTime = xAxis.data.currentTimeType?.roundingFunction!(
+
+    let currentRoundTime = xAxis.data.currentTimeType?.roundingFunction(
       Number(time),
-      baseConfig!.timeZone!.displayTimeZone!
-    )!;
+      baseConfig.timeZone!.displayTimeZone!
+    );
+    let _displayCandleData = [...displayCandleData];
     let _latestCandleItem = { ...latestCandleItem };
     let isNew = false;
     _latestCandleItem.isEscaped = false;
@@ -1928,18 +1899,18 @@ const useCandleHook = function(
           break;
         }
       }
-    } else if (currentRoundTime > Number(_latestCandleItem?.time!)) {
+    } else if (currentRoundTime! > Number(_latestCandleItem?.time!)) {
       //如果是下一个时间刻度
       //是否为快速合并模式
       if (typeof isMergeMode !== 'undefined' && isMergeMode === true) {
-        _latestCandleItem.time = currentRoundTime;
+        _latestCandleItem.time = currentRoundTime!;
         _latestCandleItem.open = close;
         _latestCandleItem.close = close;
         _latestCandleItem.high = close;
         _latestCandleItem.low = close;
         _latestCandleItem.volume = volume;
       } else {
-        _latestCandleItem.time = currentRoundTime;
+        _latestCandleItem.time = currentRoundTime!;
         _latestCandleItem.open = open!;
         _latestCandleItem.close = close!;
         _latestCandleItem.high = high!;
@@ -1966,8 +1937,8 @@ const useCandleHook = function(
 
       //在可见范围内更新，不可见就不更新
       if (
-        xAxis.data.currentTimeScope.start <= currentRoundTime &&
-        xAxis.data.currentTimeScope.end >= currentRoundTime
+        xAxis.data.currentTimeScope.start <= currentRoundTime! &&
+        xAxis.data.currentTimeScope.end >= currentRoundTime!
       ) {
         _displayCandleData.push(_latestCandleItem);
         isChangeDisplayCandleArr = true;
@@ -1981,7 +1952,7 @@ const useCandleHook = function(
       return;
     }
 
-    allComputedCandleData.current[currentRoundTime] = _latestCandleItem;
+    allComputedCandleData.current[currentRoundTime!] = _latestCandleItem;
     setvolumChartViewMax(
       Math.max(Number(_latestCandleItem.volume), volumChartViewMax)
     );
@@ -2012,8 +1983,8 @@ const useCandleHook = function(
     } else {
       //可见范围内的话就移动一下
       if (
-        xAxis.data.currentTimeScope.start <= currentRoundTime &&
-        xAxis.data.currentTimeScope.end >= currentRoundTime
+        xAxis.data.currentTimeScope.start <= currentRoundTime! &&
+        xAxis.data.currentTimeScope.end >= currentRoundTime!
       ) {
         xAxis.funcs.moveContainer!(
           0,
@@ -2241,6 +2212,9 @@ const useCandleHook = function(
       setdisplayCandleMaxMin(data.data.result.scope);
       //
       if (data.data.result.data.length !== 0) {
+        settotalDataPIXHeight(
+          currentheight + currentheight * yAxis.initArgs.displayPadding!
+        );
         setminy(y * scale);
         setyScale(scale);
         checkDynamicData(data.data.result.data);

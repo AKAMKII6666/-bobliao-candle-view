@@ -25,7 +25,7 @@ import {
   Sprite,
 } from '@pixi/react';
 import * as PIXI from 'pixi.js';
-import { DashedLine, Rectangle } from '../utils/basicShaps';
+import { DashedLine, KlineBatching, Rectangle } from '../utils/basicShaps';
 import { useCandleViewPixiContext } from '..';
 import { getSpaceSize } from '../utils/consts';
 
@@ -33,6 +33,11 @@ import { getSpaceSize } from '../utils/consts';
  * 传入参数
  */
 export interface iprops {}
+
+export interface wickAndCandle {
+  wick: ReactElement[];
+  candle: ReactElement[];
+}
 
 const Data: FC<iprops> = ({}, _ref): ReactElement => {
   //===============useHooks=================
@@ -145,84 +150,25 @@ const Data: FC<iprops> = ({}, _ref): ReactElement => {
     return result;
   };
 
-  /* 创建candle */
-  //const makeCandle = function () {
-  //	let result: React.JSX.Element[] = [];
-  //
-  //	for (var item of CVData.hookObjs.candleObj.data.displayCandleData) {
-  //		result.push(
-  //			<Sprite
-  //				key={item.time + "_candle"}
-  //				width={item.candleWidth}
-  //				height={item.candleLength!}
-  //				position={{
-  //					x: item.currentTick!.cPosition.x!,
-  //					y: item.candlePixPosition!.y!,
-  //				}}
-  //				texture={PIXI.Texture.WHITE}
-  //				tint={PIXI.utils.string2hex(item.candleColor!)}
-  //				anchor={{ x: 0.5, y: 0 }}
-  //			></Sprite>
-  //		);
-  //	}
-  //	return result;
-  //};
-  //
-  //{
-  //	/* <Rectangle
-  //
-  //				color={PIXI.utils.string2hex(item.candleColor!)}
-  //				size={{
-  //					width: item.candleWidth!,
-  //					height: item.candleLength!,
-  //				}}
-  //				position={{
-  //					x: item.currentTick!.cPosition.x!,
-  //					y: item.candlePixPosition!.y!,
-  //				}}
-  //				alignX="center"
-  //				alignY="top"
-  //			></Rectangle> */
-  //}
-  //
-  ///* 创建wick */
-  //const makeWick = function () {
-  //	let result: React.JSX.Element[] = [];
-  //	let index = 0;
-  //	for (var item of CVData.hookObjs.candleObj.data.displayCandleData) {
-  //		if (!item.isEscaped!) {
-  //			result.push(
-  //				<Sprite
-  //					key={item.time + "_wick"}
-  //					width={item.wickWidth!}
-  //					height={item.wickLength!}
-  //					position={{
-  //						x: item.currentTick!.cPosition.x!,
-  //						y: item.wickPixPosition!.y!,
-  //					}}
-  //					texture={PIXI.Texture.WHITE}
-  //					tint={PIXI.utils.string2hex(item.wickColor!)}
-  //					anchor={{ x: 0.5, y: 0 }}
-  //				></Sprite>
-  //			);
-  //		} else {
-  //			result.push(
-  //				<Sprite
-  //					key={item.time + "_wick"}
-  //					width={0}
-  //					height={0}
-  //					position={{
-  //						x: 0,
-  //						y: 0,
-  //					}}
-  //				></Sprite>
-  //			);
-  //		}
-  //		index++;
-  //	}
-  //
-  //	return result;
-  //};
+  /* 创建批渲染 */
+  const makeBatchKline = function() {
+    return (
+      <>
+        <KlineBatching
+          {...{
+            isDQuickUpdateing: CVData.hookObjs.candleObj.data.isDQuickUpdateing,
+            wickRiseColor: CVData.initArgs.data?.candleStyles?.wickRiseColor!,
+            wickFallColor: CVData.initArgs.data?.candleStyles?.wickFallColor!,
+            candleRiseColor: CVData.initArgs.data?.candleStyles
+              ?.candleRiseColor!,
+            candleFallColor: CVData.initArgs.data?.candleStyles
+              ?.candleFallColor!,
+            data: CVData.hookObjs.candleObj.data.displayCandleData,
+          }}
+        ></KlineBatching>
+      </>
+    );
+  };
 
   //===============effects==================
   useEffect(
@@ -240,42 +186,51 @@ const Data: FC<iprops> = ({}, _ref): ReactElement => {
     };
   }, []);
 
-  let candle = useMemo(
-    function() {
-      return (function() {
-        if (CVData.hookObjs.candleObj.data.displayCandleData.length === 0) {
-          return [];
-        }
-        if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
-          return makeCandle();
-        }
-        return [];
-      })();
-    },
-    [
-      CVData.hookObjs.candleObj.data.displayCandleData,
-      CVData.hookObjs.candleObj.data.isDQuickUpdateing,
-      CVData.initArgs.data!.candleStyles!.candleFallColor!,
-      CVData.initArgs.data!.candleStyles!.candleRiseColor!,
-      { ...CVData.initArgs.timeZone },
-    ]
-  );
+  let wc: wickAndCandle = { wick: [], candle: [] };
+  let batchKLine = <></>;
 
-  let wick = useMemo(
-    function() {
-      if (CVData.hookObjs.candleObj.data.displayCandleData.length === 0) {
-        return null;
-      }
-      return makeWick();
-    },
-    [
-      CVData.hookObjs.candleObj.data.displayCandleData,
-      CVData.hookObjs.candleObj.data.isDQuickUpdateing,
-      CVData.initArgs.data!.candleStyles!.wickFallColor!,
-      CVData.initArgs.data!.candleStyles!.wickFallColor!,
-      { ...CVData.initArgs.timeZone },
-    ]
-  );
+  if (CVData.hookObjs.xAxisObj.data.tickArr.length > 120) {
+    batchKLine = useMemo(
+      function() {
+        return makeBatchKline();
+      },
+      [
+        CVData.hookObjs.candleObj.data.displayCandleData,
+        CVData.hookObjs.candleObj.data.isDQuickUpdateing,
+        CVData.initArgs.data!.candleStyles!.wickFallColor!,
+        CVData.initArgs.data!.candleStyles!.wickFallColor!,
+        CVData.initArgs.data!.candleStyles!.candleFallColor!,
+        CVData.initArgs.data!.candleStyles!.candleRiseColor!,
+        { ...CVData.initArgs.timeZone },
+      ]
+    );
+  } else {
+    wc = useMemo(
+      function() {
+        let result: wickAndCandle = { wick: [], candle: [] };
+        if (CVData.hookObjs.candleObj.data.displayCandleData.length === 0) {
+          result.wick = [];
+          result.candle = [];
+          return result;
+        }
+
+        if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
+          result.candle = makeCandle();
+        }
+        result.wick = makeWick();
+        return result;
+      },
+      [
+        CVData.hookObjs.candleObj.data.displayCandleData,
+        CVData.hookObjs.candleObj.data.isDQuickUpdateing,
+        CVData.initArgs.data!.candleStyles!.wickFallColor!,
+        CVData.initArgs.data!.candleStyles!.wickFallColor!,
+        CVData.initArgs.data!.candleStyles!.candleFallColor!,
+        CVData.initArgs.data!.candleStyles!.candleRiseColor!,
+        { ...CVData.initArgs.timeZone },
+      ]
+    );
+  }
 
   return (
     <>
@@ -284,8 +239,18 @@ const Data: FC<iprops> = ({}, _ref): ReactElement => {
         y={CVData.hookObjs.candleObj.data.miny}
         scale={{ x: 1, y: CVData.hookObjs.candleObj.data.yScale }}
       >
-        {wick}
-        {candle}
+        {(function() {
+          if (CVData.hookObjs.xAxisObj.data.tickArr.length > 120) {
+            return batchKLine;
+          } else {
+            return (
+              <>
+                {wc.wick}
+                {wc.candle}
+              </>
+            );
+          }
+        })()}
       </Container>
     </>
   );

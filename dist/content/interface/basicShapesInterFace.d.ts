@@ -1,4 +1,4 @@
-import { Isize, pointCoord } from "./itemsInterFace";
+import { IcandleData, Isize, pointCoord } from './itemsInterFace';
 /**
  * pixi的矩形绘制接口
  */
@@ -18,11 +18,11 @@ export interface IPixiShapeRectangle {
     /**
      * 对齐x坐标的模式
      */
-    alignX?: "left" | "center" | "right";
+    alignX?: 'left' | 'center' | 'right';
     /**
      * 对齐y坐标的模式
      */
-    alignY?: "top" | "center" | "bottom";
+    alignY?: 'top' | 'center' | 'bottom';
     /**
      * 透明度
      */
@@ -38,4 +38,28 @@ export interface IPixiShapeDashedLine {
     positionStop: pointCoord;
     dashLength: number;
     spaceLength: number;
+}
+/**
+ * 批量绘制k线的参数
+ */
+export interface IPixiKlineBatching {
+    isDQuickUpdateing: boolean;
+    wickRiseColor: string;
+    wickFallColor: string;
+    candleRiseColor: string;
+    candleFallColor: string;
+    data: IcandleData[];
+}
+/**
+ * 批量绘制Volume的参数
+ */
+export interface IPixiVolumeBatching {
+    alpha: number;
+    staticMax: number;
+    volumChartPixHeight: number;
+    riseColor: string;
+    fallColor: string;
+    isDQuickUpdateing: boolean;
+    linePositionY: number;
+    data: IcandleData[];
 }

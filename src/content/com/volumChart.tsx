@@ -6,16 +6,21 @@
  */
 import React, {
   useEffect,
+  useRef,
   useState,
+  forwardRef,
+  useImperativeHandle,
   FC,
   ReactElement,
   memo,
+  LegacyRef,
   useMemo,
 } from 'react';
-import { Container } from '@pixi/react';
+import { Stage, Graphics, Container, Text } from '@pixi/react';
 import * as PIXI from 'pixi.js';
-import { Rectangle } from '../utils/basicShaps';
+import { DashedLine, Rectangle, VolumeBatching } from '../utils/basicShaps';
 import { useCandleViewPixiContext } from '..';
+import { getSpaceSize } from '../utils/consts';
 
 /**
  * 传入参数
@@ -28,6 +33,8 @@ const VolumChat: FC<iprops> = ({}, _ref): ReactElement => {
 
   //===============state====================
   const [isMounted, setIsMounted] = useState<boolean>(false);
+  //===============static====================
+  const staticMax = 1;
 
   //===============function=================
   /* 创建volume */
@@ -43,8 +50,7 @@ const VolumChat: FC<iprops> = ({}, _ref): ReactElement => {
         CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart?.alpha;
       let currentHeight =
         CVData.hookObjs.candleObj.data.volumChartPixHeight *
-        (Number(item.volume) /
-          CVData.hookObjs.candleObj.data.volumChartViewMax);
+        (Number(item.volume) / staticMax);
 
       if (!item.isEscaped!) {
         result.push(
@@ -95,61 +101,32 @@ const VolumChat: FC<iprops> = ({}, _ref): ReactElement => {
     return result;
   };
 
-  /* 		const makeChat = function () {
-			let result: React.JSX.Element[] = [];
-			let index = 0;
-
-			for (var item of CVData.hookObjs.candleObj.data.displayCandleData) {
-				let alpha = CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart?.alpha;
-				let currentHeight =
-					CVData.hookObjs.candleObj.data.volumChartPixHeight *
-					(Number(item.volume) / CVData.hookObjs.candleObj.data.volumChartViewMax);
-
-				if (!item.isEscaped!) {
-					result.push(
-						<Sprite
-							key={item.time + "_volume"}
-							width={(function () {
-								if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
-									return item.candleWidth!;
-								}
-								return 1;
-							})()}
-							height={currentHeight}
-							position={{
-								x: item.currentTick!.cPosition.x!,
-								y: CVData.hookObjs.xAxisObj.data.linePosition.y,
-							}}
-							texture={PIXI.Texture.WHITE}
-							tint={PIXI.utils.string2hex(
-								(function () {
-									if (
-										item.candleColor! ===
-										CVData.hookObjs.candleObj.initArgs.candleStyles!.candleRiseColor!
-									) {
-										return CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.riseColor!;
-									}
-									return CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.fallColor!;
-								})()
-							)}
-							alpha={(function () {
-								if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
-									return CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.alpha;
-								}
-								return 1;
-							})()}
-							anchor="0.5,1"
-						></Sprite>
-					);
-				} else {
-					result.push(<React.Fragment key={item.time + "_volume"}></React.Fragment>);
-				}
-
-				index++;
-			}
-
-			return result;
-		}; */
+  /* 批量创建volume */
+  const makeChatBatching = function() {
+    if (!CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.enabled) {
+      return [];
+    }
+    return (
+      <>
+        <VolumeBatching
+          {...{
+            alpha: CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart
+              ?.alpha!,
+            staticMax: staticMax,
+            volumChartPixHeight:
+              CVData.hookObjs.candleObj.data.volumChartPixHeight,
+            riseColor: CVData.hookObjs.candleObj.initArgs.candleStyles!
+              .volumChart!.riseColor!,
+            fallColor: CVData.hookObjs.candleObj.initArgs.candleStyles!
+              .volumChart!.fallColor!,
+            isDQuickUpdateing: CVData.hookObjs.candleObj.data.isDQuickUpdateing,
+            linePositionY: CVData.hookObjs.xAxisObj.data.linePosition.y,
+            data: CVData.hookObjs.candleObj.data.displayCandleData,
+          }}
+        ></VolumeBatching>
+      </>
+    );
+  };
 
   //===============effects==================
   useEffect(
@@ -169,7 +146,11 @@ const VolumChat: FC<iprops> = ({}, _ref): ReactElement => {
 
   let chat = useMemo(
     function() {
-      return makeChat();
+      if (CVData.hookObjs.xAxisObj.data.tickArr.length > 120) {
+        return makeChatBatching();
+      } else {
+        return makeChat();
+      }
     },
     [
       CVData.hookObjs.candleObj.data.displayCandleData,
@@ -183,9 +164,27 @@ const VolumChat: FC<iprops> = ({}, _ref): ReactElement => {
     ]
   );
 
+  let scale = //用允许的最大高度 / 当前图像里的最大高度 = 需要缩放的值
+    CVData.hookObjs.candleObj.data.volumChartPixHeight /
+    (CVData.hookObjs.candleObj.data.volumChartPixHeight *
+      (Number(CVData.hookObjs.candleObj.data.volumChartViewMax) / staticMax));
+
+  //y轴位置也要减去刚刚计算的缩放
+  let containerY =
+    CVData.hookObjs.xAxisObj.data.linePosition.y -
+    CVData.hookObjs.xAxisObj.data.linePosition.y * scale;
   return (
     <>
-      <Container x={CVData.hookObjs.xAxisObj.data.x}>{chat}</Container>
+      <Container
+        x={CVData.hookObjs.xAxisObj.data.x}
+        y={containerY}
+        scale={{
+          x: 1,
+          y: scale,
+        }}
+      >
+        {chat}
+      </Container>
     </>
   );
 };

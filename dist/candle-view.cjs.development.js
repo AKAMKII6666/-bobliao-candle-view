@@ -1919,14 +1919,14 @@ var LANGUAGES = {
 };
 
 var getshifttime = function getshifttime(hourShift) {
-  if (typeof hourShift === "undefined" || hourShift === 0) {
+  if (typeof hourShift === 'undefined' || hourShift === 0) {
     return 0;
   }
 
   var date = new Date();
   var localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
 
-  if (hourShift === "local") {
+  if (hourShift === 'local') {
     hourShift = localtimeZone;
   }
 
@@ -1937,8 +1937,8 @@ var getshifttime = function getshifttime(hourShift) {
  */
 
 var ONEMIN = {
-  name: "1min",
-  lang: "oneMin",
+  name: '1min',
+  lang: 'oneMin',
   timeGap: 1000 * 60,
 
   /* 取整 */
@@ -2003,7 +2003,7 @@ var ONEMIN = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 20,
         end: +new Date() + 1000 * 60 * 10
@@ -2027,21 +2027,23 @@ var ONEMIN = {
  */
 
 var TWO = {
-  name: "2min",
-  lang: "twoMin",
+  name: '2min',
+  lang: 'twoMin',
   timeGap: 1000 * 60 * 2,
 
   /* 取整 */
   roundingFunction: function roundingFunction(timeStamp, hourShift) {
     // 获取当前时间
     var now = new Date(timeStamp);
+    var setTime = 0;
 
-    for (var time = 0; time < 60; time += 2) {
+    for (var time = 0; time < 60; time += 3) {
       if (now.getMinutes() >= time) {
-        now.setMinutes(time);
+        setTime = time;
       }
     }
 
+    now.setMinutes(setTime);
     now.setSeconds(0);
     now.setMilliseconds(0); // 获取当前整小时的时间戳（毫秒）
 
@@ -2099,7 +2101,7 @@ var TWO = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 30,
         end: +new Date() + 1000 * 60 * 30
@@ -2123,21 +2125,23 @@ var TWO = {
  */
 
 var THREE = {
-  name: "3min",
-  lang: "threeMin",
+  name: '3min',
+  lang: 'threeMin',
   timeGap: 1000 * 60 * 3,
 
   /* 取整 */
   roundingFunction: function roundingFunction(timeStamp, hourShift) {
     // 获取当前时间
     var now = new Date(timeStamp);
+    var setTime = 0;
 
     for (var time = 0; time < 60; time += 3) {
       if (now.getMinutes() >= time) {
-        now.setMinutes(time);
+        setTime = time;
       }
     }
 
+    now.setMinutes(setTime);
     now.setSeconds(0);
     now.setMilliseconds(0); // 获取当前整小时的时间戳（毫秒）
 
@@ -2195,7 +2199,7 @@ var THREE = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 60,
         end: +new Date() + 1000 * 60 * 60
@@ -2219,8 +2223,8 @@ var THREE = {
  */
 
 var FMIN = {
-  name: "5min",
-  lang: "fiveMin",
+  name: '5min',
+  lang: 'fiveMin',
   timeGap: 1000 * 60 * 5,
 
   /* 取整 */
@@ -2311,7 +2315,7 @@ var FMIN = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 50,
         end: +new Date() + 1000 * 60 * 10
@@ -2335,8 +2339,8 @@ var FMIN = {
  */
 
 var TENMIN = {
-  name: "10min",
-  lang: "tenMin",
+  name: '10min',
+  lang: 'tenMin',
   timeGap: 1000 * 60 * 10,
 
   /* 取整 */
@@ -2415,7 +2419,7 @@ var TENMIN = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 2 * 10,
         end: +new Date() + 1000 * 60 * 10 * 10
@@ -2439,8 +2443,8 @@ var TENMIN = {
  */
 
 var FIFMIN = {
-  name: "15min",
-  lang: "fifteenMin",
+  name: '15min',
+  lang: 'fifteenMin',
   timeGap: 1000 * 60 * 15,
 
   /* 取整 */
@@ -2515,7 +2519,7 @@ var FIFMIN = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 15 * 18,
         end: +new Date() + 1000 * 60 * 15 * 6
@@ -2539,8 +2543,8 @@ var FIFMIN = {
  */
 
 var HALFHOUR = {
-  name: "30min",
-  lang: "halfhour",
+  name: '30min',
+  lang: 'halfhour',
   timeGap: 1000 * 60 * 30,
 
   /* 取整 */
@@ -2611,7 +2615,7 @@ var HALFHOUR = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 30 * 18,
         end: +new Date() + 1000 * 60 * 30 * 6
@@ -2639,8 +2643,8 @@ var HALFHOUR = {
  */
 
 var HOUR = {
-  name: "1h",
-  lang: "oneHour",
+  name: '1h',
+  lang: 'oneHour',
   timeGap: 1000 * 60 * 60,
 
   /* 取整 */
@@ -2714,7 +2718,7 @@ var HOUR = {
 
   /* 获得初始化的时间范围 */
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 60 * 18,
         end: +new Date() + 1000 * 60 * 60 * 6
@@ -2738,8 +2742,8 @@ var HOUR = {
  */
 
 var DAY = {
-  name: "1d",
-  lang: "oneday",
+  name: '1d',
+  lang: 'oneday',
   timeGap: 1000 * 60 * 60 * 24,
   roundingFunction: function roundingFunction(timeStamp, hourShift) {
     // 获取当前时间
@@ -2810,7 +2814,7 @@ var DAY = {
     return result;
   },
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 60 * 24 * 20,
         end: +new Date() + 1000 * 60 * 60 * 24 * 10
@@ -2846,8 +2850,8 @@ var DAY = {
  */
 
 var WEEK = {
-  name: "1w",
-  lang: "oneWeek",
+  name: '1w',
+  lang: 'oneWeek',
   timeGap: 1000 * 60 * 60 * 24 * 7,
   roundingFunction: function roundingFunction(timeStamp, hourShift) {
     var today = new Date(timeStamp);
@@ -2907,7 +2911,7 @@ var WEEK = {
     return Math.floor(date.getTime()) + getshifttime(hourShift);
   },
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 60 * 24 * 7 * 5,
         end: +new Date() + 1000 * 60 * 60 * 24 * 7 * 5
@@ -2943,8 +2947,8 @@ var WEEK = {
  */
 
 var MONTH = {
-  name: "1m",
-  lang: "onemonth",
+  name: '1m',
+  lang: 'onemonth',
   timeGap: 1000 * 60 * 60 * 24 * 30,
   roundingFunction: function roundingFunction(timeStamp, hourShift) {
     // 获取当前时间
@@ -3020,7 +3024,7 @@ var MONTH = {
     return result;
   },
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 60 * 24 * 30 * 12,
         end: +new Date() + 1000 * 60 * 60 * 24 * 30 * 2
@@ -3080,8 +3084,8 @@ var MONTH = {
  */
 
 var YEAR = {
-  name: "1y",
-  lang: "oneYear",
+  name: '1y',
+  lang: 'oneYear',
   timeGap: 1000 * 60 * 60 * 24 * 30 * 12,
   roundingFunction: function roundingFunction(timeStamp, hourShift) {
     // 获取当前时间
@@ -3162,7 +3166,7 @@ var YEAR = {
     return result;
   },
   getInitTimeScope: function getInitTimeScope(initTime) {
-    if (initTime === "now") {
+    if (initTime === 'now') {
       return {
         start: +new Date() - 1000 * 60 * 60 * 24 * 30 * 12 * 3,
         end: +new Date() + 1000 * 60 * 60 * 24 * 30 * 12 * 3
@@ -3185,18 +3189,18 @@ var YEAR = {
  */
 
 var timeTypeMap = {
-  "1min": ONEMIN,
-  "2min": TWO,
-  "3min": THREE,
-  "5min": FMIN,
-  "10min": TENMIN,
-  "15min": FIFMIN,
-  "30min": HALFHOUR,
-  "1h": HOUR,
-  "1d": DAY,
-  "1w": WEEK,
-  "1m": MONTH,
-  "1y": YEAR
+  '1min': ONEMIN,
+  '2min': TWO,
+  '3min': THREE,
+  '5min': FMIN,
+  '10min': TENMIN,
+  '15min': FIFMIN,
+  '30min': HALFHOUR,
+  '1h': HOUR,
+  '1d': DAY,
+  '1w': WEEK,
+  '1m': MONTH,
+  '1y': YEAR
 };
 /**
  *通过时间对象查找某个数组里的时间为特定时间对象的整数的个数
@@ -3204,7 +3208,7 @@ var timeTypeMap = {
 
 var findRoundTimeCountFromArray = function findRoundTimeCountFromArray(array, timeShift, currentType, key) {
   var getItemTime = function getItemTime(arr, index) {
-    if (typeof array[index] === "object" || typeof key !== "undefined") {
+    if (typeof array[index] === 'object' || typeof key !== 'undefined') {
       return Number(arr[index][key]);
     }
 
@@ -3217,7 +3221,7 @@ var findRoundTimeCountFromArray = function findRoundTimeCountFromArray(array, ti
 
 
   var getTimeShift = function getTimeShift() {
-    if (currentType === "1d" || currentType === "1w" || currentType === "1m" || currentType === "1y") {
+    if (currentType === '1d' || currentType === '1w' || currentType === '1m' || currentType === '1y') {
       return timeShift;
     }
 
@@ -3236,59 +3240,59 @@ var findRoundTimeCountFromArray = function findRoundTimeCountFromArray(array, ti
 
   if (gap < 1000 * 60 * 60) {
     _timeTypeMap = {
-      "1min": ONEMIN,
-      "5min": FIFMIN,
-      "10min": TENMIN
+      '1min': ONEMIN,
+      '5min': FIFMIN,
+      '10min': TENMIN
     };
   } //大于1小时，但是小于5小时
 
 
   if (gap >= 1000 * 60 * 60 && gap < 1000 * 60 * 60 * 5) {
     _timeTypeMap = {
-      "15min": FIFMIN,
-      "30min": HALFHOUR,
-      "1h": HOUR
+      '15min': FIFMIN,
+      '30min': HALFHOUR,
+      '1h': HOUR
     };
   } //大于5小时，但是小于35小时
 
 
   if (gap >= 1000 * 60 * 60 * 5 && gap < 1000 * 60 * 60 * 35) {
     _timeTypeMap = {
-      "30min": HALFHOUR,
-      "1h": HOUR
+      '30min': HALFHOUR,
+      '1h': HOUR
     };
   } //大于35小时，但是小于15天
 
 
   if (gap >= 1000 * 60 * 60 * 35 && gap < 1000 * 60 * 60 * 24 * 15) {
     _timeTypeMap = {
-      "1h": HOUR,
-      "1d": DAY
+      '1h': HOUR,
+      '1d': DAY
     };
   } //大于15天，但是小于55天
 
 
   if (gap >= 1000 * 60 * 60 * 24 * 15 && gap < 1000 * 60 * 60 * 24 * 55) {
     _timeTypeMap = {
-      "1d": DAY,
-      "1m": MONTH
+      '1d': DAY,
+      '1m': MONTH
     };
   } //大于55天，但是小于1年
 
 
   if (gap >= 1000 * 60 * 60 * 24 * 35 && gap < 1000 * 60 * 60 * 24 * 365) {
     _timeTypeMap = {
-      "1d": DAY,
-      "1m": MONTH,
-      "1y": YEAR
+      '1d': DAY,
+      '1m': MONTH,
+      '1y': YEAR
     };
   } //大于1年
 
 
   if (gap >= 1000 * 60 * 60 * 24 * 365) {
     _timeTypeMap = {
-      "1m": MONTH,
-      "1y": YEAR
+      '1m': MONTH,
+      '1y': YEAR
     };
   } //查找数量
 
@@ -3302,7 +3306,7 @@ var findRoundTimeCountFromArray = function findRoundTimeCountFromArray(array, ti
 
     var round = timeType.roundingFunction(end, getTimeShift()); //然后从后往前找，看看有没有这个时间
 
-    var latestEqualIndex = binarySearchByKeyStrictlyEqual(array, round, "forEnd", key); //如果找到的这个下标都已经在数组里过半了，就直接返回0 ，说明这种时间格式不合适
+    var latestEqualIndex = binarySearchByKeyStrictlyEqual(array, round, 'forEnd', key); //如果找到的这个下标都已经在数组里过半了，就直接返回0 ，说明这种时间格式不合适
 
     if (latestEqualIndex === null || latestEqualIndex === -1) {
       return result_c;
@@ -3318,7 +3322,7 @@ var findRoundTimeCountFromArray = function findRoundTimeCountFromArray(array, ti
 
     var nextRound = timeType.backwardSingleUnit(getItemTime(array, latestEqualIndex), getTimeShift()); //找到下一个这个时间类型的整数点
 
-    var nextEqualIndex = binarySearchByKeyStrictlyEqual(array.slice(0, latestEqualIndex), nextRound, "forEnd", key);
+    var nextEqualIndex = binarySearchByKeyStrictlyEqual(array.slice(0, latestEqualIndex), nextRound, 'forEnd', key);
 
     if (nextEqualIndex === null || nextEqualIndex === -1) {
       result_c.count = 1;
@@ -3338,7 +3342,7 @@ var findRoundTimeCountFromArray = function findRoundTimeCountFromArray(array, ti
   };
 
   for (var timeTypeItem in _timeTypeMap) {
-    if (_timeTypeMap.hasOwnProperty(timeTypeItem) && timeTypeItem !== "1w" && timeTypeItem !== "2min" && timeTypeItem !== "3min") {
+    if (_timeTypeMap.hasOwnProperty(timeTypeItem) && timeTypeItem !== '1w' && timeTypeItem !== '2min' && timeTypeItem !== '3min') {
       var item = _timeTypeMap[timeTypeItem];
       result.push(_extends({}, findRoundTimeCount(item), {
         type: item
@@ -5539,113 +5543,121 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       workMessage = _useState11[0];
 
   var _useState12 = React.useState([]);
- //全量更新的时候才会更新这个guid,这个guid是用来判断每个candle是否需要进行重新计算的标志
+
+  var _useState13 = React.useState(0),
+      settotalDataPIXHeight = _useState13[1];
+
+  var _useState14 = React.useState(0),
+      setcleanY = _useState14[1]; //全量更新的时候才会更新这个guid,这个guid是用来判断每个candle是否需要进行重新计算的标志
   //每次全量更新会更新一次，每次都不太一样。
 
 
-  var _useState13 = React.useState(''),
-      currentGUIDUpdateTag = _useState13[0],
-      setcurrentGUIDUpdateTag = _useState13[1];
+  var _useState15 = React.useState(''),
+      currentGUIDUpdateTag = _useState15[0],
+      setcurrentGUIDUpdateTag = _useState15[1];
   /**
    * 动态数据暂存处
    */
 
 
-  var _useState14 = React.useState(null),
-      TempDynamicData = _useState14[0],
-      setTempDynamicData = _useState14[1];
+  var _useState16 = React.useState(null),
+      TempDynamicData = _useState16[0],
+      setTempDynamicData = _useState16[1];
 
-  var _useState15 = React.useState(false),
-      isFirstTimeUpdate = _useState15[0],
-      setisFirstTimeUpdate = _useState15[1];
+  var _useState17 = React.useState(false),
+      isFirstTimeUpdate = _useState17[0],
+      setisFirstTimeUpdate = _useState17[1];
   /**
    * 是否已完成初始化
    */
 
 
-  var _useState16 = React.useState(false),
-      isFinishedInit = _useState16[0],
-      setisFinishedInit = _useState16[1];
+  var _useState18 = React.useState(false),
+      isFinishedInit = _useState18[0],
+      setisFinishedInit = _useState18[1];
 
-  var _useState17 = React.useState(false),
-      isDQuickUpdateing = _useState17[0],
-      setisDQuickUpdateing = _useState17[1];
+  var _useState19 = React.useState(false),
+      isDQuickUpdateing = _useState19[0],
+      setisDQuickUpdateing = _useState19[1];
 
-  var _useState18 = React.useState(null),
-      cursorCandleItem = _useState18[0],
-      setCursorCandleItem = _useState18[1];
+  var _useState20 = React.useState(null),
+      cursorCandleItem = _useState20[0],
+      setCursorCandleItem = _useState20[1];
 
-  var _useState19 = React.useState(null),
-      latestCandleItem = _useState19[0],
-      setlatestCandleItem = _useState19[1];
+  var _useState21 = React.useState(null),
+      latestCandleItem = _useState21[0],
+      setlatestCandleItem = _useState21[1];
   /**
    * 上次更新的X轴时间戳
    */
 
 
-  var _useState20 = React.useState(798);
+  var _useState22 = React.useState(798);
   /**
    * volume 数据图表的高度
    */
 
 
-  var _useState21 = React.useState(0),
-      volumChartPixHeight = _useState21[0],
-      setvolumChartPixHeight = _useState21[1];
+  var _useState23 = React.useState(0),
+      volumChartPixHeight = _useState23[0],
+      setvolumChartPixHeight = _useState23[1];
   /**
    * volume 数据图表 当前视窗区域的最大值
    */
 
 
-  var _useState22 = React.useState(0),
-      volumChartViewMax = _useState22[0],
-      setvolumChartViewMax = _useState22[1];
+  var _useState24 = React.useState(0),
+      volumChartViewMax = _useState24[0],
+      setvolumChartViewMax = _useState24[1];
   /**
    * 是否为静态数据模式
    */
 
 
-  var _useState23 = React.useState(false),
-      isStaticData = _useState23[0],
-      setisStaticData = _useState23[1];
+  var _useState25 = React.useState(false),
+      isStaticData = _useState25[0],
+      setisStaticData = _useState25[1];
   /**
    * 所有的candle数据（原始数据，未经过加工）
    */
 
 
-  var _useState24 = React.useState([]),
-      orgCandleData = _useState24[0],
-      setorgCandleData = _useState24[1];
+  var _useState26 = React.useState([]),
+      orgCandleData = _useState26[0],
+      setorgCandleData = _useState26[1];
   /**
    * 用于显示的candle数据(经过加工和归并之后的数据 )
    */
 
 
-  var _useState25 = React.useState([]),
-      displayCandleData = _useState25[0],
-      setdisplayCandleData = _useState25[1];
+  var _useState27 = React.useState([]),
+      displayCandleData = _useState27[0],
+      setdisplayCandleData = _useState27[1];
   /**
    * 记录当前视窗内y轴数据的最大值和最小值
    */
 
 
-  var _useState26 = React.useState({
+  var _useState28 = React.useState({
     start: '0',
     end: '0'
   }),
-      displayCandleMaxMin = _useState26[0],
-      setdisplayCandleMaxMin = _useState26[1];
+      displayCandleMaxMin = _useState28[0],
+      setdisplayCandleMaxMin = _useState28[1];
 
-  var _useState27 = React.useState({
+  var _useState29 = React.useState({
     start: '0',
     end: '0'
   }),
-      org_displayCandleMaxMin = _useState27[0],
-      setorg_displayCandleMaxMin = _useState27[1];
+      org_displayCandleMaxMin = _useState29[0],
+      setorg_displayCandleMaxMin = _useState29[1];
 
-  var _useState28 = React.useState(1),
-      yScale = _useState28[0],
-      setyScale = _useState28[1];
+  var _useState30 = React.useState(1),
+      yScale = _useState30[0],
+      setyScale = _useState30[1];
+
+  var _useState31 = React.useState(1),
+      setvolumeScale = _useState31[1];
   /**
    * latestCandle
    * 最新的candle
@@ -5653,51 +5665,51 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
    */
 
 
-  var _useState29 = React.useState();
+  var _useState32 = React.useState();
 
-  var _useState30 = React.useState(null),
-      latestCandleToolTip = _useState30[0],
-      setlatestCandleToolTip = _useState30[1];
+  var _useState33 = React.useState(null),
+      latestCandleToolTip = _useState33[0],
+      setlatestCandleToolTip = _useState33[1];
 
-  var _useState31 = React.useState(null),
-      latestVolumeToolTip = _useState31[0],
-      setlatestVolumeToolTip = _useState31[1];
+  var _useState34 = React.useState(null),
+      latestVolumeToolTip = _useState34[0],
+      setlatestVolumeToolTip = _useState34[1];
   /**
    * 视图范围内最末尾的candle
    * 最新的candle
    */
 
 
-  var _useState32 = React.useState(null),
-      displayLatestCandle = _useState32[0],
-      setdisplayLatestCandle = _useState32[1];
+  var _useState35 = React.useState(null),
+      displayLatestCandle = _useState35[0],
+      setdisplayLatestCandle = _useState35[1];
 
-  var _useState33 = React.useState(null),
-      latestdisplayLatestCandle = _useState33[0],
-      setlatestdisplayLatestCandle = _useState33[1];
+  var _useState36 = React.useState(null),
+      latestdisplayLatestCandle = _useState36[0],
+      setlatestdisplayLatestCandle = _useState36[1];
 
-  var _useState34 = React.useState(null),
-      latestdisplayLatestVolume = _useState34[0],
-      setlatestdisplayLatestVolume = _useState34[1];
+  var _useState37 = React.useState(null),
+      latestdisplayLatestVolume = _useState37[0],
+      setlatestdisplayLatestVolume = _useState37[1];
   /**
    * view的全量尺寸
    */
 
 
-  var _useState35 = React.useState({
+  var _useState38 = React.useState({
     width: 0,
     height: 0
   }),
-      viewSize = _useState35[0],
-      setviewSize = _useState35[1];
+      viewSize = _useState38[0],
+      setviewSize = _useState38[1];
 
-  var _useState36 = React.useState(-1),
-      updateStamp = _useState36[0],
-      setupdateStamp = _useState36[1];
+  var _useState39 = React.useState(-1),
+      updateStamp = _useState39[0],
+      setupdateStamp = _useState39[1];
 
-  var _useState37 = React.useState(-1),
-      initDyStamp = _useState37[0],
-      setinitDyStamp = _useState37[1];
+  var _useState40 = React.useState(-1),
+      initDyStamp = _useState40[0],
+      setinitDyStamp = _useState40[1];
   /**
    * ==================================Ref===============================
    */
@@ -5710,7 +5722,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
   var allComputedCandleData = React.useRef({});
   var isUpdateing = React.useRef(false);
   var isQuickUpdateing = React.useRef(false);
-  var isEscapeItems = React.useRef(false);
   var mWorker = React.useRef();
   /**
    * ==========================静态常量==============================
@@ -6092,7 +6103,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               setorgCandleData([]);
               setdisplayCandleData([]);
               setyScale(1);
+              setvolumeScale(1);
               setminy(0);
+              settotalDataPIXHeight(0);
+              setcleanY(0);
               setisFetchingData(true);
               setCursorCandleItem(null);
               setlatestCandleItem(null);
@@ -6114,7 +6128,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               allComputedCandleData.current = {};
               isUpdateing.current = false;
               isQuickUpdateing.current = false;
-              isEscapeItems.current = false;
               setisFinishedInit(false);
               setstopDynamicFetching(false); // TODO: 1.获得时间范围，获得当前x轴时间范围的end,然后往后推用户设置的数据条数（也就是时间单位）
 
@@ -6141,10 +6154,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
                */
 
               startTime = xAxis.data.currentTimeType.backwardTimeUnit(endTime, preTime, baseConfig.timeZone.displayTimeZone);
-              _context.next = 33;
+              _context.next = 35;
               return initArgs.dynamicData.dataFetchCallback(xAxis.data.currentTimeType.name, startTime, endTime);
 
-            case 33:
+            case 35:
               result = _context.sent;
 
               if (result.length !== 0) {
@@ -6158,7 +6171,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
               setisFetchingData(false);
               setisFinishedInit(true);
 
-            case 39:
+            case 41:
             case "end":
               return _context.stop();
           }
@@ -6363,7 +6376,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     setisFinishedInit(true);
     setorg_displayCandleMaxMin(result.scope);
     setyScale(1);
-    setminy(0); //更新y轴
+    setvolumeScale(1);
+    setminy(0);
+    settotalDataPIXHeight(xAxis.data.linePosition.y);
+    setcleanY(0); //更新y轴
 
     yAxis.funcs.updateAxisSates(xAxis.data.viewSize.width, xAxis.data.viewSize.height, {
       start: Number(dataScope.start),
@@ -6380,15 +6396,12 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
 
   var updatePartialCandleData = function updatePartialCandleData() {
-    debugger;
-
     var _xAxisdatatickArr = [].concat(xAxis.data.tickArr);
 
     var _viewSize = _extends({}, xAxis.data.viewSize);
 
     var _org_displayCandleMaxMin = _extends({}, org_displayCandleMaxMin);
 
-    var isEscapeItems_current = isEscapeItems.current;
     var isQuickUpdateing_current = isQuickUpdateing.current; //用于显示的数据
 
     var result = findDataByTicks(_xAxisdatatickArr);
@@ -6421,45 +6434,18 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       end: 99999999999999
     }; //进行数据计算
 
-    var index = 0;
-
     for (var _iterator4 = _createForOfIteratorHelperLoose(result.data), _step4; !(_step4 = _iterator4()).done;) {
       var item = _step4.value;
 
-      //如果已经打开了省略模式
-      //如果已经打开了省略模式
-      if (isEscapeItems_current) {
-        if (Number(index) % 2) {
-          //全部进行全量计算
-          //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
-          //这样的元素就需要重新进行计算，
-          //否则就不需要进行计算
-          if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag || item.time === latestCandleItem.time) {
-            item = computSingalCandledata(item, _org_displayCandleMaxMin);
-            item.updateTag = currentGUIDUpdateTag;
-          } else {
-            computSingalCandledataMini(item);
-          }
-
-          item.isEscaped = false;
-        } else {
-          //省略过的只收集数据
-          computSingalCandledataMini(item);
-          item.isEscaped = true;
-        }
+      //全部进行全量计算
+      //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
+      //这样的元素就需要重新进行计算，
+      //否则就不需要进行计算
+      if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag || item.time === latestCandleItem.time) {
+        item = computSingalCandledata(item, _org_displayCandleMaxMin);
+        item.updateTag = currentGUIDUpdateTag;
       } else {
-        //全部进行全量计算
-        //如果上次更新的tag和现在当前的值不一致，说明是上次缩放后还没来得及计算的元素
-        //这样的元素就需要重新进行计算，
-        //否则就不需要进行计算
-        if (typeof item.updateTag === 'undefined' || item.updateTag !== currentGUIDUpdateTag || item.time === latestCandleItem.time) {
-          item = computSingalCandledata(item, _org_displayCandleMaxMin);
-          item.updateTag = currentGUIDUpdateTag;
-        } else {
-          computSingalCandledataMini(item);
-        }
-
-        item.isEscaped = false;
+        computSingalCandledataMini(item);
       }
 
       if (isQuickUpdateing_current) {
@@ -6495,8 +6481,6 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
           orgMaxMiny.end = Math.min(Number((_item$candlePixPositi4 = item.candlePixPosition) == null ? void 0 : _item$candlePixPositi4.y), Number((_item$wickPixPosition8 = item.wickPixPosition) == null ? void 0 : _item$wickPixPosition8.y));
         }
       }
-
-      index++;
     } //对查找出来的边界进行扩展
     ///let expandedMaxMin = yAxis.funcs.expandDataSpanceEdgePIX(orgMaxMiny);
 
@@ -6505,6 +6489,8 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     var expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding;
     var scale = yAxis.data.lineSize.height / expendHeight;
     var y = -orgMaxMiny.end + currentheight * yAxis.initArgs.displayPadding / 2;
+    settotalDataPIXHeight(currentheight + currentheight * yAxis.initArgs.displayPadding);
+    setcleanY(orgMaxMiny.end);
     setminy(y * scale);
     setyScale(scale);
     setdisplayCandleData(result.data);
@@ -6608,7 +6594,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       var expendHeight = currentheight + currentheight * yAxis.initArgs.displayPadding;
       var scale = yAxis.data.lineSize.height / expendHeight;
       var y = -orgMaxMiny.end + currentheight * yAxis.initArgs.displayPadding / 2;
+      settotalDataPIXHeight(currentheight + currentheight * yAxis.initArgs.displayPadding);
       setminy(y * scale);
+      setcleanY(orgMaxMiny.end);
       setyScale(scale);
       /* setLastScopeddcData(() => currentScopeDisplayCandleData); */
 
@@ -6713,7 +6701,10 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
 
 
       if (_displayCandleData.length > 0 && currentScopeDisplayCandleData.length > 0) {
-        var rangeNamber = 900;
+        /*
+                前后数量
+                */
+        var rangeNamber = 3000;
 
         if (Number(_displayCandleData[0].time) < xAxis.data.currentTimeType.backwardTimeUnit(Number(currentScopeDisplayCandleData[0].time), rangeNamber, 0)) {
           var i = 0;
@@ -6897,43 +6888,22 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     });
     setdisplayCandleMaxMin(function () {
       return result.scope;
-    }); //if (xAxis.data.tickArr.length > 2000) {
-    //	isEscapeItems.current = true;
-    //} else {
-    //	isEscapeItems.current = false;
-    //}
-
-    var index = 0;
+    });
     var updateTag = newGuid();
 
     for (var _iterator6 = _createForOfIteratorHelperLoose(result.data), _step6; !(_step6 = _iterator6()).done;) {
       var item = _step6.value;
-
-      //如果已经打开了省略模式
-      if (isEscapeItems.current) {
-        if (Number(index) % 2) {
-          //没有被省略的进行全量计算
-          item = computSingalCandledata(item, result.scope);
-          item.isEscaped = false;
-          item.updateTag = updateTag;
-        } else {
-          //省略过的只收集数据
-          computSingalCandledataMini(item);
-          item.isEscaped = true;
-        }
-      } else {
-        //全部进行全量计算
-        item = computSingalCandledata(item, result.scope);
-        item.isEscaped = false;
-        item.updateTag = updateTag;
-      }
-
-      index++;
+      //全部进行全量计算
+      item = computSingalCandledata(item, result.scope);
+      item.isEscaped = false;
+      item.updateTag = updateTag;
     }
 
     var scale = xAxis.data.linePosition.y / (xAxis.data.linePosition.y * yAxis.initArgs.displayPadding + xAxis.data.linePosition.y);
     var y = xAxis.data.linePosition.y * yAxis.initArgs.displayPadding / 2;
+    settotalDataPIXHeight(xAxis.data.linePosition.y);
     setminy(y * scale);
+    setcleanY(0);
     setyScale(scale);
     setdisplayCandleData(result.data);
     setviewSize(xAxis.data.viewSize);
@@ -7089,9 +7059,9 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       time = anyTimeToGMT0000ToTarget(Number(new Date(time).getTime()), baseConfig.timeZone.dataSourceTimeZone, baseConfig.timeZone.displayTimeZone);
     }
 
-    var _displayCandleData = [].concat(displayCandleData);
-
     var currentRoundTime = (_xAxis$data$currentTi = xAxis.data.currentTimeType) == null ? void 0 : _xAxis$data$currentTi.roundingFunction(Number(time), baseConfig.timeZone.displayTimeZone);
+
+    var _displayCandleData = [].concat(displayCandleData);
 
     var _latestCandleItem = _extends({}, latestCandleItem);
 
@@ -7382,6 +7352,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
       setdisplayCandleMaxMin(data.data.result.scope); //
 
       if (data.data.result.data.length !== 0) {
+        settotalDataPIXHeight(currentheight + currentheight * yAxis.initArgs.displayPadding);
         setminy(y * scale);
         setyScale(scale);
         checkDynamicData(data.data.result.data);
@@ -7901,7 +7872,7 @@ var useDebounce = function useDebounce() {
   return debounce;
 };
 
-var Rectangle = /*#__PURE__*/react.PixiComponent("Rectangle", {
+var Rectangle = /*#__PURE__*/react.PixiComponent('Rectangle', {
   create: function create() {
     return new PIXI.Graphics();
   },
@@ -7921,19 +7892,19 @@ var xyComput = function xyComput(props) {
   var x = props.position.x;
   var y = props.position.y;
 
-  if (props.alignX === "center") {
+  if (props.alignX === 'center') {
     x = props.position.x - props.size.width / 2;
   }
 
-  if (props.alignX === "right") {
+  if (props.alignX === 'right') {
     x = props.position.x - props.size.width;
   }
 
-  if (props.alignY === "center") {
+  if (props.alignY === 'center') {
     y = props.position.y - props.size.height / 2;
   }
 
-  if (props.alignY === "bottom") {
+  if (props.alignY === 'bottom') {
     y = props.position.y - props.size.height;
   }
 
@@ -7943,12 +7914,241 @@ var xyComput = function xyComput(props) {
   };
 };
 /**
- * 矩形pixi对象的初始值
+ * 用于对k线图进行批量绘制的形状
  */
 
 
+var KlineBatching = /*#__PURE__*/react.PixiComponent('KlineBatching', {
+  create: function create() {
+    return new PIXI.Graphics();
+  },
+  applyProps: function applyProps(instance, oldProps, props) {
+    var new_props = Object.assign(true, {
+      isDQuickUpdateing: false,
+      wickRiseColor: '#000000',
+      wickFallColor: '#000000',
+      candleRiseColor: '#000000',
+      candleFallColor: '#000000',
+      data: []
+    }, props);
+
+    var getColor = function getColor(status, type) {
+      if (status === 'rise' && type === 'wick') {
+        return new_props.wickRiseColor;
+      }
+
+      if (status === 'fall' && type === 'wick') {
+        return new_props.wickFallColor;
+      }
+
+      if (status === 'rise' && type === 'candle') {
+        return new_props.candleRiseColor;
+      }
+
+      if (status === 'fall' && type === 'candle') {
+        return new_props.candleFallColor;
+      }
+
+      return '';
+    };
+
+    instance.clear(); //先画wick
+
+    for (var _iterator = _createForOfIteratorHelperLoose(new_props.data), _step; !(_step = _iterator()).done;) {
+      var item = _step.value;
+      var _size = {
+        width: item.wickWidth,
+        height: item.wickLength
+      };
+      var _position = {
+        x: item.currentTick.cPosition.x,
+        y: item.wickPixPosition.y
+      };
+      var wickProps = {
+        /**
+         * 颜色
+         */
+        color: PIXI.utils.string2hex(getColor(item.candleStateus, 'wick')),
+
+        /**
+         * 尺寸
+         */
+        size: _size,
+
+        /**
+         * 坐标
+         */
+        position: _position,
+
+        /**
+         * 对齐x坐标的模式
+         */
+        alignX: 'center',
+
+        /**
+         * 对齐y坐标的模式
+         */
+        alignY: 'top',
+
+        /**
+         * 透明度
+         */
+        opacity: 1
+      };
+
+      var _newxy = xyComput(wickProps);
+
+      var _x = _newxy.x;
+      var _y = _newxy.y;
+      instance.beginFill(wickProps.color || 0x0, wickProps.opacity);
+      instance.drawRect(_x, _y, _size.width, _size.height);
+    }
+
+    if (!new_props.isDQuickUpdateing) {
+      //再画candle
+      for (var _iterator2 = _createForOfIteratorHelperLoose(new_props.data), _step2; !(_step2 = _iterator2()).done;) {
+        var item = _step2.value;
+        var size = {
+          width: item.candleWidth,
+          height: item.candleLength
+        };
+        var position = {
+          x: item.currentTick.cPosition.x,
+          y: item.candlePixPosition.y
+        };
+        var candleProps = {
+          /**
+           * 颜色
+           */
+          color: PIXI.utils.string2hex(getColor(item.candleStateus, 'wick')),
+
+          /**
+           * 尺寸
+           */
+          size: size,
+
+          /**
+           * 坐标
+           */
+          position: position,
+
+          /**
+           * 对齐x坐标的模式
+           */
+          alignX: 'center',
+
+          /**
+           * 对齐y坐标的模式
+           */
+          alignY: 'top',
+
+          /**
+           * 透明度
+           */
+          opacity: 1
+        };
+        var newxy = xyComput(candleProps);
+        var x = newxy.x;
+        var y = newxy.y;
+        instance.beginFill(candleProps.color || 0x0, candleProps.opacity);
+        instance.drawRect(x, y, size.width, size.height);
+      }
+    }
+
+    instance.endFill();
+  }
+});
+/**
+ * 用于对Volume交易量进行批量绘制的形状
+ */
+
+var VolumeBatching = /*#__PURE__*/react.PixiComponent('VolumeBatching', {
+  create: function create() {
+    return new PIXI.Graphics();
+  },
+  applyProps: function applyProps(instance, oldProps, props) {
+    var new_props = Object.assign(true, {
+      alpha: 0,
+      staticMax: 0,
+      volumChartPixHeight: 0,
+      riseColor: '',
+      fallColor: '',
+      isDQuickUpdateing: false,
+      linePositionY: 0,
+      data: []
+    }, props);
+    instance.clear();
+
+    for (var _iterator3 = _createForOfIteratorHelperLoose(new_props.data), _step3; !(_step3 = _iterator3()).done;) {
+      var item = _step3.value;
+      var currentHeight = new_props.volumChartPixHeight * (Number(item.volume) / new_props.staticMax);
+      var size = {
+        width: function () {
+          if (!new_props.isDQuickUpdateing) {
+            return item.candleWidth;
+          }
+
+          return 1;
+        }(),
+        height: currentHeight
+      };
+      var position = {
+        x: item.currentTick.cPosition.x,
+        y: new_props.linePositionY
+      };
+      var volumeProps = {
+        /**
+         * 颜色
+         */
+        color: PIXI.utils.string2hex(function () {
+          if (item.candleStateus === 'rise') {
+            return new_props.riseColor;
+          }
+
+          return new_props.fallColor;
+        }()),
+
+        /**
+         * 尺寸
+         */
+        size: size,
+
+        /**
+         * 坐标
+         */
+        position: position,
+
+        /**
+         * 对齐x坐标的模式
+         */
+        alignX: 'center',
+
+        /**
+         * 对齐y坐标的模式
+         */
+        alignY: 'bottom',
+
+        /**
+         * 透明度
+         */
+        opacity: 1
+      };
+      var newxy = xyComput(volumeProps);
+      var x = newxy.x;
+      var y = newxy.y;
+      instance.beginFill(volumeProps.color || 0x0, volumeProps.opacity);
+      instance.drawRect(x, y, size.width, size.height);
+    }
+
+    instance.endFill();
+  }
+});
+/**
+ * 矩形pixi对象的初始值
+ */
+
 var DEFAULTRECTANGLE = {
-  color: /*#__PURE__*/PIXI.utils.string2hex("#000000"),
+  color: /*#__PURE__*/PIXI.utils.string2hex('#000000'),
   size: {
     width: 100,
     height: 100
@@ -7957,8 +8157,8 @@ var DEFAULTRECTANGLE = {
     x: 0,
     y: 0
   },
-  alignX: "left",
-  alignY: "top",
+  alignX: 'left',
+  alignY: 'top',
   opacity: 1
 };
 
@@ -8003,13 +8203,13 @@ var drawDash = function drawDash(target, x1, y1, x2, y2, dashLength, spaceLength
   return target;
 };
 
-var DashedLine = /*#__PURE__*/react.PixiComponent("DashedLine", {
+var DashedLine = /*#__PURE__*/react.PixiComponent('DashedLine', {
   create: function create() {
     return new PIXI.Graphics();
   },
   applyProps: function applyProps(instance, _, newProps) {
     var defaults = {
-      color: PIXI.utils.string2hex("#000000"),
+      color: PIXI.utils.string2hex('#000000'),
       size: 1,
       positionStart: {
         x: 0,
@@ -8029,172 +8229,7 @@ var DashedLine = /*#__PURE__*/react.PixiComponent("DashedLine", {
     instance = drawDash(instance, props.positionStart.x, props.positionStart.y, props.positionStop.x, props.positionStop.y, 4, 3);
     instance.endFill();
   }
-}); //import * as PIXI from "pixi.js";
-//import { Stage, Container, Sprite, CustomPIXIComponent } from "react-pixi-fiber";
-//import { pointCoord } from "@/components/interfaces/iComon";
-//import { IPixiShapeDashedLine, IPixiShapeRectangle } from "../interface/basicShapesInterFace";
-//import { DEFAULTRECTANGLE } from "./defaultValues";
-//
-////计算xy
-//const xyComput = function (props: IPixiShapeRectangle) {
-//	let x = props.position.x;
-//	let y = props.position.y;
-//	if (props.alignX === "center") {
-//		x = props.position.x - props.size.width / 2;
-//	}
-//	if (props.alignX === "right") {
-//		x = props.position.x - props.size.width;
-//	}
-//	if (props.alignY === "center") {
-//		y = props.position.y - props.size.height / 2;
-//	}
-//	if (props.alignY === "bottom") {
-//		y = props.position.y - props.size.height;
-//	}
-//	return { x, y };
-//};
-//
-///**
-// * 矩形(自定义PIXI图形)
-// */
-//export const Rectangle = CustomPIXIComponent(
-//	{
-//		customDisplayObject: () => new PIXI.Graphics(),
-//		customApplyProps: (instance: PIXI.Graphics, oldProps, newProps: IPixiShapeRectangle) => {
-//			//这里会产生引用
-//			const new_props = Object.assign(true, DEFAULTRECTANGLE, newProps);
-//
-//			let newxy = xyComput(new_props);
-//			let x = newxy.x;
-//			let y = newxy.y;
-//			instance.clear();
-//			instance.beginFill(new_props.color || 0x0, new_props.opacity);
-//			instance.drawRect(x, y, new_props.size.width, new_props.size.height);
-//			instance.endFill();
-//
-//			/* if (typeof oldProps === "undefined") {
-//				let x = newxy.x;
-//				let y = newxy.y;
-//				instance.clear();
-//				instance.beginFill(new_props.color || 0x0, new_props.opacity);
-//				instance.drawRect(x, y, new_props.size.width, new_props.size.height);
-//				instance.endFill();
-//			} else {
-//				const old_Props = Object.assign(true, defaultsRectangle, oldProps);
-//				let oldxy = xyComput(old_Props);
-//
-//				if (oldxy.x !== newxy.x) {
-//					instance.x += newxy.x - oldxy.x;
-//				}
-//				if (oldxy.y !== newxy.y) {
-//					instance.y += newxy.y - oldxy.y;
-//				}
-//				if (old_Props.size.width !== new_props.size.width) {
-//					instance.width = new_props.size.width;
-//				}
-//				if (old_Props.size.height !== new_props.size.height) {
-//					instance.height = new_props.size.height;
-//				}
-//				if (old_Props.color !== new_props.color) {
-//					instance.beginFill(new_props.color);
-//				}
-//				if (old_Props.opacity !== new_props.opacity) {
-//					instance.alpha = new_props.opacity as number;
-//				}
-//			} */
-//		},
-//	},
-//	"Rectangle"
-//);
-//
-///**
-// * 矩形(自定义PIXI图形)
-// */
-////export const superRectangle = CustomPIXIComponent(
-////	{
-////		customDisplayObject: () => new PIXI.Graphics(),
-////		customApplyProps: (instance: PIXI.Graphics, oldProps, newProps: IPixiShapeRectangle) => {
-////			//这里会产生引用
-////			const new_props = Object.assign(true, DEFAULTRECTANGLE, newProps);
-////
-////			let newxy = xyComput(new_props);
-////			let x = newxy.x;
-////			let y = newxy.y;
-////			instance.clear();
-////			instance.beginFill(new_props.color || 0x0, new_props.opacity);
-////			instance.drawRect(x, y, new_props.size.width, new_props.size.height);
-////			instance.endFill();
-////
-////			/* if (typeof oldProps === "undefined") {
-////				let x = newxy.x;
-////				let y = newxy.y;
-////				instance.clear();
-////				instance.beginFill(new_props.color || 0x0, new_props.opacity);
-////				instance.drawRect(x, y, new_props.size.width, new_props.size.height);
-////				instance.endFill();
-////			} else {
-////				const old_Props = Object.assign(true, defaultsRectangle, oldProps);
-////				let oldxy = xyComput(old_Props);
-////
-////				if (oldxy.x !== newxy.x) {
-////					instance.x += newxy.x - oldxy.x;
-////				}
-////				if (oldxy.y !== newxy.y) {
-////					instance.y += newxy.y - oldxy.y;
-////				}
-////				if (old_Props.size.width !== new_props.size.width) {
-////					instance.width = new_props.size.width;
-////				}
-////				if (old_Props.size.height !== new_props.size.height) {
-////					instance.height = new_props.size.height;
-////				}
-////				if (old_Props.color !== new_props.color) {
-////					instance.beginFill(new_props.color);
-////				}
-////				if (old_Props.opacity !== new_props.opacity) {
-////					instance.alpha = new_props.opacity as number;
-////				}
-////			} */
-////		},
-////	},
-////	"superRectangle"
-////);
-//
-//
-///**
-// * 虚线(自定义PIXI图形)
-// */
-//export const DashedLine = CustomPIXIComponent(
-//	{
-//		customDisplayObject: () => new PIXI.Graphics(),
-//		customApplyProps: (instance: PIXI.Graphics, oldProps, newProps: IPixiShapeDashedLine) => {
-//			let defaults: IPixiShapeDashedLine = {
-//				color: PIXI.utils.string2hex("#000000"),
-//				size: 1,
-//				positionStart: { x: 0, y: 0 },
-//				positionStop: { x: 0, y: 0 },
-//				dashLength: 4,
-//				spaceLength: 3,
-//			};
-//			//这里会产生引用
-//			const props = Object.assign(true, defaults, newProps);
-//			instance.clear();
-//			instance.lineStyle(props.size, props.color);
-//			instance = drawDash(
-//				instance,
-//				props.positionStart.x,
-//				props.positionStart.y,
-//				props.positionStop.x,
-//				props.positionStop.y,
-//				4,
-//				3
-//			);
-//			instance.endFill();
-//		},
-//	},
-//	"DashedLine"
-//);
-//
+});
 
 var XAxis = function XAxis(_ref2, _ref) {
   _objectDestructuringEmpty(_ref2);
@@ -9007,85 +9042,21 @@ var Data = function Data(_ref2, _ref) {
 
     return result;
   };
-  /* 创建candle */
-  //const makeCandle = function () {
-  //	let result: React.JSX.Element[] = [];
-  //
-  //	for (var item of CVData.hookObjs.candleObj.data.displayCandleData) {
-  //		result.push(
-  //			<Sprite
-  //				key={item.time + "_candle"}
-  //				width={item.candleWidth}
-  //				height={item.candleLength!}
-  //				position={{
-  //					x: item.currentTick!.cPosition.x!,
-  //					y: item.candlePixPosition!.y!,
-  //				}}
-  //				texture={PIXI.Texture.WHITE}
-  //				tint={PIXI.utils.string2hex(item.candleColor!)}
-  //				anchor={{ x: 0.5, y: 0 }}
-  //			></Sprite>
-  //		);
-  //	}
-  //	return result;
-  //};
-  //
-  //{
-  //	/* <Rectangle
-  //
-  //				color={PIXI.utils.string2hex(item.candleColor!)}
-  //				size={{
-  //					width: item.candleWidth!,
-  //					height: item.candleLength!,
-  //				}}
-  //				position={{
-  //					x: item.currentTick!.cPosition.x!,
-  //					y: item.candlePixPosition!.y!,
-  //				}}
-  //				alignX="center"
-  //				alignY="top"
-  //			></Rectangle> */
-  //}
-  //
-  ///* 创建wick */
-  //const makeWick = function () {
-  //	let result: React.JSX.Element[] = [];
-  //	let index = 0;
-  //	for (var item of CVData.hookObjs.candleObj.data.displayCandleData) {
-  //		if (!item.isEscaped!) {
-  //			result.push(
-  //				<Sprite
-  //					key={item.time + "_wick"}
-  //					width={item.wickWidth!}
-  //					height={item.wickLength!}
-  //					position={{
-  //						x: item.currentTick!.cPosition.x!,
-  //						y: item.wickPixPosition!.y!,
-  //					}}
-  //					texture={PIXI.Texture.WHITE}
-  //					tint={PIXI.utils.string2hex(item.wickColor!)}
-  //					anchor={{ x: 0.5, y: 0 }}
-  //				></Sprite>
-  //			);
-  //		} else {
-  //			result.push(
-  //				<Sprite
-  //					key={item.time + "_wick"}
-  //					width={0}
-  //					height={0}
-  //					position={{
-  //						x: 0,
-  //						y: 0,
-  //					}}
-  //				></Sprite>
-  //			);
-  //		}
-  //		index++;
-  //	}
-  //
-  //	return result;
-  //};
-  //===============effects==================
+  /* 创建批渲染 */
+
+
+  var makeBatchKline = function makeBatchKline() {
+    var _CVData$initArgs$data9, _CVData$initArgs$data10, _CVData$initArgs$data11, _CVData$initArgs$data12, _CVData$initArgs$data13, _CVData$initArgs$data14, _CVData$initArgs$data15, _CVData$initArgs$data16;
+
+    return React__default.createElement(React__default.Fragment, null, React__default.createElement(KlineBatching, Object.assign({}, {
+      isDQuickUpdateing: CVData.hookObjs.candleObj.data.isDQuickUpdateing,
+      wickRiseColor: (_CVData$initArgs$data9 = CVData.initArgs.data) == null ? void 0 : (_CVData$initArgs$data10 = _CVData$initArgs$data9.candleStyles) == null ? void 0 : _CVData$initArgs$data10.wickRiseColor,
+      wickFallColor: (_CVData$initArgs$data11 = CVData.initArgs.data) == null ? void 0 : (_CVData$initArgs$data12 = _CVData$initArgs$data11.candleStyles) == null ? void 0 : _CVData$initArgs$data12.wickFallColor,
+      candleRiseColor: (_CVData$initArgs$data13 = CVData.initArgs.data) == null ? void 0 : (_CVData$initArgs$data14 = _CVData$initArgs$data13.candleStyles) == null ? void 0 : _CVData$initArgs$data14.candleRiseColor,
+      candleFallColor: (_CVData$initArgs$data15 = CVData.initArgs.data) == null ? void 0 : (_CVData$initArgs$data16 = _CVData$initArgs$data15.candleStyles) == null ? void 0 : _CVData$initArgs$data16.candleFallColor,
+      data: CVData.hookObjs.candleObj.data.displayCandleData
+    })));
+  }; //===============effects==================
 
 
   React.useEffect(function () {
@@ -9098,26 +9069,38 @@ var Data = function Data(_ref2, _ref) {
       setIsMounted(false);
     };
   }, []);
-  var candle = React.useMemo(function () {
-    return function () {
+  var wc = {
+    wick: [],
+    candle: []
+  };
+  var batchKLine = React__default.createElement(React__default.Fragment, null);
+
+  if (CVData.hookObjs.xAxisObj.data.tickArr.length > 120) {
+    batchKLine = React.useMemo(function () {
+      return makeBatchKline();
+    }, [CVData.hookObjs.candleObj.data.displayCandleData, CVData.hookObjs.candleObj.data.isDQuickUpdateing, CVData.initArgs.data.candleStyles.wickFallColor, CVData.initArgs.data.candleStyles.wickFallColor, CVData.initArgs.data.candleStyles.candleFallColor, CVData.initArgs.data.candleStyles.candleRiseColor, _extends({}, CVData.initArgs.timeZone)]);
+  } else {
+    wc = React.useMemo(function () {
+      var result = {
+        wick: [],
+        candle: []
+      };
+
       if (CVData.hookObjs.candleObj.data.displayCandleData.length === 0) {
-        return [];
+        result.wick = [];
+        result.candle = [];
+        return result;
       }
 
       if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
-        return makeCandle();
+        result.candle = makeCandle();
       }
 
-      return [];
-    }();
-  }, [CVData.hookObjs.candleObj.data.displayCandleData, CVData.hookObjs.candleObj.data.isDQuickUpdateing, CVData.initArgs.data.candleStyles.candleFallColor, CVData.initArgs.data.candleStyles.candleRiseColor, _extends({}, CVData.initArgs.timeZone)]);
-  var wick = React.useMemo(function () {
-    if (CVData.hookObjs.candleObj.data.displayCandleData.length === 0) {
-      return null;
-    }
+      result.wick = makeWick();
+      return result;
+    }, [CVData.hookObjs.candleObj.data.displayCandleData, CVData.hookObjs.candleObj.data.isDQuickUpdateing, CVData.initArgs.data.candleStyles.wickFallColor, CVData.initArgs.data.candleStyles.wickFallColor, CVData.initArgs.data.candleStyles.candleFallColor, CVData.initArgs.data.candleStyles.candleRiseColor, _extends({}, CVData.initArgs.timeZone)]);
+  }
 
-    return makeWick();
-  }, [CVData.hookObjs.candleObj.data.displayCandleData, CVData.hookObjs.candleObj.data.isDQuickUpdateing, CVData.initArgs.data.candleStyles.wickFallColor, CVData.initArgs.data.candleStyles.wickFallColor, _extends({}, CVData.initArgs.timeZone)]);
   return React__default.createElement(React__default.Fragment, null, React__default.createElement(react.Container, {
     x: CVData.hookObjs.xAxisObj.data.x,
     y: CVData.hookObjs.candleObj.data.miny,
@@ -9125,7 +9108,13 @@ var Data = function Data(_ref2, _ref) {
       x: 1,
       y: CVData.hookObjs.candleObj.data.yScale
     }
-  }, wick, candle));
+  }, function () {
+    if (CVData.hookObjs.xAxisObj.data.tickArr.length > 120) {
+      return batchKLine;
+    } else {
+      return React__default.createElement(React__default.Fragment, null, wc.wick, wc.candle);
+    }
+  }()));
 }; //使用memo不让其因为上级节点的更新而频繁更新
 
 
@@ -9227,10 +9216,12 @@ var VolumChat = function VolumChat(_ref2, _ref) {
 
   var _useState = React.useState(false),
       isMounted = _useState[0],
-      setIsMounted = _useState[1]; //===============function=================
+      setIsMounted = _useState[1]; //===============static====================
+
+
+  var staticMax = 1; //===============function=================
 
   /* 创建volume */
-
 
   var makeChat = function makeChat() {
     if (!CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.enabled) {
@@ -9244,7 +9235,7 @@ var VolumChat = function VolumChat(_ref2, _ref) {
 
       item = _step.value;
       var alpha = (_CVData$hookObjs$cand = CVData.hookObjs.candleObj.initArgs.candleStyles) == null ? void 0 : (_CVData$hookObjs$cand2 = _CVData$hookObjs$cand.volumChart) == null ? void 0 : _CVData$hookObjs$cand2.alpha;
-      var currentHeight = CVData.hookObjs.candleObj.data.volumChartPixHeight * (Number(item.volume) / CVData.hookObjs.candleObj.data.volumChartViewMax);
+      var currentHeight = CVData.hookObjs.candleObj.data.volumChartPixHeight * (Number(item.volume) / staticMax);
 
       if (!item.isEscaped) {
         result.push(React__default.createElement(Rectangle, {
@@ -9295,58 +9286,27 @@ var VolumChat = function VolumChat(_ref2, _ref) {
 
     return result;
   };
-  /* 		const makeChat = function () {
-            let result: React.JSX.Element[] = [];
-            let index = 0;
-                for (var item of CVData.hookObjs.candleObj.data.displayCandleData) {
-                let alpha = CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart?.alpha;
-                let currentHeight =
-                    CVData.hookObjs.candleObj.data.volumChartPixHeight *
-                    (Number(item.volume) / CVData.hookObjs.candleObj.data.volumChartViewMax);
-                    if (!item.isEscaped!) {
-                    result.push(
-                        <Sprite
-                            key={item.time + "_volume"}
-                            width={(function () {
-                                if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
-                                    return item.candleWidth!;
-                                }
-                                return 1;
-                            })()}
-                            height={currentHeight}
-                            position={{
-                                x: item.currentTick!.cPosition.x!,
-                                y: CVData.hookObjs.xAxisObj.data.linePosition.y,
-                            }}
-                            texture={PIXI.Texture.WHITE}
-                            tint={PIXI.utils.string2hex(
-                                (function () {
-                                    if (
-                                        item.candleColor! ===
-                                        CVData.hookObjs.candleObj.initArgs.candleStyles!.candleRiseColor!
-                                    ) {
-                                        return CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.riseColor!;
-                                    }
-                                    return CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.fallColor!;
-                                })()
-                            )}
-                            alpha={(function () {
-                                if (!CVData.hookObjs.candleObj.data.isDQuickUpdateing) {
-                                    return CVData.hookObjs.candleObj.initArgs.candleStyles!.volumChart!.alpha;
-                                }
-                                return 1;
-                            })()}
-                            anchor="0.5,1"
-                        ></Sprite>
-                    );
-                } else {
-                    result.push(<React.Fragment key={item.time + "_volume"}></React.Fragment>);
-                }
-                    index++;
-            }
-                return result;
-        }; */
-  //===============effects==================
+  /* 批量创建volume */
+
+
+  var makeChatBatching = function makeChatBatching() {
+    var _CVData$hookObjs$cand3, _CVData$hookObjs$cand4;
+
+    if (!CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.enabled) {
+      return [];
+    }
+
+    return React__default.createElement(React__default.Fragment, null, React__default.createElement(VolumeBatching, Object.assign({}, {
+      alpha: (_CVData$hookObjs$cand3 = CVData.hookObjs.candleObj.initArgs.candleStyles) == null ? void 0 : (_CVData$hookObjs$cand4 = _CVData$hookObjs$cand3.volumChart) == null ? void 0 : _CVData$hookObjs$cand4.alpha,
+      staticMax: staticMax,
+      volumChartPixHeight: CVData.hookObjs.candleObj.data.volumChartPixHeight,
+      riseColor: CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.riseColor,
+      fallColor: CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.fallColor,
+      isDQuickUpdateing: CVData.hookObjs.candleObj.data.isDQuickUpdateing,
+      linePositionY: CVData.hookObjs.xAxisObj.data.linePosition.y,
+      data: CVData.hookObjs.candleObj.data.displayCandleData
+    })));
+  }; //===============effects==================
 
 
   React.useEffect(function () {
@@ -9360,10 +9320,23 @@ var VolumChat = function VolumChat(_ref2, _ref) {
     };
   }, []);
   var chat = React.useMemo(function () {
-    return makeChat();
+    if (CVData.hookObjs.xAxisObj.data.tickArr.length > 120) {
+      return makeChatBatching();
+    } else {
+      return makeChat();
+    }
   }, [CVData.hookObjs.candleObj.data.displayCandleData, CVData.hookObjs.candleObj.data.isDQuickUpdateing, CVData.hookObjs.candleObj.data.volumChartViewMax, CVData.hookObjs.candleObj.data.volumChartPixHeight, CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.riseColor, CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.fallColor, CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.alpha, CVData.hookObjs.candleObj.initArgs.candleStyles.volumChart.enabled]);
+  var scale = //用允许的最大高度 / 当前图像里的最大高度 = 需要缩放的值
+  CVData.hookObjs.candleObj.data.volumChartPixHeight / (CVData.hookObjs.candleObj.data.volumChartPixHeight * (Number(CVData.hookObjs.candleObj.data.volumChartViewMax) / staticMax)); //y轴位置也要减去刚刚计算的缩放
+
+  var containerY = CVData.hookObjs.xAxisObj.data.linePosition.y - CVData.hookObjs.xAxisObj.data.linePosition.y * scale;
   return React__default.createElement(React__default.Fragment, null, React__default.createElement(react.Container, {
-    x: CVData.hookObjs.xAxisObj.data.x
+    x: CVData.hookObjs.xAxisObj.data.x,
+    y: containerY,
+    scale: {
+      x: 1,
+      y: scale
+    }
   }, chat));
 }; //使用memo不让其因为上级节点的更新而频繁更新
 
