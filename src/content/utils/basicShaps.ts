@@ -101,7 +101,12 @@ export const KlineBatching = PixiComponent<IPixiKlineBatching, Graphics>(
           /**
            * 颜色
            */
-          color: utils.string2hex(getColor(item!.candleStateus!, 'wick')),
+          color: (function() {
+            if (!new_props.isDQuickUpdateing) {
+              return utils.string2hex(getColor(item!.candleStateus!, 'wick'));
+            }
+            return utils.string2hex(getColor(item!.candleStateus!, 'candle'));
+          })(),
           /**
            * 尺寸
            */
@@ -147,7 +152,7 @@ export const KlineBatching = PixiComponent<IPixiKlineBatching, Graphics>(
             /**
              * 颜色
              */
-            color: utils.string2hex(getColor(item!.candleStateus!, 'wick')),
+            color: utils.string2hex(getColor(item!.candleStateus!, 'candle')),
             /**
              * 尺寸
              */
