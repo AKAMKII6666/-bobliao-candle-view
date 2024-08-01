@@ -243,12 +243,7 @@ export interface IAxisobj {
 		 *@param {number | string} yAxisLabelSpace y轴的label空间
 		 *@returns {void}
 		 */
-		initAxisSates: (
-			timeType: TtimeType,
-			viewWidth: number,
-			viewHeight: number,
-			yAxisLabelSpace: number | string
-		) => void;
+		initAxisSates: (timeType: TtimeType, viewWidth: number, viewHeight: number, yAxisLabelSpace: number | string) => void;
 		/**
 		 * 更新轴
 		 *@param  {number} viewWidth 界面的全量宽度

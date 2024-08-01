@@ -537,14 +537,9 @@ const candleViewHook = useCandleView({
 });
 ```
 
-
-
 ---
 
 ## 暴露的方法:
-
-
-
 
 ```javascript
   //使用组件提供的钩子
@@ -596,7 +591,6 @@ const candleViewHook = useCandleView({
     displayTimeZone: 0,
   });
 ```
-
 
 ---
 
@@ -702,7 +696,7 @@ const candleViewHook = useCandleView({
         //  wickStateus?: "rise" | "fall";
         //}
 
-        
+
       },
       [candleViewHook.hookObjs.candleObj.data.latestCandleItem]
     );
@@ -712,38 +706,28 @@ const candleViewHook = useCandleView({
    */
   useEffect(
       function(): ReturnType<React.EffectCallback> {
-        
+
       },
       [candleViewHook.data.canvasWidth,candleViewHook.data.cursorCandleItem]
     );
-
 ```
 
-
 ---
+
 Producted by bobliao
 ---
+
 如果有任何问题欢迎联系:
 QQ:281191341
 tel:18681449125
 微信:18681449125
+
 ---
+
 长期维护，需要什么功能也可以联系我，及时更新。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # English
+
 =======================================================
 
 # **🚀CandleView🚀 For Reactjs !**
@@ -756,13 +740,14 @@ A K-line diagram component for use in Reactjs
 
 ---
 
-#### Function Outline 
+#### Function Outline
 
 The component is used to display the candlestick chart and trading volume data.
 
 ---
 
 The main functions of components:
+
 1. The X-axis is displayed in calendar format, and all times marked on the X-axis are integer times. Formatter can be configured
 2. The Y-axis automatically searches for integers and does not display too many decimals. Formatter can be configured
 3. Support static K-line data
@@ -1102,14 +1087,9 @@ const candleViewHook = useCandleView({
 });
 ```
 
-
-
 ---
 
 ## Methods of exposure:
-
-
-
 
 ```javascript
     // Using the hook provided by the component
@@ -1169,7 +1149,6 @@ const candleViewHook = useCandleView({
         displayTimeZone: 0,
     });
 ```
-
 
 ---
 
@@ -1275,7 +1254,7 @@ const candleViewHook = useCandleView({
         //  wickStatus?: "rise" | "fall",
         //}
 
-        
+
       },
       [candleViewHook.hookObjs.candleObj.data.latestCandleItem]
     );
@@ -1289,18 +1268,20 @@ const candleViewHook = useCandleView({
       },
       [candleViewHook.data.canvasWidth,candleViewHook.data.cursorCandleItem]
     );
-
 ```
 
-
 ---
+
 Producted by bobliao
 ---
+
 If you have any questions, please feel free to contact me:
 ---
+
 QQ:281191341
 tel:18681449125
 wechat:18681449125
----
-Long term maintenance, please feel free to contact me for any necessary functions and updates in a timely manner.
 
+---
+
+Long term maintenance, please feel free to contact me for any necessary functions and updates in a timely manner.

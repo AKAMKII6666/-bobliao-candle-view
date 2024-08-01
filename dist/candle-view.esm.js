@@ -734,7 +734,7 @@ var useThrottle = function useThrottle() {
    */
 
   var Throttle = function Throttle(_func, _time) {
-    if (typeof _time === "undefined") {
+    if (typeof _time === 'undefined') {
       _time = 500;
     }
 
@@ -3394,7 +3394,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       setIsMounted = _useState8[1]; //移动的运动方向
 
 
-  var _useState9 = useState("add"),
+  var _useState9 = useState('add'),
       moveDirection = _useState9[0],
       setmoveDirection = _useState9[1];
   /**
@@ -3579,7 +3579,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
    */
 
 
-  var _useState31 = useState(""),
+  var _useState31 = useState(''),
       lineColor = _useState31[0],
       setlineColor = _useState31[1];
   /**
@@ -3769,7 +3769,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
 
   var updateTicks = function updateTicks(targetTickArr, timeScope, isComputCommonProp, _moveAmount, moveDir) {
-    if (moveDir === "add" || moveDir === "all") {
+    if (moveDir === 'add' || moveDir === 'all') {
       var forwardArr = timeSpeculation_forward(targetTickArr[targetTickArr.length - 1].value, timeScope.end);
 
       if (forwardArr.length > 1) {
@@ -3781,7 +3781,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       }
     }
 
-    if (moveDir === "min" || moveDir === "all") {
+    if (moveDir === 'min' || moveDir === 'all') {
       var backwardArr = timeSpeculation_backrward(targetTickArr[0].value, timeScope.start);
 
       if (backwardArr.length > 1) {
@@ -3838,7 +3838,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
   var updateDisplayTicks = function updateDisplayTicks(targetTickArr, newTickArr) {
     //将tickArr转换成hash 方便查找
-    var newTickHash = arrayToHash(newTickArr, "value"); //往前扩展
+    var newTickHash = arrayToHash(newTickArr, 'value'); //往前扩展
     //取最早的值
 
     var correspondItem;
@@ -3850,7 +3850,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       //获得下一个 step
       nextStep = nextStep - 1 - tickStep;
 
-      if (typeof newTickArr[nextStep] === "undefined") {
+      if (typeof newTickArr[nextStep] === 'undefined') {
         break;
       } else {
         targetTickArr.unshift(newTickArr[nextStep]);
@@ -3865,7 +3865,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       //获得下一个 step
       nextStep = nextStep + 1 + tickStep;
 
-      if (typeof newTickArr[nextStep] === "undefined") {
+      if (typeof newTickArr[nextStep] === 'undefined') {
         break;
       } else {
         targetTickArr.unshift(newTickArr[nextStep]);
@@ -4153,13 +4153,13 @@ var usexAxis = function usexAxis(args, igorn, config) {
       }
     }
 
-    var displayTickArr2Map = arrayToHash(displayTickArr2, "value");
+    var displayTickArr2Map = arrayToHash(displayTickArr2, 'value');
     var result = [];
 
     for (var _iterator6 = _createForOfIteratorHelperLoose(displayTickArr1), _step6; !(_step6 = _iterator6()).done;) {
       var item = _step6.value;
 
-      if (typeof displayTickArr2Map[item.value] !== "undefined") {
+      if (typeof displayTickArr2Map[item.value] !== 'undefined') {
         result.push(displayTickArr2Map[item.value]);
       } else {
         result.push(item);
@@ -4180,7 +4180,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     for (var i = xCondition.count; i > -1; i--) {
       currentIndex = currentIndex - 1 - xCondition.step;
 
-      if (typeof tickArr[currentIndex] === "undefined") {
+      if (typeof tickArr[currentIndex] === 'undefined') {
         break;
       }
 
@@ -4199,11 +4199,11 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
   var createAxisData = function createAxisData() {
     /*
-        1.获得初始的时间范围
-        1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
-        1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
-        1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
-    */
+            1.获得初始的时间范围
+            1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
+            1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
+            1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
+        */
 
     /**
      * 粗糙时间范围
@@ -4212,7 +4212,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     //就需要把起始的时区算成GMT +0000
 
 
-    if (config.timeZone.displayTimeZone !== "local") {
+    if (config.timeZone.displayTimeZone !== 'local') {
       var date = new Date();
       var localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
       _flexTimeScope.start = anyTimeToGMT0000ToTarget(_flexTimeScope.start, localtimeZone, config.timeZone.displayTimeZone);
@@ -4240,7 +4240,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
     var _tickerArr = createTickers(realTimeArr, _flexTimeScope, true, 0); //挑选出所有按时间整数排列的等差数列的参数
 
 
-    var displayTickRoundValuesArray = findRoundTimeCountFromArray(_tickerArr, config.timeZone.displayTimeZone, config.timeFormat, "value");
+    var displayTickRoundValuesArray = findRoundTimeCountFromArray(_tickerArr, config.timeZone.displayTimeZone, config.timeFormat, 'value');
 
     var _displayTickerArr;
 
@@ -4325,10 +4325,10 @@ var usexAxis = function usexAxis(args, igorn, config) {
       var _moveAmount = pureLength + moveAmount; //加还是减
 
 
-      var sign = "add";
+      var sign = 'add';
 
       if (length > 0) {
-        sign = "min";
+        sign = 'min';
       }
 
       setmoveDirection(sign);
@@ -4338,7 +4338,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
       var changeScope = Number(((lastTimeScope.end - lastTimeScope.start) * prec).toFixed(0));
 
-      if (sign === "min") {
+      if (sign === 'min') {
         changeScope = 0 - changeScope;
       } //从新计算currentTimeScope
 
@@ -4360,18 +4360,18 @@ var usexAxis = function usexAxis(args, igorn, config) {
 
       var newTicks = updateTicks(resultInterArr, _currentTimeScope, false, _moveAmount, function () {
         if (pureLength + moveAmount - x > 0) {
-          return "min";
+          return 'min';
         }
 
-        return "add";
+        return 'add';
       }());
       /* let displayTickRoundValuesArray = findRoundTimeCountFromArray(
-          newTicks as unknown as jsonObjectType[],
-          "value"
-      ); */
+                newTicks as unknown as jsonObjectType[],
+                "value"
+            ); */
       //挑选出所有按时间整数排列的等差数列的参数
 
-      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, "value");
+      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, 'value');
 
       var _displayTickerArr;
 
@@ -4427,12 +4427,12 @@ var usexAxis = function usexAxis(args, igorn, config) {
       return;
     }
 
-    if (tickArr.length > 24 * 60 * 2 && movement === "zoomOut") {
+    if (tickArr.length > 24 * 60 * 2 && movement === 'zoomOut') {
       return;
     } //最小缩放
 
 
-    if (tickArr.length <= netLineMinCount && movement === "zoomIn") {
+    if (tickArr.length <= netLineMinCount && movement === 'zoomIn') {
       return;
     }
 
@@ -4452,14 +4452,14 @@ var usexAxis = function usexAxis(args, igorn, config) {
         end: total * rightPrecent
       };
 
-      if (movement === "zoomIn") {
+      if (movement === 'zoomIn') {
         _currentTimeScope = {
           start: _currentTimeScope.start + q.start,
           end: _currentTimeScope.end - q.end
         };
       }
 
-      if (movement === "zoomOut") {
+      if (movement === 'zoomOut') {
         _currentTimeScope = {
           start: _currentTimeScope.start - q.start,
           end: _currentTimeScope.end + q.end
@@ -4487,9 +4487,9 @@ var usexAxis = function usexAxis(args, igorn, config) {
        */
 
 
-      var newTicks = updateTicks(resultInterArr, _currentTimeScope, true, 0, "all"); //挑选出所有按时间整数排列的等差数列的参数
+      var newTicks = updateTicks(resultInterArr, _currentTimeScope, true, 0, 'all'); //挑选出所有按时间整数排列的等差数列的参数
 
-      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, "value");
+      var displayTickRoundValuesArray = findRoundTimeCountFromArray(newTicks, config.timeZone.displayTimeZone, config.timeFormat, 'value');
 
       var _displayTickerArr;
 
@@ -4566,7 +4566,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
       } //通过像素位置进行二分法查找目标tick
 
 
-      var _tickItem = findTick(tooltipX - moveAmount, "pixSpace");
+      var _tickItem = findTick(tooltipX - moveAmount, 'pixSpace');
 
       if (_tickItem === null) {
         setTooltipState(null);
@@ -4616,7 +4616,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
   var resize = function resize() {
     if (isFinishedInit) {
       window.requestAnimationFrame(function () {
-        scale(viewSize.width / 2, 0, "keep");
+        scale(viewSize.width / 2, 0, 'keep');
       });
     }
   };
@@ -4626,7 +4626,7 @@ var usexAxis = function usexAxis(args, igorn, config) {
   var reGenXAxis = function reGenXAxis() {
     if (isFinishedInit) {
       window.requestAnimationFrame(function () {
-        scale(viewSize.width / 2, 0, "keep");
+        scale(viewSize.width / 2, 0, 'keep');
       });
     }
   };
@@ -5464,19 +5464,19 @@ var useyAxis = function useyAxis(args, xAxis) {
  * 数据处理钩子
  *
  * 1.静态模式下拿到数据的处理步骤
- *   1.1 全部由过去到现在进行一遍排序
- *   1.2 检查 data[0] ~ data[1] 的时间范围是否为当前设置的时间类型的时间范围：
- *      1.2.1 如果比当前设置的时间范围小，就进行归并
- *      1.2.3 归并之后的数据放进allComputedCandleData堆里
- *      1.2.4 如果比当前设置的时间范围大，就不进行任何操作，直接停止更新。
- *      1.2.4 如果等于当前设置的时间范围，就不进行归并操作，放进allComputedCandleData堆里。
- *   1.3 根据x轴的tick 在 allComputedCandleData里找到的数据生成并计算完位置等信息后放进 displayCandleData
- *   1.4 根据上面1.3的计算更新y轴的范围
+ *	 1.1 全部由过去到现在进行一遍排序
+ *	 1.2 检查 data[0] ~ data[1] 的时间范围是否为当前设置的时间类型的时间范围：
+ *			1.2.1 如果比当前设置的时间范围小，就进行归并
+ *			1.2.3 归并之后的数据放进allComputedCandleData堆里
+ *			1.2.4 如果比当前设置的时间范围大，就不进行任何操作，直接停止更新。
+ *			1.2.4 如果等于当前设置的时间范围，就不进行归并操作，放进allComputedCandleData堆里。
+ *	 1.3 根据x轴的tick 在 allComputedCandleData里找到的数据生成并计算完位置等信息后放进 displayCandleData
+ *	 1.4 根据上面1.3的计算更新y轴的范围
  *
  *
  * 2.静态模式下移动和缩放时响应的方式：
- *   2.1 根据x轴的tick 在 allComputedCandleData里找到的数据生成并计算完位置等信息后放进 displayCandleData
- *   2.2 根据上面1.3的计算更新y轴的范围
+ *	 2.1 根据x轴的tick 在 allComputedCandleData里找到的数据生成并计算完位置等信息后放进 displayCandleData
+ *	 2.2 根据上面1.3的计算更新y轴的范围
  *
  * 但不是每次移动都这样，需要一个响亮来进行控制，当拖动速度很快时只进行移动计算，不往 displayarr里加入任何东西 只计算视图内的数据，同时发起webworker离线计算接下来可能要更新的数据
  *当速度小于某个值的时候，就把webworker算好的数据更新进来
@@ -6348,7 +6348,7 @@ var useCandleHook = function useCandleHook(args, xAxis, yAxis, baseConfig) {
     } else {
       //如果是一致的，就直接将这些数据放进堆里
       dataScope = putDataIntoAllComputedCandleData(_orgCandleData);
-    } //dataScope  这个scope是指所有数据的scope,并不是当前屏幕显示范围的scope
+    } //dataScope	这个scope是指所有数据的scope,并不是当前屏幕显示范围的scope
     //用于显示的数据
 
 
@@ -7825,7 +7825,7 @@ var useDebounce = function useDebounce() {
    */
 
   var debounce = function debounce(_func, _time) {
-    if (typeof _time === "undefined") {
+    if (typeof _time === 'undefined') {
       _time = 500;
     }
 

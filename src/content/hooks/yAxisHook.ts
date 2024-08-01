@@ -1,14 +1,7 @@
-import { createContext, useState, useContext, useRef, useCallback, useEffect, FC, ReactElement } from "react";
+import { useState, useEffect } from "react";
 
-import {} from "../interface/contextInterFace";
 import { pointCoord } from "../interface/itemsInterFace";
-import {
-	getDecimalOfLength,
-	getIntOfLength,
-	getSpaceSize,
-	roundToNearestTenBigNumber,
-	shiftNumber,
-} from "../utils/consts";
+import { getSpaceSize, roundToNearestTenBigNumber, shiftNumber } from "../utils/consts";
 import _bigNumber from "bignumber.js";
 import { Iaxis } from "../interface/configInterFaces";
 import { IAxisobj, IyAxisobj } from "../interface/hooksInterFace";
@@ -170,20 +163,12 @@ const useyAxis = function (args: Iaxis, xAxis?: IAxisobj): IyAxisobj {
 	 */
 	const updateAxisSates = function (viewWidth: number, viewHeight: number, dataScope: numberScope) {
 		let _dataScope: numberScopeString = {
-			start: new _bigNumber(dataScope.start)
-				.times(new _bigNumber(10).exponentiatedBy(_shiftLength).toFixed())
-				.toFixed(0),
-			end: new _bigNumber(dataScope.end)
-				.times(new _bigNumber(10).exponentiatedBy(_shiftLength).toFixed())
-				.toFixed(0),
+			start: new _bigNumber(dataScope.start).times(new _bigNumber(10).exponentiatedBy(_shiftLength).toFixed()).toFixed(0),
+			end: new _bigNumber(dataScope.end).times(new _bigNumber(10).exponentiatedBy(_shiftLength).toFixed()).toFixed(0),
 		};
 		let scopeResult = expandDataSpanceEdge(_dataScope);
 
-		if (
-			viewWidth === viewSize.width &&
-			viewHeight === viewSize.height &&
-			scopeResult.dataScope === currentDataScope
-		) {
+		if (viewWidth === viewSize.width && viewHeight === viewSize.height && scopeResult.dataScope === currentDataScope) {
 			return;
 		}
 		/* 设置各项属性 */
@@ -381,12 +366,7 @@ const useyAxis = function (args: Iaxis, xAxis?: IAxisobj): IyAxisobj {
 				cPosition: {
 					x: linePosition.x,
 					y: (function () {
-						let pre = Number(
-							new _bigNumber(item)
-								.minus(currentDataScope.start)
-								.div(currentDataSpace)
-								.toFixed(_shiftLength)
-						);
+						let pre = Number(new _bigNumber(item).minus(currentDataScope.start).div(currentDataSpace).toFixed(_shiftLength));
 						return lineSize.height - lineSize.height * pre;
 					})(),
 				},
@@ -412,12 +392,7 @@ const useyAxis = function (args: Iaxis, xAxis?: IAxisobj): IyAxisobj {
 				cPosition: {
 					x: 0,
 					y: (function () {
-						let pre = Number(
-							new _bigNumber(item)
-								.minus(currentDataScope.start)
-								.div(currentDataSpace)
-								.toFixed(_shiftLength)
-						);
+						let pre = Number(new _bigNumber(item).minus(currentDataScope.start).div(currentDataSpace).toFixed(_shiftLength));
 						return lineSize.height - lineSize.height * pre;
 					})(),
 				},

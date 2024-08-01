@@ -4,18 +4,7 @@
  * 模块说明：
  * 编写时间：
  */
-import React, {
-	useEffect,
-	useRef,
-	useState,
-	forwardRef,
-	useImperativeHandle,
-	FC,
-	ReactElement,
-	memo,
-	LegacyRef,
-	useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle, FC, ReactElement, memo, LegacyRef, useMemo } from "react";
 import { Stage, Graphics, Container, Text } from "@pixi/react";
 import * as PIXI from "pixi.js";
 import { DashedLine, Rectangle } from "../utils/basicShaps";
@@ -83,9 +72,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					alignY="center"
 				></Rectangle>
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip?.label?.color!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip?.label?.color!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.tickLength,
 						height: CVData.hookObjs.candleObj.data.latestCandleToolTip.size,
@@ -110,11 +97,8 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					resolution={2}
 					style={
 						new PIXI.TextStyle({
-							fontSize:
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip?.label?.fontsize,
-							fill: PIXI.utils.string2hex(
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip?.label?.color!
-							),
+							fontSize: CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip?.label?.fontsize,
+							fill: PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip?.label?.color!),
 						})
 					}
 				/>
@@ -135,9 +119,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 		return (
 			<>
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.backGroundColor!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.backGroundColor!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.labelSpace,
 						height: lastDataTooltipTextRef2.current?.height + labelPadding,
@@ -148,14 +130,10 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					}}
 					alignX="left"
 					alignY="center"
-					opacity={
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.backGroundAlpha
-					}
+					opacity={CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.backGroundAlpha}
 				></Rectangle>
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.color!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.color!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.tickLength,
 						height: CVData.hookObjs.candleObj.data.latestdisplayLatestCandle.size,
@@ -180,11 +158,8 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					resolution={2}
 					style={
 						new PIXI.TextStyle({
-							fontSize:
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.fontsize,
-							fill: PIXI.utils.string2hex(
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.color!
-							),
+							fontSize: CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.fontsize,
+							fill: PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.viewLastPriceTooltip?.label?.color!),
 						})
 					}
 				/>
@@ -205,28 +180,19 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 		return (
 			<>
 				<DashedLine
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip!.color!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip!.color!)}
 					size={CVData.hookObjs.candleObj.data.latestVolumeToolTip.size}
 					positionStart={CVData.hookObjs.candleObj.data.latestVolumeToolTip.position}
 					positionStop={{
 						x: CVData.hookObjs.candleObj.data.latestVolumeToolTip.length,
 						y: CVData.hookObjs.candleObj.data.latestVolumeToolTip.position.y,
 					}}
-					dashLength={
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip!.dashLength!
-					}
-					spaceLength={
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip!.spaceLength!
-					}
+					dashLength={CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip!.dashLength!}
+					spaceLength={CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip!.spaceLength!}
 				></DashedLine>
 
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label
-							?.backGroundColor!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label?.backGroundColor!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.labelSpace,
 						height: lastDataTooltipTextRef3.current?.height + labelPadding,
@@ -239,9 +205,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					alignY="center"
 				></Rectangle>
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label?.color!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label?.color!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.tickLength,
 						height: CVData.hookObjs.candleObj.data.latestVolumeToolTip.size,
@@ -259,8 +223,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					x={CVData.hookObjs.yAxisObj.data.linePosition.x + CVData.hookObjs.yAxisObj.data.tickLength * 2}
 					y={CVData.hookObjs.candleObj.data.latestVolumeToolTip.position.y}
 					text={
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label
-							?.formatter!(
+						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label?.formatter!(
 							CVData.hookObjs.candleObj.data.latestVolumeToolTip,
 							CVData.initArgs.language
 						) as string
@@ -268,13 +231,8 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					resolution={2}
 					style={
 						new PIXI.TextStyle({
-							fontSize:
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label
-									?.fontsize,
-							fill: PIXI.utils.string2hex(
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label
-									?.color!
-							),
+							fontSize: CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label?.fontsize,
+							fill: PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.currentPriceTooltip?.label?.color!),
 						})
 					}
 				/>
@@ -295,10 +253,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 		return (
 			<>
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label
-							?.backGroundColor!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.backGroundColor!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.labelSpace,
 						height: lastDataTooltipTextRef4.current?.height + labelPadding,
@@ -309,15 +264,10 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					}}
 					alignX="left"
 					alignY="center"
-					opacity={
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label
-							?.backGroundAlpha
-					}
+					opacity={CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.backGroundAlpha}
 				></Rectangle>
 				<Rectangle
-					color={PIXI.utils.string2hex(
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.color!
-					)}
+					color={PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.color!)}
 					size={{
 						width: CVData.hookObjs.yAxisObj.data.tickLength,
 						height: CVData.hookObjs.candleObj.data.latestdisplayLatestVolume.size,
@@ -335,8 +285,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					x={CVData.hookObjs.yAxisObj.data.linePosition.x + CVData.hookObjs.yAxisObj.data.tickLength * 2}
 					y={CVData.hookObjs.candleObj.data.latestdisplayLatestVolume.position.y}
 					text={
-						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label
-							?.formatter!(
+						CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.formatter!(
 							CVData.hookObjs.candleObj.data.latestdisplayLatestVolume,
 							CVData.initArgs.language
 						) as string
@@ -344,13 +293,8 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 					resolution={2}
 					style={
 						new PIXI.TextStyle({
-							fontSize:
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label
-									?.fontsize,
-							fill: PIXI.utils.string2hex(
-								CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label
-									?.color!
-							),
+							fontSize: CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.fontsize,
+							fill: PIXI.utils.string2hex(CVData.hookObjs.candleObj.initArgs.candleStyles?.volumChart!.viewLastPriceTooltip?.label?.color!),
 						})
 					}
 				/>
@@ -404,11 +348,7 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 		function () {
 			return makeLastCandleTooltip();
 		},
-		[
-			{ ...CVData.hookObjs.candleObj.data.latestCandleToolTip },
-			updateTemp,
-			{ ...CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip! },
-		]
+		[{ ...CVData.hookObjs.candleObj.data.latestCandleToolTip }, updateTemp, { ...CVData.hookObjs.candleObj.initArgs.candleStyles?.currentPriceTooltip! }]
 	);
 
 	let LastVolumeTooltip = useMemo(

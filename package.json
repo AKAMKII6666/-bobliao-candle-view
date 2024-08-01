@@ -27,12 +27,6 @@
       "pre-commit": "tsdx lint"
     }
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
   "name": "@bobliao/candle-view",
   "repository": {
     "type": "git",
@@ -60,6 +54,7 @@
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18",
     "husky": "^7.0.4",
+    "prettier": "^3.3.3",
     "react": "^18",
     "react-dom": "^18",
     "react-helmet": "^6.1.0",

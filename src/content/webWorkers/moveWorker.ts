@@ -120,14 +120,8 @@ webWorker.addEventListener("message", (event) => {
 			//全量渲染
 		} else {
 			try {
-				dataitem.candleWidth = getSpaceSize(
-					initArgs_candleStyles_candleWidth,
-					xAxis_data_displayTickCommonpixWidth
-				);
-				dataitem.wickWidth = getSpaceSize(
-					initArgs_candleStyles_wickWidth,
-					xAxis_data_displayTickCommonpixWidth
-				);
+				dataitem.candleWidth = getSpaceSize(initArgs_candleStyles_candleWidth, xAxis_data_displayTickCommonpixWidth);
+				dataitem.wickWidth = getSpaceSize(initArgs_candleStyles_wickWidth, xAxis_data_displayTickCommonpixWidth);
 			} catch (_e) {}
 
 			dataitem.candlePixPosition = {
@@ -209,9 +203,7 @@ webWorker.addEventListener("message", (event) => {
 	 * @param dataScope 范围
 	 * @returns
 	 */
-	const findDataByTicks = function (
-		tickArr: tickItem[]
-	): IcandleData[] | { data: IcandleData[]; scope: numberScopeString; maxVolume: number } {
+	const findDataByTicks = function (tickArr: tickItem[]): IcandleData[] | { data: IcandleData[]; scope: numberScopeString; maxVolume: number } {
 		let result: IcandleData[] = [];
 		let _displayCandleMaxMin: numberScopeString = {
 			/**
@@ -315,10 +307,8 @@ webWorker.addEventListener("message", (event) => {
 			}
 		} else {
 			if (
-				Math.max(
-					Number(item.candlePixPosition?.y) + Number(item.candleLength),
-					Number(item.wickPixPosition?.y) + Number(item.wickLength)
-				) > orgMaxMiny.start
+				Math.max(Number(item.candlePixPosition?.y) + Number(item.candleLength), Number(item.wickPixPosition?.y) + Number(item.wickLength)) >
+				orgMaxMiny.start
 			) {
 				//求（像素）y最大值
 				orgMaxMiny.start = Math.max(

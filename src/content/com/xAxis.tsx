@@ -4,18 +4,7 @@
  * 模块说明：
  * 编写时间：
  */
-import React, {
-	useEffect,
-	useRef,
-	useState,
-	forwardRef,
-	useImperativeHandle,
-	FC,
-	ReactElement,
-	memo,
-	LegacyRef,
-	useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle, FC, ReactElement, memo, LegacyRef, useMemo } from "react";
 import { Stage, Graphics, Container, Text } from "@pixi/react";
 import * as PIXI from "pixi.js";
 import { DashedLine, Rectangle } from "../utils/basicShaps";
@@ -131,12 +120,7 @@ const XAxis: FC<iprops> = ({}, _ref): ReactElement => {
 						height: CVData.hookObjs.xAxisObj.data.labelSpace,
 					}}
 					position={(function () {
-						if (
-							CVData.hookObjs.xAxisObj.data.tooltipState.position.x -
-								tooltipTextRef.current?.width / 2 -
-								labelPadding / 2 <
-							0
-						) {
+						if (CVData.hookObjs.xAxisObj.data.tooltipState.position.x - tooltipTextRef.current?.width / 2 - labelPadding / 2 < 0) {
 							return {
 								x: tooltipTextRef.current?.width / 2 + labelPadding / 2,
 								y: CVData.hookObjs.xAxisObj.data.tooltipState.relatedTickItem!.cPosition.y,
@@ -144,16 +128,11 @@ const XAxis: FC<iprops> = ({}, _ref): ReactElement => {
 						}
 
 						if (
-							CVData.hookObjs.xAxisObj.data.tooltipState.position.x +
-								tooltipTextRef.current?.width / 2 +
-								labelPadding / 2 >
+							CVData.hookObjs.xAxisObj.data.tooltipState.position.x + tooltipTextRef.current?.width / 2 + labelPadding / 2 >
 							CVData.hookObjs.xAxisObj.data.lineSize.width
 						) {
 							return {
-								x:
-									CVData.hookObjs.xAxisObj.data.lineSize.width -
-									tooltipTextRef.current?.width / 2 -
-									labelPadding / 2,
+								x: CVData.hookObjs.xAxisObj.data.lineSize.width - tooltipTextRef.current?.width / 2 - labelPadding / 2,
 								y: CVData.hookObjs.xAxisObj.data.tooltipState.relatedTickItem!.cPosition.y,
 							};
 						}
@@ -182,35 +161,20 @@ const XAxis: FC<iprops> = ({}, _ref): ReactElement => {
 					ref={tooltipTextRef}
 					anchor={0.5}
 					x={(function () {
-						if (
-							CVData.hookObjs.xAxisObj.data.tooltipState.position.x -
-								tooltipTextRef.current?.width / 2 -
-								labelPadding / 2 <
-							0
-						) {
+						if (CVData.hookObjs.xAxisObj.data.tooltipState.position.x - tooltipTextRef.current?.width / 2 - labelPadding / 2 < 0) {
 							return tooltipTextRef.current?.width / 2 + labelPadding / 2;
 						}
 
 						if (
-							CVData.hookObjs.xAxisObj.data.tooltipState.position.x +
-								tooltipTextRef.current?.width / 2 +
-								labelPadding / 2 >
+							CVData.hookObjs.xAxisObj.data.tooltipState.position.x + tooltipTextRef.current?.width / 2 + labelPadding / 2 >
 							CVData.hookObjs.xAxisObj.data.lineSize.width
 						) {
-							return (
-								CVData.hookObjs.xAxisObj.data.lineSize.width -
-								tooltipTextRef.current?.width / 2 -
-								labelPadding / 2
-							);
+							return CVData.hookObjs.xAxisObj.data.lineSize.width - tooltipTextRef.current?.width / 2 - labelPadding / 2;
 						}
 						return CVData.hookObjs.xAxisObj.data.tooltipState.position.x;
 					})()}
 					y={CVData.hookObjs.xAxisObj.data.tooltipState.length + CVData.hookObjs.xAxisObj.data.labelSpace / 2}
-					text={
-						CVData.hookObjs.xAxisObj.initArgs.tooltip?.label?.formatter!(
-							CVData.hookObjs.xAxisObj.data.tooltipState.relatedTickItem!
-						) as string
-					}
+					text={CVData.hookObjs.xAxisObj.initArgs.tooltip?.label?.formatter!(CVData.hookObjs.xAxisObj.data.tooltipState.relatedTickItem!) as string}
 					resolution={2}
 					style={
 						new PIXI.TextStyle({

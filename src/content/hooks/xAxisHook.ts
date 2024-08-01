@@ -1,52 +1,18 @@
-import { createContext, useState, useContext, useRef, useCallback, useEffect, FC, ReactElement } from "react";
+import { useState, useEffect } from "react";
 
 import { pointCoord } from "../interface/itemsInterFace";
-import {
-	anyTimeToGMT0000ToTarget,
-	arrayToHash,
-	findIntersection,
-	getRangePosition,
-	getSpaceSize,
-	hasDuplicates,
-	localTimeToGMT0000,
-} from "../utils/consts";
-import useThrottle from "./throttleHook";
+import { anyTimeToGMT0000ToTarget, arrayToHash, findIntersection, getRangePosition, getSpaceSize } from "../utils/consts";
 import { IAxisobj, IuseCandleHook, TAxis } from "../interface/hooksInterFace";
 import { Iaxis } from "../interface/configInterFaces";
 import { DEFAULTAXISVALUES } from "../utils/defaultValues";
-import {
-	DAY,
-	FIFMIN,
-	FMIN,
-	HALFHOUR,
-	HOUR,
-	MONTH,
-	ONEMIN,
-	TENMIN,
-	THREE,
-	TWO,
-	WEEK,
-	YEAR,
-	findRoundTimeCountFromArray,
-	timeTypeMap,
-} from "../utils/timeFormatDefine";
-import {
-	IToolTipItem,
-	findRoundTimeCountFromArrayDataItem,
-	jsonObjectType,
-	netLineItem,
-	numberScope,
-	tickItem,
-} from "../interface/itemsInterFace";
+import { findRoundTimeCountFromArray, timeTypeMap } from "../utils/timeFormatDefine";
+import { IToolTipItem, findRoundTimeCountFromArrayDataItem, jsonObjectType, netLineItem, numberScope, tickItem } from "../interface/itemsInterFace";
 import { ItimeFormat, TtimeType } from "../interface/timeDefineInterFace";
-import lodash from "lodash";
 
 /**
  * x轴钩子
  */
 const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
-	const moveThrettor = useThrottle();
-
 	/**
 	 *默认参数状态
 	 */
@@ -261,12 +227,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	 *@param {number | string} yAxisLabelSpace y轴的label空间
 	 *@returns {void}
 	 */
-	const initAxisSates = function (
-		timeType: TtimeType,
-		viewWidth: number,
-		viewHeight: number,
-		yAxisLabelSpace: number | string
-	) {
+	const initAxisSates = function (timeType: TtimeType, viewWidth: number, viewHeight: number, yAxisLabelSpace: number | string) {
 		/* 设置各项属性 */
 		setviewSize({
 			width: viewWidth,
@@ -354,10 +315,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 		moveDir: "add" | "min" | "all"
 	): tickItem[] {
 		if (moveDir === "add" || moveDir === "all") {
-			let forwardArr = timeSpeculation_forward(
-				targetTickArr[targetTickArr.length - 1].value as number,
-				timeScope.end
-			);
+			let forwardArr = timeSpeculation_forward(targetTickArr[targetTickArr.length - 1].value as number, timeScope.end);
 
 			if (forwardArr.length > 1) {
 				let arr = createTickers(forwardArr, timeScope, isComputCommonProp, _moveAmount);
@@ -396,22 +354,13 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 				let width = lineSize.width + commonPixProperties.incriseWidth * 2;
 				//计算位置
 				item.cPosition = {
-					x:
-						getRangePosition(Number(item.value), timeScope, width) -
-						commonPixProperties.incriseWidth -
-						_moveAmount,
+					x: getRangePosition(Number(item.value), timeScope, width) - commonPixProperties.incriseWidth - _moveAmount,
 					y: linePosition.y,
 				};
 				item.index = index;
 				index++;
 
-				item = computDataPixTick(
-					item,
-					timeScope,
-					index,
-					commonPixProperties.dataWidth,
-					commonPixProperties.pixWidth
-				);
+				item = computDataPixTick(item, timeScope, index, commonPixProperties.dataWidth, commonPixProperties.pixWidth);
 			}
 			targetTickArr = targetTickArr.sort(function (a: tickItem, b: tickItem) {
 				return (a.value as number) - (b.value as number);
@@ -479,13 +428,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	/**
 	 * 计算tick的位置和数据关系数据
 	 */
-	const computDataPixTick = function (
-		item: tickItem,
-		range: numberScope,
-		index: number,
-		dataWidth: number,
-		pixWidth: number
-	): tickItem {
+	const computDataPixTick = function (item: tickItem, range: numberScope, index: number, dataWidth: number, pixWidth: number): tickItem {
 		item.dataSpace = {
 			start: index * dataWidth + range.start,
 			end: (index + 1) * dataWidth + range.start,
@@ -503,12 +446,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	/**
 	 * 创建真实tick组
 	 */
-	const createTickers = function (
-		arr: number[],
-		range: numberScope,
-		isComputCommonProp: boolean,
-		moveAmount: number
-	): Array<tickItem> {
+	const createTickers = function (arr: number[], range: numberScope, isComputCommonProp: boolean, moveAmount: number): Array<tickItem> {
 		debugger;
 		let result: Array<tickItem> = [];
 
@@ -538,17 +476,12 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 
 			//计算位置
 			resultItem.cPosition = {
-				x:
-					getRangePosition(Number(resultItem.value), range, width) -
-					commonPixProperties.incriseWidth -
-					moveAmount,
+				x: getRangePosition(Number(resultItem.value), range, width) - commonPixProperties.incriseWidth - moveAmount,
 				y: linePosition.y,
 			};
 			resultItem.index = index;
 
-			result.push(
-				computDataPixTick(resultItem, range, index, commonPixProperties.dataWidth, commonPixProperties.pixWidth)
-			);
+			result.push(computDataPixTick(resultItem, range, index, commonPixProperties.dataWidth, commonPixProperties.pixWidth));
 			index++;
 		}
 		return result;
@@ -589,58 +522,6 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	/**
 	 * 通过像素位置查找目标tick
 	 */
-	//const findTick = function (position: number, key: "pixSpace" | "dataSpace"): tickItem | null {
-	//	var _tickerArr = tickArr;
-	//	var _findArr: tickItem[] = [];
-	//	var centerPoint = 0;
-	//	while (true) {
-	//		centerPoint = Number(((_tickerArr.length - 1) / 2).toFixed(0));
-	//		var isFind = false;
-	//
-	//		var find = function (start: number, end: number) {
-	//			if (_tickerArr[start][key]!.start <= position && _tickerArr[end][key]!.end >= position) {
-	//				isFind = true;
-	//				_findArr = _tickerArr.slice(start, end + 1);
-	//			}
-	//		};
-	//
-	//		let start = 0;
-	//		let end = centerPoint;
-	//		if (_tickerArr.length === 2) {
-	//			start = 0;
-	//			end = 0;
-	//		}
-	//		//在第一组范围里查找
-	//		find(start, end);
-	//
-	//		if (_findArr.length === 1) {
-	//			return _findArr[0];
-	//		}
-	//		if (isFind) {
-	//			_tickerArr = _findArr;
-	//			continue;
-	//		}
-	//
-	//		start = centerPoint;
-	//		end = _tickerArr.length - 1;
-	//		if (_tickerArr.length === 2) {
-	//			start = 1;
-	//			end = 1;
-	//		}
-	//		//在第二组范围里查找
-	//		find(start, end);
-	//
-	//		if (_findArr.length === 1) {
-	//			return _findArr[0];
-	//		}
-	//		if (isFind === false) {
-	//			return null;
-	//		} else {
-	//			_tickerArr = _findArr;
-	//		}
-	//	}
-	//};
-
 	//ai 优化后的版本
 	const findTick = function (position: number, key: "pixSpace" | "dataSpace"): tickItem | null {
 		let tickerArr = tickArr.slice(); // 复制数组以避免修改原数组
@@ -704,10 +585,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	//2.按照挑选的两个等差数列的参数，从tickArr中挑选出具体的数组
 	//2.合并两个数组
 	//3.输出
-	const createDisplayTickersByDate = function (
-		tickArr: tickItem[],
-		displayTickRoundValuesArray: findRoundTimeCountFromArrayDataItem[]
-	) {
+	const createDisplayTickersByDate = function (tickArr: tickItem[], displayTickRoundValuesArray: findRoundTimeCountFromArrayDataItem[]) {
 		tickArr = [...tickArr];
 		let displayTickArr1: tickItem[] = [];
 		let displayTickArr2: tickItem[] = [];
@@ -737,19 +615,12 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 		return result;
 	};
 
-	const getTickWithFormated = function (
-		tickArr: tickItem[],
-		xCondition: findRoundTimeCountFromArrayDataItem
-	): tickItem[] {
+	const getTickWithFormated = function (tickArr: tickItem[], xCondition: findRoundTimeCountFromArrayDataItem): tickItem[] {
 		let result: tickItem[] = [];
 		//先取到第一个
 		let currentIndex = xCondition.startIndex;
 		let currentItem = tickArr[currentIndex];
-		currentItem.displayValue = xCondition.type.formatter(
-			Number(currentItem.value),
-			config?.language!,
-			config!.timeZone!.displayTimeZone
-		);
+		currentItem.displayValue = xCondition.type.formatter(Number(currentItem.value), config?.language!, config!.timeZone!.displayTimeZone);
 		result.push(currentItem);
 		//然后再依次取剩下的
 		for (let i = xCondition.count; i > -1; i--) {
@@ -758,11 +629,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 				break;
 			}
 			currentItem = tickArr[currentIndex];
-			currentItem.displayValue = xCondition.type.formatter(
-				Number(currentItem.value),
-				config?.language!,
-				config!.timeZone!.displayTimeZone
-			);
+			currentItem.displayValue = xCondition.type.formatter(Number(currentItem.value), config?.language!, config!.timeZone!.displayTimeZone);
 			result.push(currentItem);
 		}
 		return result;
@@ -774,11 +641,11 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	 */
 	const createAxisData = function () {
 		/* 
-            1.获得初始的时间范围
-            1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
-            1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
-            1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
-        */
+						1.获得初始的时间范围
+						1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
+						1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
+						1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
+				*/
 
 		/**
 		 * 粗糙时间范围
@@ -789,16 +656,8 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 		if (config!.timeZone!.displayTimeZone !== "local") {
 			let date = new Date();
 			let localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
-			_flexTimeScope.start = anyTimeToGMT0000ToTarget(
-				_flexTimeScope.start,
-				localtimeZone,
-				config!.timeZone!.displayTimeZone!
-			);
-			_flexTimeScope.end = anyTimeToGMT0000ToTarget(
-				_flexTimeScope.end,
-				localtimeZone,
-				config!.timeZone!.displayTimeZone!
-			);
+			_flexTimeScope.start = anyTimeToGMT0000ToTarget(_flexTimeScope.start, localtimeZone, config!.timeZone!.displayTimeZone!);
+			_flexTimeScope.end = anyTimeToGMT0000ToTarget(_flexTimeScope.end, localtimeZone, config!.timeZone!.displayTimeZone!);
 		}
 
 		/**
@@ -942,11 +801,6 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 					return "add";
 				})()
 			);
-
-			/* let displayTickRoundValuesArray = findRoundTimeCountFromArray(
-				newTicks as unknown as jsonObjectType[],
-				"value"
-			); */
 
 			//挑选出所有按时间整数排列的等差数列的参数
 			let displayTickRoundValuesArray = findRoundTimeCountFromArray(
@@ -1095,7 +949,6 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 			setdisplayTickArr(_displayTickerArr);
 			setxAxisUpdateTimeStamp(+new Date());
 			setxAxisUpdateScaleTimeStamp(+new Date());
-			//setx(0);在数据钩子里设置这个，免得页面跳动
 			setmoveAmount(0);
 		}
 	};

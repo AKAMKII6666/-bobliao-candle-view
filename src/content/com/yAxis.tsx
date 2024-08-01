@@ -4,18 +4,7 @@
  * 模块说明：
  * 编写时间：
  */
-import React, {
-	useEffect,
-	useRef,
-	useState,
-	forwardRef,
-	useImperativeHandle,
-	FC,
-	ReactElement,
-	memo,
-	LegacyRef,
-	useMemo,
-} from "react";
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle, FC, ReactElement, memo, LegacyRef, useMemo } from "react";
 import { Stage, Graphics, Container, Text } from "@pixi/react";
 import * as PIXI from "pixi.js";
 import { DashedLine, Rectangle } from "../utils/basicShaps";
@@ -148,11 +137,7 @@ const YAxis: FC<iprops> = ({}, _ref): ReactElement => {
 					anchor={{ x: 0, y: 0.6 }}
 					x={CVData.hookObjs.yAxisObj.data.linePosition.x + CVData.hookObjs.yAxisObj.data.tickLength * 2}
 					y={CVData.hookObjs.yAxisObj.data.tooltipState.position.y}
-					text={
-						CVData.hookObjs.yAxisObj.initArgs.tooltip?.label?.formatter!(
-							CVData.hookObjs.yAxisObj.data.tooltipState
-						) as string
-					}
+					text={CVData.hookObjs.yAxisObj.initArgs.tooltip?.label?.formatter!(CVData.hookObjs.yAxisObj.data.tooltipState) as string}
 					resolution={2}
 					style={
 						new PIXI.TextStyle({
@@ -259,11 +244,7 @@ const YAxis: FC<iprops> = ({}, _ref): ReactElement => {
 		function () {
 			return makeTooltip();
 		},
-		[
-			CVData.hookObjs.yAxisObj.data.tooltipState,
-			CVData.hookObjs.yAxisObj.data.tooltipIsShow,
-			CVData.hookObjs.yAxisObj.initArgs.tooltip!,
-		]
+		[CVData.hookObjs.yAxisObj.data.tooltipState, CVData.hookObjs.yAxisObj.data.tooltipIsShow, CVData.hookObjs.yAxisObj.initArgs.tooltip!]
 	);
 
 	return (
