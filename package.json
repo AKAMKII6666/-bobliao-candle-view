@@ -21,8 +21,8 @@
 	},
 	"peerDependencies": {
 		"react": ">=16",
-		"pixi.js": "^7.4.2",
-		"@pixi/react": "^7.4.2"
+		"pixi.js": "^7.1.2",
+		"@pixi/react": "^7.1.2"
 	},
 	"peerDependenciesMeta": {
 		"pixi.js": {
@@ -85,7 +85,7 @@
 		"code-stringify": "2.0.3",
 		"lodash": "4.17.21",
 		"lodash-es": "4.17.21",
-		"pixi.js": "7.4.2",
+		"pixi.js": "7.1.2",
 		"plugin-bugfix-v8-spread-parameters-in-optional-chaining": "0.0.1-security",
 		"postcss": "8.4.38",
 		"postcss-import": "16.1.0",

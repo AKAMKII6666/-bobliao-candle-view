@@ -7627,7 +7627,7 @@ var Rectangle = /*#__PURE__*/react.PixiComponent("Rectangle", {
     var x = newxy.x;
     var y = newxy.y;
     instance.clear();
-    instance.beginFill(new_props.color || 0x0, new_props.opacity);
+    instance.beginFill(Number(new_props.color) || 0x0, Number(new_props.opacity) || 1);
     instance.drawRect(x, y, new_props.size.width, new_props.size.height);
     instance.endFill();
   }
@@ -7751,7 +7751,7 @@ var KlineBatching = /*#__PURE__*/react.PixiComponent("KlineBatching", {
 
       var _x = _newxy.x;
       var _y = _newxy.y;
-      instance.beginFill(wickProps.color || 0x0, wickProps.opacity);
+      instance.beginFill(Number(wickProps.color) || 0x0, Number(wickProps.opacity) || 1);
       instance.drawRect(_x, _y, _size.width, _size.height);
     }
 
@@ -7801,7 +7801,7 @@ var KlineBatching = /*#__PURE__*/react.PixiComponent("KlineBatching", {
         var newxy = xyComput(candleProps);
         var x = newxy.x;
         var y = newxy.y;
-        instance.beginFill(candleProps.color || 0x0, candleProps.opacity);
+        instance.beginFill(Number(candleProps.color) || 0x0, Number(candleProps.opacity) || 1);
         instance.drawRect(x, y, size.width, size.height);
       }
     }
@@ -7887,7 +7887,7 @@ var VolumeBatching = /*#__PURE__*/react.PixiComponent("VolumeBatching", {
       var newxy = xyComput(volumeProps);
       var x = newxy.x;
       var y = newxy.y;
-      instance.beginFill(volumeProps.color || 0x0, volumeProps.opacity);
+      instance.beginFill(Number(volumeProps.color) || 0x0, Number(volumeProps.opacity) || 1);
       instance.drawRect(x, y, size.width, size.height);
     }
 

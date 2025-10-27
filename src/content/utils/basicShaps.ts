@@ -10,7 +10,7 @@ export const Rectangle = PixiComponent<IPixiShapeRectangle, Graphics>("Rectangle
 		let x = newxy.x;
 		let y = newxy.y;
 		instance.clear();
-		instance.beginFill(new_props.color || 0x0, new_props.opacity);
+		instance.beginFill(Number(new_props.color) || 0x0, Number(new_props.opacity) || 1);
 		instance.drawRect(x, y, new_props.size.width, new_props.size.height);
 		instance.endFill();
 	},
@@ -119,7 +119,7 @@ export const KlineBatching = PixiComponent<IPixiKlineBatching, Graphics>("KlineB
 			let newxy = xyComput(wickProps);
 			let x = newxy.x;
 			let y = newxy.y;
-			instance.beginFill(wickProps.color || 0x0, wickProps.opacity);
+			instance.beginFill(Number(wickProps.color) || 0x0, Number(wickProps.opacity) || 1);
 			instance.drawRect(x, y, size.width, size.height);
 		}
 
@@ -165,7 +165,7 @@ export const KlineBatching = PixiComponent<IPixiKlineBatching, Graphics>("KlineB
 				let newxy = xyComput(candleProps);
 				let x = newxy.x;
 				let y = newxy.y;
-				instance.beginFill(candleProps.color || 0x0, candleProps.opacity);
+				instance.beginFill(Number(candleProps.color) || 0x0, Number(candleProps.opacity) || 1);
 				instance.drawRect(x, y, size.width, size.height);
 			}
 		}
@@ -250,7 +250,7 @@ export const VolumeBatching = PixiComponent<IPixiVolumeBatching, Graphics>("Volu
 			let newxy = xyComput(volumeProps);
 			let x = newxy.x;
 			let y = newxy.y;
-			instance.beginFill(volumeProps.color || 0x0, volumeProps.opacity);
+			instance.beginFill(Number(volumeProps.color) || 0x0, Number(volumeProps.opacity) || 1);
 			instance.drawRect(x, y, size.width, size.height);
 		}
 
