@@ -1,4 +1,4 @@
-import { IcandleData, Isize, pointCoord } from './itemsInterFace';
+import { IcandleData, Isize, pointCoord } from "./itemsInterFace";
 /**
  * pixi的矩形绘制接口
  */
@@ -18,11 +18,11 @@ export interface IPixiShapeRectangle {
     /**
      * 对齐x坐标的模式
      */
-    alignX?: 'left' | 'center' | 'right';
+    alignX?: "left" | "center" | "right";
     /**
      * 对齐y坐标的模式
      */
-    alignY?: 'top' | 'center' | 'bottom';
+    alignY?: "top" | "center" | "bottom";
     /**
      * 透明度
      */

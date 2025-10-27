@@ -4,7 +4,7 @@
  * 模块说明：
  * 编写时间：
  */
-import React, { ReactElement } from 'react';
+import React, { ReactElement } from "react";
 /**
  * 传入参数
  */

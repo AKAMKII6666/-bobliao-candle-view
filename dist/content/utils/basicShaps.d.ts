@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { Graphics } from 'pixi.js';
-import { IPixiKlineBatching, IPixiShapeDashedLine, IPixiShapeRectangle, IPixiVolumeBatching } from '../interface/basicShapesInterFace';
+import { Graphics } from "pixi.js";
+import { IPixiKlineBatching, IPixiShapeDashedLine, IPixiShapeRectangle, IPixiVolumeBatching } from "../interface/basicShapesInterFace";
 export declare const Rectangle: import("react").FC<IPixiShapeRectangle & {
     ref?: import("react").Ref<Graphics>;
 }>;

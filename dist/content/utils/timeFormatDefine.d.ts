@@ -1,6 +1,6 @@
-import { findRoundTimeCountFromArrayDataItem, jsonObjectType } from '../interface/itemsInterFace';
-import { ItimeFormat, TtimeType } from '../interface/timeDefineInterFace';
-export declare const getshifttime: (hourShift?: number | 'local') => number;
+import { findRoundTimeCountFromArrayDataItem, jsonObjectType } from "../interface/itemsInterFace";
+import { ItimeFormat, TtimeType } from "../interface/timeDefineInterFace";
+export declare const getshifttime: (hourShift?: number | "local") => number;
 /**
  *1分钟
  */
@@ -58,4 +58,4 @@ export declare const timeTypeMap: {
 /**
  *通过时间对象查找某个数组里的时间为特定时间对象的整数的个数
  */
-export declare const findRoundTimeCountFromArray: (array: jsonObjectType[] | number[], timeShift: number | 'local', currentType: TtimeType, key?: string) => findRoundTimeCountFromArrayDataItem[] | null;
+export declare const findRoundTimeCountFromArray: (array: jsonObjectType[] | number[], timeShift: number | "local", currentType: TtimeType, key?: string) => findRoundTimeCountFromArrayDataItem[] | null;

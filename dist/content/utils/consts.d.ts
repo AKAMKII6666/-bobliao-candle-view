@@ -1,4 +1,4 @@
-import { IcandleData, jsonObjectType, numberScope, pointCoord, tickItem } from '../interface/itemsInterFace';
+import { IcandleData, jsonObjectType, numberScope, pointCoord, tickItem } from "../interface/itemsInterFace";
 /**
  * 格式化时间
  */
@@ -13,7 +13,7 @@ export declare const GMT0000TolocalTime: (time: number | Date) => number;
 /**
  * 将某个时间重置到GMT +0000 然后再变换到GMT +0n00
  */
-export declare const anyTimeToGMT0000ToTarget: (time: number | Date, currentTimeZone: number | 'local', targetTimeZone: number | 'local') => number;
+export declare const anyTimeToGMT0000ToTarget: (time: number | Date, currentTimeZone: number | "local", targetTimeZone: number | "local") => number;
 /**
  * 获得长度
  *@param  {number | string} arg 输入值
@@ -61,7 +61,7 @@ export declare const roundToNearestTenBigNumber: (num: string, intGetPar: number
  * @param key 目标字段
  * @param targetType 找 起点=== 目标  还是 终点=== 目标
  */
-export declare function binarySearchByKeyStrictlyEqual(inputArr: jsonObjectType[] | number[], target: number, targetType: 'forStart' | 'forEnd', key?: string): number | null;
+export declare function binarySearchByKeyStrictlyEqual(inputArr: jsonObjectType[] | number[], target: number, targetType: "forStart" | "forEnd", key?: string): number | null;
 /**
  * 二分查找法求交集
  * @param inputArr 输入数组

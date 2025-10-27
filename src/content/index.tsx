@@ -28,7 +28,7 @@ import Loading from "./com/loadingLay";
 export interface iprops {}
 
 /**
- * 创建一个需要全局使用的钱包context
+ * 创建一个需要全局使用的context
  **/
 export const candleViewPixiContext = createContext<IcandleViewContext>({} as IcandleViewContext);
 export const useCandleViewPixiContext: IuseCandleViewContext = function (): IcandleViewContext {

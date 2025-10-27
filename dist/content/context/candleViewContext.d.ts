@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { IcandleViewContext, TcandleViewContext } from '../interface/contextInterFace';
+import { IcandleViewContext, TcandleViewContext } from "../interface/contextInterFace";
 /**
  * candleViewContext
  * k线context

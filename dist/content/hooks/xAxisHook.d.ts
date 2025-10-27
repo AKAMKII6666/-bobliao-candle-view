@@ -1,4 +1,4 @@
-import { TAxis } from '../interface/hooksInterFace';
+import { TAxis } from "../interface/hooksInterFace";
 /**
  * x轴钩子
  */
