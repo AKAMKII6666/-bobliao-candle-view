@@ -305,7 +305,16 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	};
 
 	/**
-	 * 扩展tick组
+	 * 扩展tick组（动态更新X轴刻度）
+	 * 这是X轴数据更新的核心函数，负责根据移动方向动态扩展tick数组
+	 * 支持向前、向后或双向扩展，并重新计算所有tick的位置和属性
+	 *
+	 * @param targetTickArr 目标tick数组，将被扩展和更新
+	 * @param timeScope 当前时间范围，用于计算tick位置
+	 * @param isComputCommonProp 是否重新计算公共属性（位置、宽度等）
+	 * @param _moveAmount 当前移动偏移量，用于位置计算
+	 * @param moveDir 移动方向："add"向前扩展，"min"向后扩展，"all"双向扩展
+	 * @returns 更新后的tick数组
 	 */
 	const updateTicks = function (
 		targetTickArr: tickItem[],
@@ -314,59 +323,133 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 		_moveAmount: number,
 		moveDir: "add" | "min" | "all"
 	): tickItem[] {
+		/**
+		 * 第一部分：向前扩展tick数组
+		 * 当用户向右拖拽或需要显示更多未来时间时触发
+		 */
 		if (moveDir === "add" || moveDir === "all") {
+			/**
+			 * 从当前tick数组的最后一个时间点开始，向前推测到时间范围结束
+			 * 生成需要添加的未来时间点数组
+			 */
 			let forwardArr = timeSpeculation_forward(targetTickArr[targetTickArr.length - 1].value as number, timeScope.end);
 
+			/**
+			 * 如果推测出新的时间点，则创建对应的tick对象并添加到数组末尾
+			 * 注意：跳过第一个元素（index=0），因为它是当前数组的最后一个元素
+			 */
 			if (forwardArr.length > 1) {
+				// 创建新的tick对象数组
 				let arr = createTickers(forwardArr, timeScope, isComputCommonProp, _moveAmount);
+				// 将新tick添加到目标数组末尾（跳过第一个重复元素）
 				for (var i = 1; i < arr.length; i++) {
 					targetTickArr.push(arr[i]);
 				}
 			}
 		}
 
+		/**
+		 * 第二部分：向后扩展tick数组
+		 * 当用户向左拖拽或需要显示更多历史时间时触发
+		 */
 		if (moveDir === "min" || moveDir === "all") {
+			/**
+			 * 从当前tick数组的第一个时间点开始，向后推测到时间范围开始
+			 * 生成需要添加的历史时间点数组
+			 */
 			let backwardArr = timeSpeculation_backrward(targetTickArr[0].value as number, timeScope.start);
+
+			/**
+			 * 如果推测出新的时间点，则创建对应的tick对象并添加到数组开头
+			 * 注意：跳过最后一个元素，因为它是当前数组的第一个元素
+			 */
 			if (backwardArr.length > 1) {
+				// 创建新的tick对象数组
 				let arr = createTickers(backwardArr, timeScope, isComputCommonProp, _moveAmount);
+				// 将新tick添加到目标数组开头（跳过最后一个重复元素）
 				for (var i = arr.length - 2; i > -1; i--) {
 					targetTickArr.unshift(arr[i]);
 				}
 			}
 		}
+
+		/**
+		 * 第三部分：计算公共像素属性
+		 * 这些属性用于计算每个tick的位置、宽度等显示属性
+		 */
 		let commonPixProperties;
 		if (isComputCommonProp) {
+			/**
+			 * 情况A：重新计算公共属性
+			 * 当时间范围或tick数量发生变化时，需要重新计算所有公共属性
+			 */
 			commonPixProperties = computTickCommonProp(timeScope, lineSize.width, targetTickArr.length);
 		} else {
+			/**
+			 * 情况B：使用现有公共属性
+			 * 当只是移动位置而不改变范围时，复用现有的公共属性以提高性能
+			 */
 			commonPixProperties = {
-				dataWidth: displayTickCommonWidth,
-				pixWidth: displayTickCommonpixWidth,
+				dataWidth: displayTickCommonWidth, // 每个tick的数据宽度
+				pixWidth: displayTickCommonpixWidth, // 每个tick的像素宽度
 				incriseWidth: (function () {
+					// 扩展宽度（用于padding）
 					return lineSize.width * initArgs.displayPadding!;
 				})(),
 			};
 		}
 
+		/**
+		 * 第四部分：更新tick位置和属性
+		 * 只有在需要重新计算公共属性时才执行，避免不必要的计算
+		 */
 		if (isComputCommonProp) {
-			//更新位置
+			/**
+			 * 更新每个tick的位置和索引
+			 * 重新计算所有tick的像素位置、数据空间等属性
+			 */
 			let index = 0;
 			for (var item of targetTickArr) {
+				/**
+				 * 计算总宽度（包含扩展宽度）
+				 * 总宽度 = 轴宽度 + 左右扩展宽度
+				 */
 				let width = lineSize.width + commonPixProperties.incriseWidth * 2;
-				//计算位置
+
+				/**
+				 * 计算tick的像素位置
+				 * x坐标 = 时间在范围中的相对位置 - 扩展宽度 - 移动偏移量
+				 * y坐标 = 轴线的y位置
+				 */
 				item.cPosition = {
 					x: getRangePosition(Number(item.value), timeScope, width) - commonPixProperties.incriseWidth - _moveAmount,
 					y: linePosition.y,
 				};
+
+				// 设置tick在数组中的索引
 				item.index = index;
 				index++;
 
+				/**
+				 * 计算tick的数据空间和像素空间
+				 * 包括数据范围、像素范围等详细属性
+				 */
 				item = computDataPixTick(item, timeScope, index, commonPixProperties.dataWidth, commonPixProperties.pixWidth);
 			}
+
+			/**
+			 * 按时间顺序排序tick数组
+			 * 确保tick数组始终按时间顺序排列，便于后续处理
+			 */
 			targetTickArr = targetTickArr.sort(function (a: tickItem, b: tickItem) {
 				return (a.value as number) - (b.value as number);
 			});
 		}
 
+		/**
+		 * 返回更新后的tick数组
+		 * 包含所有扩展的tick和更新后的位置信息
+		 */
 		return targetTickArr;
 	};
 
@@ -447,7 +530,6 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	 * 创建真实tick组
 	 */
 	const createTickers = function (arr: number[], range: numberScope, isComputCommonProp: boolean, moveAmount: number): Array<tickItem> {
-		debugger;
 		let result: Array<tickItem> = [];
 
 		let commonPixProperties;
@@ -615,6 +697,20 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 		return result;
 	};
 
+	/**
+	 * getTickWithFormated函数的作用是：根据给定的等差数列参数（xCondition），从tickArr（tick数组）中挑选出需要显示的tick（刻度）项，并格式化它们的显示值（displayValue）。
+	 *
+	 * 参数说明：
+	 * - tickArr: tick项的数组，每一项包含其value等信息
+	 * - xCondition: 一个对象，包含刻度的挑选规则，包括startIndex（起始下标）、step（步长，每隔几个取一个）、count（总共取多少个），以及type（时间类型及其formatter格式化函数）
+	 *
+	 * 实现方式：
+	 * 1. 首先根据startIndex取得第一个需要显示的tick，将其displayValue通过xCondition.type.formatter格式化。
+	 * 2. 然后继续按照步长step, 从当前下标往前，依次挑选后续需要显示的tick（共count+1个，因为包含起点），每一个tick都同样格式化displayValue。
+	 * 3. 最终返回格式化后的tick数组。
+	 *
+	 * 返回值：格式化好的tick数组
+	 */
 	const getTickWithFormated = function (tickArr: tickItem[], xCondition: findRoundTimeCountFromArrayDataItem): tickItem[] {
 		let result: tickItem[] = [];
 		//先取到第一个
@@ -636,104 +732,197 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 	};
 
 	/**
-	 * 初始化时
-	 * 制造轴数据
+	 * 初始化时制造轴数据
+	 * 这是X轴数据生成的核心函数，负责创建时间轴的所有显示元素
+	 *
+	 * 算法流程：
+	 * 1. 获得初始的时间范围
+	 *    1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
+	 *    1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出"拟定时间范围" 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
+	 *    1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
 	 */
 	const createAxisData = function () {
-		/* 
-						1.获得初始的时间范围
-						1.1 拟定时间范围，例如从当前时间往前推 24 小时，这是拟定的时间范围
-						1.2 确定标准时间范围，根据设置的时间类型 以当前时间进行取整+1 获得最末尾时间（最右边的时间），然后将时间往前推，每次一个单位（例如小时），直到超出“拟定时间范围” 得到最开始时间｛最左边的时间｝ 输出【｛最左边的时间｝，｛最左边的时间｝】时间范围； 真实 tick 数数组；
-						1.3 获得显示 tick 组 根据上面生成的 真实小时数数组；以及 最大 tick 显示数量，和最小显示 tick 数量；计算 显示 tick 组
-				*/
-
 		/**
-		 * 粗糙时间范围
+		 * 第一步：获取初始时间范围
+		 * 根据当前时间类型和初始时间点，计算X轴应该显示的时间范围
+		 * 例如：1分钟图可能显示最近24小时，1小时图可能显示最近30天
 		 */
 		let _flexTimeScope = currentTimeType!.getInitTimeScope(initArgs.initTimePoint!);
-		//如果设置了时间归零
-		//就需要把起始的时区算成GMT +0000
+
+		/**
+		 * 第二步：处理时区转换
+		 * 如果用户设置了非本地时区的显示时区，需要将时间范围转换为目标时区
+		 * 这样可以确保在不同时区的用户看到一致的时间显示
+		 */
 		if (config!.timeZone!.displayTimeZone !== "local") {
+			// 获取当前本地时区偏移量（小时）
 			let date = new Date();
 			let localtimeZone = Math.abs(date.getTimezoneOffset() / 60);
+
+			// 将时间范围的开始时间转换为目标时区
 			_flexTimeScope.start = anyTimeToGMT0000ToTarget(_flexTimeScope.start, localtimeZone, config!.timeZone!.displayTimeZone!);
+			// 将时间范围的结束时间转换为目标时区
 			_flexTimeScope.end = anyTimeToGMT0000ToTarget(_flexTimeScope.end, localtimeZone, config!.timeZone!.displayTimeZone!);
 		}
 
 		/**
-		 * 当前的整数时间
+		 * 第三步：计算整数时间点
+		 * 将时间范围的结束时间向下取整到最近的整数时间点
+		 * 例如：如果结束时间是14:23，1小时图的整数时间点就是14:00
 		 */
 		let _timeInteger = currentTimeType!.roundingFunction(_flexTimeScope!.end!, config!.timeZone!.displayTimeZone!);
-		/* 对齐整数的时间组 */
+
+		/**
+		 * 第四步：生成完整的时间序列
+		 * 从整数时间点开始，向前推算所有需要显示的时间点
+		 * 例如：从14:00开始，向前推算到时间范围开始，生成[10:00, 11:00, 12:00, 13:00, 14:00]
+		 */
 		let realTimeArr = timeSpeculation_backrward(_timeInteger, _flexTimeScope?.start!);
 
 		/**
-		 * 当前时间范围
+		 * 第五步：设置当前时间范围
+		 * 将计算出的时间范围保存为当前显示的时间范围
 		 */
 		let _currentTimeScope = _flexTimeScope;
+
 		/**
-		 * 真实数据位置
+		 * 第六步：创建基础tick数组
+		 * 根据时间序列创建所有tick对象，包含位置、样式等属性
+		 * 这是X轴的基础数据结构，包含所有可能显示的时间点
 		 */
 		let _tickerArr = createTickers(realTimeArr, _flexTimeScope, true, 0);
 
-		//挑选出所有按时间整数排列的等差数列的参数
+		/**
+		 * 第七步：智能选择显示格式
+		 * 分析时间数据，寻找最适合的整数时间点显示格式
+		 * 例如：如果数据跨度是1天，可能选择每4小时显示一个刻度
+		 * 如果数据跨度是1小时，可能选择每15分钟显示一个刻度
+		 */
 		let displayTickRoundValuesArray = findRoundTimeCountFromArray(
 			_tickerArr as unknown as jsonObjectType[],
 			config!.timeZone!.displayTimeZone!,
 			config!.timeFormat!,
 			"value"
 		);
+
+		/**
+		 * 第八步：生成显示用的tick数组
+		 * 根据智能分析的结果，决定如何显示tick
+		 */
 		let _displayTickerArr;
 		if (displayTickRoundValuesArray === null) {
 			/**
-			 * 用于显示的ticker
+			 * 情况A：没有找到合适的时间格式
+			 * 使用简单的等间隔显示方式，通过减半算法控制显示数量
 			 */
 			_displayTickerArr = createDisplayTickers(_tickerArr);
 
+			// 按时间顺序排序显示tick
 			_displayTickerArr = _displayTickerArr.sort(function (a: tickItem, b: tickItem) {
 				return (a.value as number) - (b.value as number);
 			});
 		} else {
-			//从所有等差数列的参数里算出具体的数列
+			/**
+			 * 情况B：找到了合适的时间格式
+			 * 使用智能的整数时间点显示方式，显示更美观的时间刻度
+			 * 例如：显示整点时间而不是随机时间点
+			 */
 			_displayTickerArr = createDisplayTickersByDate(_tickerArr, displayTickRoundValuesArray);
 		}
 
 		/**
-		 * 网格线组
+		 * 第九步：创建网格线数组
+		 * 根据显示tick创建对应的垂直网格线，用于辅助阅读
 		 */
 		let _netLineArr = createNetLines(_displayTickerArr);
 
+		/**
+		 * 第十步：更新所有状态
+		 * 将计算出的所有数据保存到React状态中，触发界面重新渲染
+		 */
+		// 保存原始时间范围，用于缩放计算
 		setorgScope(_flexTimeScope);
+		// 保存上次的时间范围，用于移动计算
 		setlastTimeScope(_flexTimeScope);
+		// 保存当前时间范围
 		setcurrentTimeScope(() => _currentTimeScope);
+		// 保存所有tick数据
 		settickArr(_tickerArr);
+		// 保存网格线数据
 		setnetLineArr(_netLineArr);
+		// 保存显示用的tick数据
 		setdisplayTickArr(_displayTickerArr);
+		// 标记初始化完成
 		setisFinishedInit(true);
+		// 记录初始化时间戳
 		setInitStemp(+new Date());
-		//这里产生出来的指针会偏移一点，很正常 因为最末尾的时间是根据当前时间来的
-		//倒数第一个指针是根据最末尾时间取整得来的
+
+		/**
+		 * 注意：这里产生出来的指针会偏移一点，这是正常现象
+		 * 因为最末尾的时间是根据当前时间来的，倒数第一个指针是根据最末尾时间取整得来的
+		 * 这种偏移确保了时间轴与当前时间的对齐
+		 */
 	};
 
 	/**
-	 * 移动轴(鼠标拖拽)
+	 * 移动轴容器（鼠标拖拽处理）
+	 * 这是用户拖拽X轴时的入口函数，负责处理鼠标移动事件并触发轴数据更新
+	 *
+	 * @param start 拖拽开始时的鼠标X坐标位置
+	 * @param stop 拖拽结束时的鼠标X坐标位置
+	 * @param isSaveScope 是否保存移动范围，true表示确认移动，false表示临时移动
 	 */
 	const moveContainer = function (start: number, stop: number, isSaveScope: boolean) {
+		/**
+		 * 前置检查：确保轴已经完成初始化
+		 * 只有在轴数据完全初始化后才能进行移动操作
+		 */
 		if (isFinishedInit) {
+			/**
+			 * 第一步：计算本次移动的距离
+			 * pureLength = 当前拖拽的距离（像素）
+			 * 正值表示向右拖拽，负值表示向左拖拽
+			 */
 			let pureLength = stop - start;
+
+			/**
+			 * 第二步：计算累计移动距离
+			 * _moveAmount = 本次移动距离 + 历史累计移动距离
+			 * 这样可以实现连续的拖拽效果
+			 */
 			let _moveAmount = pureLength + moveAmount;
 
-			//设置鼠标位置用于计算鼠标速度
+			/**
+			 * 第三步：更新鼠标位置状态
+			 * 记录当前鼠标位置，用于计算鼠标移动速度
+			 * 鼠标速度会影响拖拽的流畅度和响应性
+			 */
 			setmousePosition(stop);
 
-			//设置x用于更新画面
+			/**
+			 * 第四步：更新X轴偏移量
+			 * 设置X轴的当前偏移量，用于立即更新画面显示
+			 * 这确保了拖拽时的实时视觉反馈
+			 */
 			setx(pureLength + moveAmount);
+
+			/**
+			 * 第五步：条件性保存移动状态
+			 * 只有在用户确认移动时才保存移动量
+			 * 这样可以区分临时拖拽和确认的移动操作
+			 */
 			if (isSaveScope) {
+				// 保存累计移动量，用于后续的移动计算
 				setmoveAmount(_moveAmount);
 			}
 
-			//计算移动，并更新tick
+			/**
+			 * 第六步：异步更新轴数据
+			 * 使用requestAnimationFrame确保在下一帧更新轴数据
+			 * 这样可以避免阻塞UI渲染，提供流畅的用户体验
+			 */
 			window.requestAnimationFrame(function () {
+				// 调用核心移动算法，更新所有tick数据和显示
 				moveAxis(start, stop, isSaveScope);
 			});
 		}
@@ -842,6 +1031,7 @@ const usexAxis: TAxis = function (args, igorn, config): IAxisobj {
 			if (isSaveScope) {
 				setlastTimeScope(_currentTimeScope);
 			}
+			//完成x轴更新，通知其他组件例如数据组件和y轴组件更新内容
 			setxAxisUpdateTimeStamp(+new Date());
 		}
 	};

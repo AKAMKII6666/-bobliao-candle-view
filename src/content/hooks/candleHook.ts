@@ -251,19 +251,21 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 		return result;
 	};
 
-	//按照当前的时间刻度归并数据（确保数据已经排序）
-	//数据只支持比当前设置的最小单位小的
-	//合并完数据就直接把数据放进allComputedCandleData堆里去了
+	/**
+	 * 将原始细粒度数据按当前时间类型（x轴粒度）进行归并，产出每个时间桶的K线数据
+	 *
+	 * 输入：按时间升序或降序的一组 IcandleItem（可能比当前x轴时间粒度更细）
+	 * 过程：
+	 *  - 使用 xAxis.data.currentTimeType.roundingFunction 对每条数据的时间取整到目标时间桶
+	 *  - 以“时间桶”为单位聚合 open/close/high/low/volume
+	 *  - 在 allComputedCandleData.current[timeBucket] 中落盘聚合结果
+	 * 输出：返回当前批次数据在数值维度上的整体 min/max（string 形式，供Y轴使用）
+	 */
+
+	/* 
+		
+	*/
 	const mergeData = function (data: IcandleItem[]): numberScopeString {
-		//归并的方式是这样的，首先确保数据已经排序，排序顺序为从最早到最晚
-		//那么我们可以从数组的最晚数据开始进行归并
-		//拿取最后一个数据的时间，通过时间配置对象取到整数
-		//将这个整数进行保存。然后归并到一个新的IcandleData对象里
-		//继续下一个，
-		//拿取下一个数据的时间，通过时间配置对象取到整数
-		//通过当前的项目的整数时间和上一个对象的整数时间进行比对
-		//一致就归并到一起
-		//不一致就另起一个新的IcandleData 将数据放进去，以此类推到数组循环结束
 		let _currentCandleStick: IcandleData = {
 			time: -1,
 			open: -1,
@@ -274,7 +276,6 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 		} as unknown as IcandleData;
 
 		let prevItem: IcandleItem = data[data.length - 1];
-		//let result: IcandleData[] = [];
 
 		let _displayCandleMaxMin: numberScopeString = {
 			/**
@@ -286,11 +287,14 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 			 * */
 			end: "-9999999999999999999999",
 		};
+		// 采用从后往前遍历，确保 open/close 的取值逻辑正确（靠近过去的数据作为 open，靠近当前的数据作为 close）
 		for (let i = data.length - 1; i > -1; i--) {
 			let item = data[i];
+			// 将原始时间归整到当前x轴时间类型的时间桶（考虑显示时区）
 			let time = xAxis.data.currentTimeType!.roundingFunction(getRightDate(item.time), baseConfig.timeZone!.displayTimeZone!);
 
 			if (_currentCandleStick.time === -1 || time !== _currentCandleStick.time) {
+				// 时间桶切换：写入上一桶（若已初始化且未写入）并初始化新桶
 				if (
 					time !== _currentCandleStick.time &&
 					_currentCandleStick.time !== -1 &&
@@ -309,13 +313,16 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 				};
 			}
 
+			// open 始终取该时间桶内“更早”的一条（从后往前迭代，遇到更早时间则覆盖）
 			_currentCandleStick.open = item.open;
 			if (
 				time < xAxis.data.currentTimeType!.roundingFunction(getRightDate(prevItem.time), baseConfig!.timeZone!.displayTimeZone!) ||
 				_currentCandleStick.close === -1
 			) {
+				// close 取该时间桶内“更晚”的一条（靠近当前的那条），首条进入桶时也要填充
 				_currentCandleStick.close = item.close;
 			}
+			// high/low 逐条更新桶内极值
 			if (Number(_currentCandleStick.high) < Number(item.high)) {
 				_currentCandleStick.high = item.high;
 			}
@@ -324,13 +331,16 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 				_currentCandleStick.low = item.low;
 			}
 
+			// 同步记录当前批次的整体最小/最大值（供Y轴范围使用）
 			_displayCandleMaxMin.start = getMin(item, Number(_displayCandleMaxMin.start)).toString();
 			_displayCandleMaxMin.end = getMax(item, Number(_displayCandleMaxMin.end)).toString();
 
+			// 累加成交量
 			_currentCandleStick.volume = Number(_currentCandleStick.volume) + Number(item.volume);
 			prevItem = item;
 
 			if (i === 0) {
+				// 循环结束时，落盘最后一个时间桶
 				allComputedCandleData.current[_currentCandleStick.time] = _currentCandleStick;
 			}
 		}
