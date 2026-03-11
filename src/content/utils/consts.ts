@@ -78,7 +78,7 @@ export const getSpaceSize = function (arg: number | string, length: number): num
 		return Number(arg);
 	}
 
-	console.log("no useful length !");
+	// 无效参数，返回默认值
 	return 0;
 };
 
