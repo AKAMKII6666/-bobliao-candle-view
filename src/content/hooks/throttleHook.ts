@@ -44,6 +44,12 @@ const useThrottle = function () {
 			setIsMounted(true);
 		}
 		return function (): void {
+			// 清理定时器，防止组件卸载后定时器仍执行导致内存泄漏
+			if (ThrottleTimeOut.current !== null) {
+				clearTimeout(ThrottleTimeOut.current);
+				ThrottleTimeOut.current = null;
+			}
+			ThrottleFunction.current = null;
 			setIsMounted(false);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
