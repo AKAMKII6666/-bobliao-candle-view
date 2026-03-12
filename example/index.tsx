@@ -4,8 +4,6 @@ import * as ReactDOM from 'react-dom';
 import { useReso } from '../.';
 
 const App = () => {
-  debugger;
-  console.log(useReso);
 
   return <div>test resohook</div>;
 };
