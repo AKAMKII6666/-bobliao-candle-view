@@ -10,36 +10,6 @@ import { DEFAULTDATAVALUES } from "../utils/defaultValues";
 import { IToolTipItem, IcandleData, IcandleItem, IcandleUpdateItem, numberScope, numberScopeString, tickItem } from "../interface/itemsInterFace";
 import { TtimeType } from "../interface/timeDefineInterFace";
 
-interface MessageEventInit<T = any> extends EventInit {
-	lastEventId?: string;
-	channel?: string;
-	data?: T;
-	origin?: string;
-	ports?: MessagePort[];
-	source?: Window;
-}
-
-interface MessageEvent<T = any> extends Event {
-	readonly data: T;
-	readonly origin: string;
-	readonly ports: any;
-	readonly source: Window;
-	initMessageEvent(
-		typeArg: string,
-		canBubbleArg: boolean,
-		cancelableArg: boolean,
-		dataArg: T,
-		originArg: string,
-		lastEventIdArg: string,
-		sourceArg: Window
-	): void;
-}
-
-declare var MessageEvent: {
-	prototype: MessageEvent;
-	new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>;
-};
-
 /**
  * 数据处理钩子
  *
