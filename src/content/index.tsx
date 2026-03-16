@@ -438,7 +438,7 @@ export const CandleView: FC<iprops> = memo(({}, _ref): ReactElement => {
 		e.nativeEvent.stopPropagation();
 		return false;
 	};
-	const preventDefault = (e: any) => e.preventDefault();
+	const preventDefault = (e: WheelEvent<HTMLDivElement>) => e.preventDefault();
 
 	//===============effects==================
 	useEffect(
