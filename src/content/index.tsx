@@ -148,7 +148,7 @@ export const CandleView: FC<iprops> = memo(({}, _ref): ReactElement => {
 			)
 		);
 
-		let offset: any = $(canvasConatiner.current).offset();
+		let offset: JQuery.Offset = $(canvasConatiner.current).offset();
 		//获得组件当前位置
 		setoffset({ x: offset.left, y: offset.top });
 	};

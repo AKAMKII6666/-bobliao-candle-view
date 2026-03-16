@@ -1,4 +1,95 @@
-export const LANGUAGES: any = {
+export interface LanguageConfig {
+	zh: {
+		timeFormat: {
+			today: string;
+			yesterday: string;
+			unitsecond: string;
+			unitminute: string;
+			unithour: string;
+			unithalfOur: string;
+			unitoclock: string;
+			unitday: string;
+			unitdayst: string;
+			unitdaynd: string;
+			unitdayrd: string;
+			thisMonth: string;
+			nextMonth: string;
+			January: string;
+			February: string;
+			March: string;
+			April: string;
+			May: string;
+			June: string;
+			July: string;
+			August: string;
+			September: string;
+			October: string;
+			November: string;
+			December: string;
+			year: string;
+			thisyear: string;
+			lastyear: string;
+			oneMin: string;
+			twoMin: string;
+			threeMin: string;
+			fiveMin: string;
+			tenMin: string;
+			fifteenMin: string;
+			halfhour: string;
+			oneHour: string;
+			oneday: string;
+			oneWeek: string;
+			onemonth: string;
+			oneYear: string;
+		};
+	};
+	en: {
+		timeFormat: {
+			today: string;
+			yesterday: string;
+			unitsecond: string;
+			unitminute: string;
+			unithour: string;
+			unithalfOur: string;
+			unitoclock: string;
+			unitday: string;
+			unitdayst: string;
+			unitdaynd: string;
+			unitdayrd: string;
+			thisMonth: string;
+			nextMonth: string;
+			January: string;
+			February: string;
+			March: string;
+			April: string;
+			May: string;
+			June: string;
+			July: string;
+			August: string;
+			September: string;
+			October: string;
+			November: string;
+			December: string;
+			year: string;
+			thisyear: string;
+			lastyear: string;
+			oneMin: string;
+			twoMin: string;
+			threeMin: string;
+			fiveMin: string;
+			tenMin: string;
+			fifteenMin: string;
+			halfhour: string;
+			oneHour: string;
+			oneday: string;
+			oneWeek: string;
+			onemonth: string;
+			oneYear: string;
+		};
+	};
+}
+
+export const LANGUAGES: LanguageConfig = {
 	zh: {
 		timeFormat: {
 			today: "今天",
