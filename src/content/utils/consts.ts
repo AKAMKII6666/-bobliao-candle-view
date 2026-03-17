@@ -138,14 +138,15 @@ export const shiftNumber = function (_number: string | number, _shiftLength: num
 };
 
 /**
- * 将数组快速转换为hash表
+ * 将数组快速转换为 hash 表
  */
-export const arrayToHash = function (arr: any[], keyProperty: string) {
+export const arrayToHash = function <T extends Record<string, any>>(arr: T[], keyProperty: keyof T) {
 	return arr.reduce((hash, obj, index) => {
-		hash[obj[keyProperty]] = obj;
-		hash[obj[keyProperty]].index = index;
+		const key = obj[keyProperty] as string;
+		hash[key] = obj;
+		hash[key].index = index;
 		return hash;
-	}, {});
+	}, {} as Record<string, T & { index: number }>);
 };
 
 /**
