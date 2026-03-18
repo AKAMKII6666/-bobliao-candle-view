@@ -198,11 +198,11 @@ export function binarySearchByKeyStrictlyEqual(
 	targetType: "forStart" | "forEnd",
 	key?: string
 ): number | null {
-	let getItem = function (arr: any[], index: any): number {
+	let getItem = function (arr: jsonObjectType[] | number[], index: number): number {
 		if (typeof arr[index] === "object" || typeof key !== "undefined") {
-			return Number(arr[index][key!]);
+			return Number((arr[index] as jsonObjectType)[key!]);
 		}
-		return Number(arr[index]);
+		return Number(arr[index] as number);
 	};
 	if (targetType === "forStart" && target === (getItem(inputArr, 0) as number)) {
 		return 0;
@@ -547,7 +547,7 @@ export const countSelectedElements = function (length: number, step: number): nu
 /**
  * 检查数组里的元素是否有重复
  */
-export const hasDuplicates = function (arr: any) {
+export const hasDuplicates = function <T>(arr: T[]): boolean {
 	// 创建一个Set对象，它会自动去除重复的元素
 	const uniqueSet = new Set(arr);
 
