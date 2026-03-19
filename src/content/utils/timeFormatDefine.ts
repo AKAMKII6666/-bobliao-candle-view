@@ -1300,9 +1300,10 @@ export const findRoundTimeCountFromArray = function (
 	currentType: TtimeType,
 	key?: string
 ): findRoundTimeCountFromArrayDataItem[] | null {
-	let getItemTime = function (arr: any[], index: any): number {
-		if (typeof array[index] === "object" || typeof key !== "undefined") {
-			return Number(arr[index][key!]);
+	type ArrayItem = jsonObjectType | number;
+	let getItemTime = function (arr: ArrayItem[], index: number): number {
+		if (typeof arr[index] === "object" || typeof key !== "undefined") {
+			return Number((arr[index] as jsonObjectType)[key!]);
 		}
 		return Number(arr[index]);
 	};
