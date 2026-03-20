@@ -11,6 +11,14 @@ import { IToolTipItem, IcandleData, IcandleItem, IcandleUpdateItem, numberScope,
 import { TtimeType } from "../interface/timeDefineInterFace";
 
 /**
+ * Web Worker 消息数据类型定义
+ */
+interface IWorkerMessageData {
+	message: string;
+	data?: IcandleData | { start: string; end: string } | { orgMaxMiny: numberScope; result: { data: IcandleData[]; scope: numberScopeString } };
+}
+
+/**
  * 数据处理钩子
  *
  * 1.静态模式下拿到数据的处理步骤
@@ -53,7 +61,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 	});
 	const [currentTimeZone, setcurrentTimeZone] = useState<Itimezone>();
 
-	const [workMessage, seworkMessage] = useState<MessageEvent<any>>();
+	const [workMessage, seworkMessage] = useState<MessageEvent<IWorkerMessageData>>();
 	const [LastScopeddcData, setLastScopeddcData] = useState<IcandleData[]>([]);
 	const [totalDataPIXHeight, settotalDataPIXHeight] = useState<number>(0);
 	const [cleanY, setcleanY] = useState<number>(0);
@@ -1571,7 +1579,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 		}
 	};
 
-	let workerReciveMessage = function (e: MessageEvent<any>) {
+	let workerReciveMessage = function (e: MessageEvent<IWorkerMessageData>) {
 		let data = e.data;
 
 		if (data.message === "setdisplayLatestCandle") {
@@ -1620,7 +1628,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 
 	let openMoveWorker = function () {
 		mWorker.current = new Worker(new URL("../webWorkers/moveWorker", import.meta.url));
-		mWorker.current.addEventListener("message", (e: MessageEvent<any>) => {
+		mWorker.current.addEventListener("message", (e: MessageEvent<IWorkerMessageData>) => {
 			seworkMessage(e);
 		});
 	};
