@@ -27,10 +27,10 @@ const DataTooltop: FC<iprops> = ({}, _ref): ReactElement => {
 	const labelPadding: number = 10;
 
 	//===============ref======================
-	const lastDataTooltipTextRef = useRef<any>(null);
-	const lastDataTooltipTextRef2 = useRef<any>(null);
-	const lastDataTooltipTextRef3 = useRef<any>(null);
-	const lastDataTooltipTextRef4 = useRef<any>(null);
+	const lastDataTooltipTextRef = useRef<PIXI.Text | null>(null);
+	const lastDataTooltipTextRef2 = useRef<PIXI.Text | null>(null);
+	const lastDataTooltipTextRef3 = useRef<PIXI.Text | null>(null);
+	const lastDataTooltipTextRef4 = useRef<PIXI.Text | null>(null);
 
 	//===============function=================
 	/* 创建最后一个candle的tooltip */
