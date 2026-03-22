@@ -32,7 +32,7 @@ const Data: FC<iprops> = ({}, _ref): ReactElement => {
 	const labelPadding: number = 10;
 
 	//===============ref======================
-	const tooltipTextRef = useRef<any>(null);
+	const tooltipTextRef = useRef<PIXI.Text | null>(null);
 
 	const getColor = function (status: "rise" | "fall", type: "wick" | "candle"): string {
 		if (status === "rise" && type === "wick") {

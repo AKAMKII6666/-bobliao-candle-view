@@ -27,7 +27,7 @@ const XAxis: FC<iprops> = ({}, _ref): ReactElement => {
 	const labelPadding: number = 25;
 
 	//===============ref======================
-	const tooltipTextRef = useRef<any>(null);
+	const tooltipTextRef = useRef<PIXI.Text | null>(null);
 
 	//===============function=================
 	/* 创建tick */

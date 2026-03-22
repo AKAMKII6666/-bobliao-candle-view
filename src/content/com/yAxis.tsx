@@ -28,7 +28,7 @@ const YAxis: FC<iprops> = ({}, _ref): ReactElement => {
 	const labelPadding: number = 10;
 
 	//===============ref======================
-	const tooltipTextRef = useRef<any>(null);
+	const tooltipTextRef = useRef<PIXI.Text | null>(null);
 
 	//===============function=================
 	/* 创建tick */
