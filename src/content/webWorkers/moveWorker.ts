@@ -1,6 +1,17 @@
-import { IcandleData, IcandleItem, numberScope, numberScopeString, tickItem } from "../interface/itemsInterFace";
+import {
+	IcandleData,
+	IcandleItem,
+	numberScope,
+	numberScopeString,
+	tickItem,
+	WorkerInputMessage,
+	WorkerMessageNotFound,
+	WorkerMessageUpdateYaxis,
+	WorkerMessageSetDisplayLatestCandle,
+	WorkerMessageFinishWork,
+} from "../interface/itemsInterFace";
 
-const webWorker: Worker = self as any; // self代表子线程自身，即子线程的全局对象
+const webWorker: Worker = self as unknown as Worker; // self 代表子线程自身，即子线程的全局对象
 webWorker.addEventListener("message", (event) => {
 	//webWorker.postMessage(sum);
 	let inputData = event.data;

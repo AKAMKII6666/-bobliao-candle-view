@@ -302,3 +302,64 @@ export interface findRoundTimeCountFromArrayDataItem {
 	step: number;
 	type: ItimeFormat;
 }
+
+/**
+ * Worker 消息类型定义
+ */
+export interface WorkerMessageSetDisplayLatestCandle {
+	state: true;
+	message: "setdisplayLatestCandle";
+	data: IcandleData;
+}
+
+export interface WorkerMessageNotFound {
+	state: false;
+	message: "not found";
+}
+
+export interface WorkerMessageUpdateYaxis {
+	state: true;
+	message: "updateYaxis";
+	data: numberScopeString;
+}
+
+export interface WorkerMessageFinishWork {
+	state: true;
+	message: "finishWork";
+	data: {
+		orgMaxMiny: numberScope;
+		result: {
+			data: IcandleData[];
+			scope: numberScopeString;
+			maxVolume?: number;
+		};
+	};
+}
+
+export type WorkerMessage =
+	| WorkerMessageSetDisplayLatestCandle
+	| WorkerMessageNotFound
+	| WorkerMessageUpdateYaxis
+	| WorkerMessageFinishWork;
+
+/**
+ * Worker 输入消息类型
+ */
+export interface WorkerInputMessage {
+	_xAxisdatatickArr: tickItem[];
+	_viewSize: { width: number; height: number };
+	_org_displayCandleMaxMin: numberScopeString;
+	isEscapeItems_current: boolean;
+	isQuickUpdateing_current: boolean;
+	allComputedCandleData_current: { [key: string]: IcandleData };
+	xAxis_initArgs_labelSpace: number | string;
+	initArgs_candleStyles_wickFallColor: string;
+	initArgs_candleStyles_candleFallColor: string;
+	initArgs_candleStyles_wickRiseColor: string;
+	initArgs_candleStyles_candleRiseColor: string;
+	initArgs_candleStyles_candleWidth: number | string;
+	initArgs_candleStyles_wickWidth: number | string;
+	xAxis_data_displayTickCommonpixWidth: number;
+	xAxis_data_lineSize_width: number;
+	xAxis_data_x: number;
+}

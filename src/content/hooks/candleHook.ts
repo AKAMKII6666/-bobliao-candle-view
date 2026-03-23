@@ -7,7 +7,16 @@ import useThrottle from "./throttleHook";
 import { IdataConfig, Itimezone, IuseCandleView } from "../interface/configInterFaces";
 import { IAxisobj, IuseCandleHook, IyAxisobj } from "../interface/hooksInterFace";
 import { DEFAULTDATAVALUES } from "../utils/defaultValues";
-import { IToolTipItem, IcandleData, IcandleItem, IcandleUpdateItem, numberScope, numberScopeString, tickItem } from "../interface/itemsInterFace";
+import {
+	IToolTipItem,
+	IcandleData,
+	IcandleItem,
+	IcandleUpdateItem,
+	numberScope,
+	numberScopeString,
+	tickItem,
+	WorkerMessage,
+} from "../interface/itemsInterFace";
 import { TtimeType } from "../interface/timeDefineInterFace";
 
 /**
@@ -53,7 +62,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 	});
 	const [currentTimeZone, setcurrentTimeZone] = useState<Itimezone>();
 
-	const [workMessage, seworkMessage] = useState<MessageEvent<any>>();
+	const [workMessage, seworkMessage] = useState<MessageEvent<WorkerMessage>>();
 	const [LastScopeddcData, setLastScopeddcData] = useState<IcandleData[]>([]);
 	const [totalDataPIXHeight, settotalDataPIXHeight] = useState<number>(0);
 	const [cleanY, setcleanY] = useState<number>(0);
@@ -1571,7 +1580,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 		}
 	};
 
-	let workerReciveMessage = function (e: MessageEvent<any>) {
+	let workerReciveMessage = function (e: MessageEvent<WorkerMessage>) {
 		let data = e.data;
 
 		if (data.message === "setdisplayLatestCandle") {
@@ -1620,7 +1629,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 
 	let openMoveWorker = function () {
 		mWorker.current = new Worker(new URL("../webWorkers/moveWorker", import.meta.url));
-		mWorker.current.addEventListener("message", (e: MessageEvent<any>) => {
+		mWorker.current.addEventListener("message", (e: MessageEvent<WorkerMessage>) => {
 			seworkMessage(e);
 		});
 	};
