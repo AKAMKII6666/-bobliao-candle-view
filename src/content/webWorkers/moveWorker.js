@@ -39,7 +39,7 @@ webWorker.addEventListener("message", (event) => {
 		if (typeof arg === "number" || !isNaN(Number(arg))) {
 			return Number(arg);
 		}
-		console.log("no useful length !");
+		// console.log("no useful length !");
 		return 0;
 	};
 	const getCandleColor = function (start, end, type) {

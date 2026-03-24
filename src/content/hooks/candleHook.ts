@@ -677,7 +677,7 @@ const useCandleHook = function (args: IdataConfig, xAxis: IAxisobj, yAxis: IyAxi
 
 		//大了就没办法了，直接return
 		if (isConsistentOfDateType === "bigger") {
-			console.warn("The time interval of the data is inconsistent with the given configured time interval!");
+			// console.warn("The time interval of the data is inconsistent with the given configured time interval!");
 			return;
 		}
 
